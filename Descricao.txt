@@ -1,0 +1,33 @@
+=====================================================================================================
+
+Controle Econômico v.1.0.0.
+
+Este software é gratuito e foi desenvolvido para atividades que não requeiram alto desempenho de 
+processamento de dados ou segurança de informações, estando sujeito a bugs e inconvenientes, a 
+interface foi desenvolvida para ser intuitiva e de fácil utilização.
+
+=====================================================================================================
+buble_sort:
+Bibliteca que contém ferramentas para ordenação de listas dinâmicas.
+
+toolslibrary:
+Biblioteca que contém ferramentas de busca e edição de cadastros.
+
+loadlibrary:
+Biblioteca que contém ferramentas de interação no sentido arquivo->lista dinâmica e vice versa,
+possui ferramentas para desalocação de memória, e alternância entre arquivos da base de dados.
+
+cadlibrary:
+Função que possui ferramentas para receber dados em uma estrutura e organizá-los em uma lista.
+
+Database:
+Diretório de armazenamento da base de dados, que possui subdiretórios para armazenamento dos dados 
+de cada ano, estes subdiretórios por sua vez, armazenam os arquivos de cadastro de cada mês.
+
+main_file:
+Código fonte do programa, possui a função principal(main()) entre outras funções e bibliotecas
+=====================================================================================================
+
+Bugs ou sugestões contate o desenvolvedor:
+
+Quemuelalp@hotmail.com      
