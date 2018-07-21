@@ -1,2 +1,2 @@
-start notepad Readme.txt
+start notepad README.txt
 exit
