@@ -17,7 +17,10 @@ Na ficha de preenchimento os campos: descrição e detalhes possuem respectivame
 500 caracteres, e quando o limite de caracteres é atingido a caixa de textos encerra o preencimento, 
 e passa para o item seguinte na ficha. 
 Em caso de alteração de datas deve-se atentar ao preenchimento da mesma, por se tratar de uma string, 
-qualquer valor pode ser adicio- nado porém não é recomendado o uso de letras, sinais ou caracteres especiais (a,s,g,*,@) assim como teclas especiais do teclado(enter esc,backspace). O arquivo main_file.exe é o executável, caso não funcione será necessário compilar no ambiente que ele deverá trabalhar.
+qualquer valor pode ser adicio- nado porém não é recomendado o uso de letras, sinais ou caracteres 
+especiais (a,s,g,*,@) assim como teclas especiais do teclado(enter esc,backspace). 
+O arquivo main_file.exe é o executável, caso não funcione será necessário compilar no ambiente que 
+ele deverá trabalhar.
 Este é um software livre criado para facilitar a organização econômica pessoal e com fins didáticos.
 
 ======================================================================================================
