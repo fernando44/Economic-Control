@@ -1,2 +1,2 @@
-start notepad Descricao.txt
+start notepad README.txt
 exit
