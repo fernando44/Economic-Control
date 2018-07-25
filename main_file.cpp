@@ -283,7 +283,7 @@ int main(){
 				system("cls");
 				printf("%s",titulo);
 				printf("Este software é destinado para uso pessoal.\nNão é recomendado o uso ambientes empresariais !!!\n\n");
-				printf("Desenvolvedor: Quemuel Alves Nassor\n\nContato ou suporte: quemuelalp@hotmail.com\n\nVersão: 1.0.0");
+				printf("Desenvolvedor: Quemuel Alves Nassor\n\nContato ou suporte: quemuelalp@hotmail.com\n\nVersão: 1.0.1");
 				fflush(stdin);
 				getch();
 				
