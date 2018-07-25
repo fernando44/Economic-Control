@@ -180,9 +180,6 @@ int main(){
 					printf("\n\n\n\t\t\t\tNão existem cadastros na lista!!!");
 					sleep (2);
 					
-					//mantém a cor do texto verde
-					system("COLOR 0A");
-					
 				}else{
 				
 					//reinicializa a variável de seleção
@@ -196,6 +193,9 @@ int main(){
 					
 					while(1){
 							
+						//mantém a cor do texto verde
+						system("COLOR 0A");
+						
 						if(sel == 1){
 							
 							//ordena a lista por data
@@ -248,8 +248,7 @@ int main(){
 							sleep (1);
 							sel = 1;
 							
-							//mantém a cor do texto verde
-							system("COLOR 0A");
+							
 						}
 					}
 				}
@@ -308,8 +307,6 @@ int main(){
 				printf("\n\n\n\t\t\t\tOpção inválida!");
 				sleep(1);
 				
-				//mantém a cor do texto verde
-				system("COLOR 0A");
 		}
 		//liberação da memória alocada na lista
 		desaloca(lista_cad);

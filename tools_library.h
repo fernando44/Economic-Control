@@ -25,7 +25,9 @@ void recebe_data(lista_cadastro *ficha,char titulo[500]){
 			
 			//insere as barras de separação, ex: dd/mm/aa
 			if (i == 2 or i == 5){
-			ficha->data[i] = '/';
+				
+				ficha->data[i] = '/';
+			
 			}else{
 				//recebe cada caractere da data
 				fflush(stdin);
@@ -121,9 +123,6 @@ void alterar(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 			system("cls");
 			printf("\n\n\n\t\t\t\tNão existem cadastros na lista!!!");
 			sleep (2);
-			
-			//mantém a cor do texto verde
-			system("COLOR 0A");
 		
 	}else{
 		
@@ -227,11 +226,7 @@ void alterar(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 			//feedback de cadastro não encontrado	
 			system("cls");
 			printf("\n\n\n\t\t\t\tNão encontramos nada, por favor verifique os dados da busca tente novamente!");
-			sleep (2);
-			
-			//mantém a cor do texto verde
-			system("COLOR 0A");
-			
+			sleep (2);			
 		}
 	}
 }
