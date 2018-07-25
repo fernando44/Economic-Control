@@ -1,7 +1,6 @@
 //declaração da matriz da categoria
 char categoria[8][14];
 
-
 //declaração da função preencher
 //=============================================================================================================================================================
 	
@@ -226,7 +225,7 @@ void preencher(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 	//declaração e incialização da variável local
 	char detalhes[500];
 	for(int i = 0;i <500;i++)
-		detalhes[i] = 0;
+		detalhes[i] = ' ';
 	
 	//loop para inserção dos destalhes
 	while(sel != 13){
