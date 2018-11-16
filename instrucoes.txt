@@ -1,7 +1,6 @@
 ============================================================================================================================
 
-Devido ao C ser uma linguagem compilada o software Controle Economico precisa ser compilado em cada máquina que for 
-utilizá-lo para que possa funcionar corretamente.
+Devido ao C ser uma linguagem compilada o software Controle Economico precisa ser compilado individualmente em cada máquina que for utilizá-lo, para que possa funcionar corretamente.
 Para que seu programa funcione será necessário seguir os seguintes passos:
 
 1 - Clique duas vezes no arquivo config.bat ele irá instalar 

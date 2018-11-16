@@ -2,48 +2,23 @@
 //=============================================================================================================================================================
 
 //função para ler a data do cadastro
-void recebe_data(lista_cadastro *ficha,char titulo[500]){
+void recebe_data(char recebe[11],char titulo[500]){
 	
-	//variável local
-	int i = 1;
-	char tecla;
+	//variável inicial
+	char data[11];
 	
-	//exibe o cabeçalho e o informativo
-	printf("%s",titulo);
-	printf("Data: %s<\t\t\tDescrição: %s\n\n\n\nCategoria: %s\t\tValor: %.2f\n\n\n\nDetalhes(opcional): %s",ficha->data,ficha->descricao,ficha->categoria,ficha->valor,ficha->detalhes);
-	
-	fflush(stdin);
-	tecla = getch();
-	
-	if(tecla != 13){
-			
-		//loop para receber a data 
-		while(i<10){
-			
-			//recebe o primeiro dígito
-			ficha->data[0] = tecla;
-			
-			//insere as barras de separação, ex: dd/mm/aa
-			if (i == 2 or i == 5){
-				
-				ficha->data[i] = '/';
-			
-			}else{
-				//recebe cada caractere da data
-				fflush(stdin);
-				ficha->data[i] = getch();
-			}
-			
-			//exibe a variavel busca_data
-			system("cls");
-			printf("%s",titulo);
-			printf("Data: %s<\t\t\tDescrição: %s\n\n\n\nCategoria: %s\t\tValor: %.2f\n\n\n\nDetalhes(opcional): %s",ficha->data,ficha->descricao,ficha->categoria,ficha->valor,ficha->detalhes);
-			i++;
-		}
+	//recebe o dia
+	printf("Data: ");
+	fgets(data,11,stdin);
+
+	//verifica se a primeira tecla pressionada foi enter
+	if(data[0] != '\n'){
+		
+		//recebe a data
+		strcpy(recebe,data);
 		//finaliza a string da data
-		ficha->data[10] = '\0';
-		fflush(stdin);
-		getch();
+		recebe[10] = '\0';
+		
 	}
 }
 
@@ -107,11 +82,11 @@ void alterar(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char d
 	lista_cadastro *temp = ficha->prox;
 	char busca_data[11],busca_categoria[15];	
 	int i = 0;
-	float valor;
+	float valor = 0;
 	
 	//inicialização de variáveis
 	strcpy(busca_data,"__/__/____");
-	strcpy(busca_categoria,"---------------");
+	strcpy(busca_categoria,"-------------");
 	
 	//verifica se a lista de structs está ou não vazia
 	if(ficha->prox == NULL){
@@ -125,69 +100,95 @@ void alterar(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char d
 			sleep (2);
 		
 	}else{
+
+//recebe a data para busca
 		
 		//limpa a tela e exibe o título
 		system("cls");
 		printf("%s",titulo);
 			
 		//exibe a variavel busca_data
-		printf("Informe a data do cadastro: %s\n",busca_data);
-			
-		//loop para receber a data 
-		while(i<10){
-			
-			//insere as barras de separação, ex: dd/mm/aa
-			if (i == 2 or i == 5){
-				busca_data[i] = '/';
-			}else{
-				//recebe cada caractere da data
-				fflush(stdin);
-				busca_data[i] = getch();
+		printf("Informe a data do cadastro \n");
+		
+		//recebe a data	
+		recebe_data(busca_data,titulo);
+
+//recebe a categoria para busca
+		
+		printf("\n\nInforme a categoria do cadastro \nCategoria: ");
+							
+		//inicializa os índices da matriz de categorias
+		i = 0;
+		int j = 0;
+		char sel;		
+		//laço de seleção da categoria
+		while(1){
+					
+			//variável de controle
+			fflush(stdin);
+			sel = getch()-48;
+				
+			//interrompre o loop para receber a categoria se a primeira tecla digitada for enter
+			if(j == 0  and sel == -35){
+				
+				printf("\nCategoria: %s\n\n",busca_categoria);
+				break;
+						
+			}else if(sel == -35 and j !=0){
+						
+				//recebe o valor selecionado pelo usuário
+				strcpy(busca_categoria,categoria[i]);
+				busca_categoria[12] = ' ';
+				system("cls");
+				printf("%s",titulo);
+				printf("Informe a data do cadastro \nData: %s\n\nInforme a categoria do cadastro \nCategoria: %s\n\n",busca_data,busca_categoria);
+				break;
+						
+			}else if(sel == 24){
+						
+				//decrementa i e exibe categorias acima
+				i--;
+					
+			}else if(sel == 32){
+						
+				//incrementa i e exibe categorias abaixo
+				i++;
 			}
-			//limpa a tela e exibe o título
+					
+			if(i == 8 ){
+						
+				//volta no primeiro item 
+				i = 0;
+						
+			}else if(i<0){
+						
+				//volta no último item 
+				i = 7;
+			}
+			
 			system("cls");
 			printf("%s",titulo);
-		
-			//exibe a variavel busca_data
-			printf("Informe a data do cadastro: %s\n",busca_data);
-			i++;
+			printf("Informe a data do cadastro \nData: %s\n\n\nInforme a categoria do cadastro \nCategoria: %s",busca_data,categoria[i]);
+			j++;
 		}
-		fflush(stdin);
-		getch();
+		
+//recebe o valor para busca
 		
 		//limpa a tela e exibe o título
 		system("cls");
 		printf("%s",titulo);
-					
-		//recebe a categoria para busca
-		printf("\nInforme a categoria do cadastro: ");
-		fgets(busca_categoria,15,stdin);
-		
-		//inicializa o contador na primeira posição em branco
-		i = strlen(busca_categoria)-1;
-		
-		//loop para preencher o restante da string com espaços em branco
-		while(i<13){
-			
-			busca_categoria[i] = ' ';
-			i++;
-		}
-		
-		//finaliza a string 
-		busca_categoria[13] = '\0';
-		
-		//limpa a tela e exibe o título
-		system("cls");
-		printf("%s",titulo);
+		printf("Informe a data do cadastro \nData: %s\n\n\nInforme a categoria do cadastro \nCategoria: %s\n\n\nInforme o valor do cadastro \nValor: ",busca_data,busca_categoria);
 		
 		//recebe o valor para busca
-		printf("Informe o valor do cadastro: ");
 		scanf("%f",&valor);
-		
+
+//efetua a busca e seleção do cadastro indicado para edição
+//=============================================================================================================================================================
+
 		//string vazia
 		char cabecalho[500];
 		strcpy(cabecalho,titulo);
-		strcat(cabecalho,"Aperte enter para manter os dados que aparecem nos campos ou digite novos dados!\n\n\n\n");
+		strcat(cabecalho,"Aperte enter para manter os dados que aparecem nos campos ou digite novos dados: \n\n\n");
 	
 		//loop para busca e comparação 
 		while(temp->prox != NULL){
@@ -196,7 +197,7 @@ void alterar(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char d
 				
 				//recebe a nova data
 				system("cls");
-				recebe_data(temp,cabecalho);
+				recebe_data(temp->data,cabecalho);
 				
 				//recebe os novos valores da struct selecionada na lista
 				system("cls");
@@ -211,13 +212,13 @@ void alterar(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char d
 				
 				//recebe a nova data
 				system("cls");
-				recebe_data(temp,cabecalho);
+				recebe_data(temp->data,cabecalho);
 				
 				//recebe os novos valores da struct selecionada na lista
 				system("cls");
 				preencher(categoria,temp,cabecalho,temp->data);
 				
-			
+		//se não for encontrado nenhum cadastro com os dados informados	
 		}else if((temp->prox == NULL) and (strcmp(busca_data,temp->data)) != 0 and (strcmp(busca_categoria,temp->categoria)) != 0 and (valor != temp->valor)){
 			
 			//altera a cor do texto para vermelho

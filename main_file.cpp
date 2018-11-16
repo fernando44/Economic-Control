@@ -21,17 +21,19 @@ typedef struct lista_dados{
 	char descricao[100];//ex: arroz, carne....
 	char categoria[14];	//ex: alimentício, informática, material escolar....
 	float valor;		//ex: 4.67 R$...
-	char detalhes[500]; //ex: teclado para computador .....
+	char detalhes[100]; //ex: teclado para computador .....
 	
 }lista_cadastro;
 
 //===================================================================
 //declaração de bibliotecas exclusivas
-#include"cad_library.h"
-#include"load_library.h"
-#include"tools_library.h"
+#include"cad_library_1.1.h"
+#include"load_library_1.1.h"
+#include"tools_library_1.1.h"
 #include"buble-sort_library.h"
 
+//declaração da matriz da categoria
+char categoria[8][14];
 
 //variáveis globais
 char data_sistema[11],mes[11],ano[7];
@@ -50,7 +52,16 @@ int main(){
 	//renomeia a janela do terminal
 	system ("title Controle Econômico");
 
-
+	//incialização da matriz de categoria
+	strcpy(categoria[0],"Informatica <");
+	strcpy(categoria[1],"Contas      <");
+	strcpy(categoria[2],"Vestimenta  <");
+	strcpy(categoria[3],"Escolar     <");
+	strcpy(categoria[4],"Alimenticio <");
+	strcpy(categoria[5],"Medicamentos<");
+	strcpy(categoria[6],"Documentos  <");
+	strcpy(categoria[7],"Compras     <");
+	
 //Recebe a data do sistema
 //===================================================================	
 	//estrutura para obter a data do sistema
@@ -62,7 +73,7 @@ int main(){
 	//recebe a data no formato dd-mm-aa
 	strftime(data_sistema, 11, "%d-%m-%Y", tm);
 	
-	//formatação da data
+	//composição da data
 	data_sistema[2] = data_sistema[5] = '/';
 	
 	//recebe o mês que será utilizado para nomear a base de dados
@@ -140,11 +151,11 @@ int main(){
 	//loop do menu	
 	while(1){
 		
+		//carrega dados de alocação dos arquivos para a lista
+		carregar(lista_cad,base_dados,sel_mes,sel_ano);
+		
 		//mantém a cor do texto verde
 		system("COLOR 0A");
-		
-		//carrega dados dos arquivos para a lista
-		carregar(lista_cad,base_dados,sel_mes,sel_ano);
 		
 		//exibe o menu de opções para seleção
 		system("cls");
@@ -161,7 +172,8 @@ int main(){
 				
 				system("cls");
 				//realiza um novo cadastro
-				adicionar(lista_cad,titulo,data_sistema);
+				adicionar(categoria,lista_cad,titulo,data_sistema);
+				
 				//grava a lista em arquivos
 				descarregar(lista_cad,base_dados,sel_mes,sel_ano);	
 				break;
@@ -248,7 +260,6 @@ int main(){
 							sleep (1);
 							sel = 1;
 							
-							
 						}
 					}
 				}
@@ -259,7 +270,7 @@ int main(){
 				system("cls");
 				printf("%s",titulo);
 				//altera um cadastro
-				alterar(lista_cad,titulo,data_sistema);
+				alterar(categoria,lista_cad,titulo,data_sistema);
 				//grava a lista em arquivos
 				descarregar(lista_cad,base_dados,sel_mes,sel_ano);		
 				break;
@@ -278,14 +289,14 @@ int main(){
 			}
 				
 			case 5:{
+				
 				//adicionais
 				system("cls");
 				printf("%s",titulo);
-				printf("Este software é destinado para uso pessoal.\nNão é recomendado o uso ambientes empresariais !!!\n\n");
-				printf("Desenvolvedor: Quemuel Alves Nassor\n\nContato ou suporte: quemuelalp@hotmail.com\n\nVersão: 1.0.1");
+				printf("Este software é gratuito e destinado para uso pessoal.\nSeu uso em ambientes empresariais não é recomendado por questões de segurança!!!\n\n");
+				printf("Desenvolvedor: Quemuel Alves Nassor\n\nContato ou suporte: quemuelalp@hotmail.com\n\nVersão: 1.0.2");
 				fflush(stdin);
 				getch();
-				
 				break;
 			}
 			
@@ -308,10 +319,10 @@ int main(){
 				sleep(1);
 				
 		}
+		
 		//liberação da memória alocada na lista
 		desaloca(lista_cad);
 					
 	}
-	
 	return(0);
 }

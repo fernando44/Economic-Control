@@ -223,11 +223,12 @@ void preencher(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 	
 	
 	//declaração e incialização da variável local
-	char detalhes[500];
-	for(int i = 0;i <500;i++)
+	char detalhes[100];
+	for(int i = 0;i <100;i++)
 		detalhes[i] = ' ';
+	detalhes[100] = '\0';
 	
-	//loop para inserção dos destalhes
+	//loop para inserção dos detalhes
 	while(sel != 13){
 		
 		//entrada de dados
@@ -239,7 +240,7 @@ void preencher(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 		if(sel != 13 and i == 0){
 						
 			//inicializa a variável detalhes
-			strcpy(ficha->detalhes,"                     ");
+			ficha->detalhes[0] = '\0';
 										
 		}
 		
@@ -247,14 +248,14 @@ void preencher(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 		system("cls");
 		printf("%s",titulo);
 		printf("Data: %s\t\t\tDescrição: %s\n\n\n\nCategoria: %s\t\tValor: %.2f\n\n\n\nDetalhes(opcional): %s<",ficha->data,ficha->descricao,ficha->categoria,ficha->valor,ficha->detalhes);
-		
+			
 		//verifica se a tecla digitada foi enter
 		if(sel != 13){
-		
+			
 			//recebe o os detalhes caratere por caractere
 			ficha->detalhes[i] = sel;
 			
-		}else if(sel == 13 or i == 499){
+		}else if(sel == 13 or i == 100){
 			
 			//finaliza a string dos detalhes
 			ficha->detalhes[i] = '\0';
@@ -267,9 +268,9 @@ void preencher(lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
 	if((strcmp(ficha->detalhes,"Ex: toalha da mesa..."))==0){
 			
 		//inicializa a variável detalhes
-		for(int j=0;j<500;j++)
-			ficha->detalhes[j] = 0;
-		
+		for(int j=0;j<100;j++)
+			ficha->detalhes[j] = ' ';
+		ficha->detalhes[0] = '\0';
 	}
 }
 
