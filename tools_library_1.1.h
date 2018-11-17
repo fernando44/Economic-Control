@@ -9,6 +9,7 @@ void recebe_data(char recebe[11],char titulo[500]){
 	
 	//recebe o dia
 	printf("Data: ");
+	fflush(stdin);
 	fgets(data,11,stdin);
 
 	//verifica se a primeira tecla pressionada foi enter
@@ -197,6 +198,7 @@ void alterar(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char d
 				
 				//recebe a nova data
 				system("cls");
+				printf("%s",titulo);
 				recebe_data(temp->data,cabecalho);
 				
 				//recebe os novos valores da struct selecionada na lista
@@ -212,6 +214,7 @@ void alterar(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char d
 				
 				//recebe a nova data
 				system("cls");
+				printf("%s",titulo);
 				recebe_data(temp->data,cabecalho);
 				
 				//recebe os novos valores da struct selecionada na lista

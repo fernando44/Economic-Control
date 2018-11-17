@@ -39,7 +39,8 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 	strcpy(ficha->descricao," ");
 	printf("Descrição: ");
 	
-	//recebe a descrição	
+	//recebe a descrição
+	fflush(stdin);
 	fgets(ficha->descricao,100,stdin);
 	
 	//verifica se a primeira tecla pressionada foi enter
@@ -125,6 +126,7 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 	
 	//recebe a variável de verificação
 	strcpy(valor," ");
+	fflush(stdin);
 	fgets(valor,1000000,stdin);		
 			
 	//verifica se a primeira tecla pressionada foi o enter		
@@ -133,6 +135,9 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 		//susbstitui o \n por \0, converte e recebe os detalhes
 		valor[strlen(valor)-1] = '\0';
 		ficha->valor = atof(valor);
+		system("cls");
+		printf("%s",titulo);
+		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->data,ficha->descricao,ficha->categoria,ficha->valor);
 			
 	}else{
 		
@@ -140,7 +145,7 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 		ficha->valor = atof(reseta);
 		system("cls");
 		printf("%s",titulo);
-		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição",ficha->data,ficha->descricao,ficha->categoria,ficha->valor);
+		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->data,ficha->descricao,ficha->categoria,ficha->valor);
 		
 	}
 	
@@ -153,6 +158,7 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 	
 	//reseta e recebe os detalhes
 	strcpy(ficha->detalhes," ");
+	fflush(stdin);
 	fgets(ficha->detalhes,100,stdin);
 	
 	if(ficha->detalhes[0] == '\n'){
