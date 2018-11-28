@@ -5,3 +5,5 @@ Database/
 #exclui o executável do commit
 
 *.so
+
+*.exe
