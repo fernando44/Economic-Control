@@ -1,4 +1,7 @@
-#exclui a base de dados do commit
+﻿#exclui a base de dados do commit
+
 Database/
+
 #exclui o executável do commit
+
 *.so
