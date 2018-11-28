@@ -174,6 +174,9 @@ int main(){
 				//realiza um novo cadastro
 				adicionar(categoria,lista_cad,titulo,data_sistema);
 				
+				//ordena por data para gravação
+				ord_data(lista_cad);
+				
 				//grava a lista em arquivos
 				descarregar(lista_cad,base_dados,sel_mes,sel_ano);	
 				break;
@@ -269,8 +272,13 @@ int main(){
 			case 3:{
 				system("cls");
 				printf("%s",titulo);
+				
 				//altera um cadastro
 				alterar(categoria,lista_cad,titulo,data_sistema);
+				
+				//ordena por data para gravação
+				ord_data(lista_cad);
+				
 				//grava a lista em arquivos
 				descarregar(lista_cad,base_dados,sel_mes,sel_ano);		
 				break;
