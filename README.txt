@@ -20,9 +20,9 @@ ser adicionado porém não é recomendado o uso de letras, sinais ou caracteres esp
 especiais do teclado(enter,esc,backspace). 
 Para que o aplicativo funcione corretamente é necessário recompilá-lo para o ambiente de sua máquina, clicando duas vezes 
 no arquivo config.bat será instalado o Dev-C++  que é uma IDE(interface de desenvolvimento) para compilação do programa, 
-pressione F9 ou F11 para compilar e executar, além destas funções o config.bat será responsável por outras tarefas como 
-criar o atalho CE na área de trabalho que aponta para o programa main_file.exe(aplicativo compilado) e também abrirá este 
-arquivo README com detalhes sobre programa.
+pressione F9 ou F11 para compilar e executar, além destas funções o Setup-CE será responsável por outras tarefas como 
+criar o atalho CE na área de trabalho que aponta para o programa main_file.exe(aplicativo compilado) e também abrirá um 
+arquivo contendo detalhes sobre como preparar a instalação do software.
 Este é um software livre criado para facilitar a organização econômica pessoal e com fins didáticos.
 
 ============================================================================================================================

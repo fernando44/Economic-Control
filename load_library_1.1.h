@@ -1,34 +1,22 @@
-//estrutura de cadastro dos dados sem ponteiros
-typedef struct dados{
-	
-	char data[11];		//ex: 05/11/2002...
-	char descricao[100];//ex: arroz, carne....
-	char categoria[14];	//ex: alimentício, informática, material escolar....
-	float valor;		//ex: 4.67 R$...
-	char detalhes[100]; //ex: teclado para computador .....
-	
-}cadastro;
-
-
 //matriz para armazenar anos que possuem cadastro
 char m_ano[10000][7];
 
 
-//matriz dos meses do ano
-char meses[12][10];
+//declaração e inicialização da matriz dos meses do ano
+char meses[12][10] = {"janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"};
 
 
 //declaração da função carregar
 //=============================================================================================================================================================
 
 //função para ler dados do arquivo para a struct
-void carregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]){
+void load_list(list_cad *ficha,FILE *base_dados,char nome[11],char pasta[7]){
 	
 	//contador sinalizar fim de dado 
 	int cnt = 0;
 	
-	//variáveis para receber o valor e os caracteres do arquivo
-	char valor[500],digito[2];
+	//variáveis para receber o value e os caracteres do arquivo
+	char value[500],digito[2];
 
 	//variável para receber o nome do arquivo
 	char arquivo[50];
@@ -40,20 +28,20 @@ void carregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]
 	strcat(arquivo,".txt");
 	
 	//cria uma alocação para ler os dados do arquivo
-	lista_cadastro *recebe = (lista_cadastro *)malloc(sizeof(lista_cadastro));
+	list_cad *recebe = (list_cad *)malloc(sizeof(list_cad));
 	recebe->prox = NULL;
 	recebe->ant = NULL;
 	
-	//reinicialização da struct receptora e da variável valor
-	strcpy(recebe->data,"");
-	recebe->valor = 0;
-	strcpy(recebe->categoria,"");
-	strcpy(recebe->descricao,"");
-	strcpy(recebe->detalhes,"");
-	strcpy(valor,"");
+	//reinicialização da struct receptora e da variável value
+	strcpy(recebe->date,"");
+	recebe->value = 0;
+	strcpy(recebe->category,"");
+	strcpy(recebe->description,"");
+	strcpy(recebe->details,"");
+	strcpy(value,"");
 	
-	//inicializa a variável que receberá os valores dos cadastros
-	strcpy(valor,"");
+	//inicializa a variável que receberá os valuees dos cadastros
+	strcpy(value,"");
 	
 	//finaliza a string
 	digito[1] = '\0';
@@ -75,22 +63,22 @@ void carregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]
 		while((digito[0] = fgetc(base_dados))!=EOF){
 			
 			//verifica a quebra de linha para adicionar uma nova alocação
-			if(digito[0]=='\n' and cnt == 4){
+			if(digito[0]=='\n' && cnt == 4){
 			
 				//reseta o contador de verificação
 				cnt = 0;
 				
 				//cria uma nova alocação a cada nova leitura do arquivo
-				lista_cadastro *novo = (lista_cadastro *)malloc(sizeof(lista_cadastro));
+				list_cad *novo = (list_cad *)malloc(sizeof(list_cad));
 				novo->prox = NULL;
 				novo->ant = NULL;
 				
 				//tranferência dos dados da struct receptora para a lista
-				strcpy(novo->data,recebe->data);
-				novo->valor = recebe->valor;
-				strcpy(novo->categoria,recebe->categoria);
-				strcpy(novo->descricao,recebe->descricao);
-				strcpy(novo->detalhes,recebe->detalhes);
+				strcpy(novo->date,recebe->date);
+				novo->value = recebe->value;
+				strcpy(novo->category,recebe->category);
+				strcpy(novo->description,recebe->description);
+				strcpy(novo->details,recebe->details);
 				
 				//inserção das novas alocações na lista
 				//verifica o inicio da lista
@@ -109,13 +97,13 @@ void carregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]
 					novo->prox->ant = novo;
 				}
 				
-				//reinicialização da struct receptora e da variável valor
-				strcpy(recebe->data,"");
-				recebe->valor = 0;
-				strcpy(recebe->categoria,"");
-				strcpy(recebe->descricao,"");
-				strcpy(recebe->detalhes,"");
-				strcpy(valor,"");
+				//reinicialização da struct receptora e da variável value
+				strcpy(recebe->date,"");
+				recebe->value = 0;
+				strcpy(recebe->category,"");
+				strcpy(recebe->description,"");
+				strcpy(recebe->details,"");
+				strcpy(value,"");
 				
 			//aloca os dados em suas respectivas variáveis na struct
 			}else if((digito[0] !='\n')){
@@ -125,39 +113,39 @@ void carregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]
 					cnt++;
 				}
 				
-				//recebe a data	do cadastro
-				if(strlen(recebe->data) < 10 and cnt == 0 and digito[0] != '\t' ){
+				//recebe a date	do cadastro
+				if(strlen(recebe->date) < 10 && cnt == 0 && digito[0] != '\t' ){
 						
-						strcat(recebe->data,digito);
+						strcat(recebe->date,digito);
 					
 				}
 				
-				//recebe o valor do cadastro
-				if((strlen(recebe->data) == 10 ) and cnt == 1 and digito[0] != '\t'){
+				//recebe o value do cadastro
+				if((strlen(recebe->date) == 10 ) && cnt == 1 && digito[0] != '\t'){
 					
-						strcat(valor,digito);				
-						recebe->valor = atof(valor);
+						strcat(value,digito);				
+						recebe->value = atof(value);
 						
 				}
 				
-				//recebe a categoria do cadastro
-				if((recebe->valor != 0) and cnt == 2 and digito[0] != '\t'){
+				//recebe a category do cadastro
+				if((recebe->value != 0) && cnt == 2 && digito[0] != '\t'){
 					
-						strcat(recebe->categoria,digito);
+						strcat(recebe->category,digito);
 						
 				}
 				
 				//recebe a descrição do cadastro
-				if((recebe->categoria != 0) and cnt == 3 and digito[0] != '\t'){
+				if((recebe->category != 0) && cnt == 3 && digito[0] != '\t'){
 						
-						strcat(recebe->descricao,digito);
+						strcat(recebe->description,digito);
 						
 				}
 				
-				//recebe os detalhes do cadastro
-				if((recebe->descricao != 0) and cnt == 4 and digito[0] != '\t'){
+				//recebe os details do cadastro
+				if((recebe->description != 0) && cnt == 4 && digito[0] != '\t'){
 					
-						strcat(recebe->detalhes,digito);
+						strcat(recebe->details,digito);
 				
 				}
 			}
@@ -173,13 +161,14 @@ void carregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]
 //=============================================================================================================================================================
 
 //função para liberar memória alocada
-void desaloca(lista_cadastro *ficha){
-		
+void deallocate_list(list_cad *ficha){
+	
+	list_cad *temp;	
 	//laço que percorre e libera a lista
 	while(ficha->prox!= NULL){
 			
 		//reorganização dos apontamentos da lista
-		lista_cadastro *temp = ficha->prox;
+		temp = ficha->prox;
 		ficha->prox = temp->prox;
 		
 		//verifica se a a variável temporária chegou ao fim da lista 
@@ -204,7 +193,7 @@ void desaloca(lista_cadastro *ficha){
 //=============================================================================================================================================================
 
 //função para escrever dados da lista de struct no arquivo
-void descarregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta[7]){
+void download_list(list_cad *ficha,FILE *base_dados,char nome[11],char pasta[5]){
 	
 	//variável para receber o nome do arquivo
 	char arquivo[50];
@@ -219,7 +208,7 @@ void descarregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta
 	if(ficha->prox != NULL){
 	
 		//ponteiro temporario
-		lista_cadastro *temp = ficha->prox;
+		list_cad *temp = ficha->prox;
 		
 		//abre arquivo em modo escrita
 		base_dados = fopen(arquivo,"w");
@@ -228,11 +217,11 @@ void descarregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta
 			//loop para percorrer e gravar a lista de structs no arquivo		
 			while(temp->prox != NULL){
 				
-				fprintf(base_dados,"%s\t",temp->data);
-				fprintf(base_dados,"%f\t",temp->valor);
-				fprintf(base_dados,"%s\t",temp->categoria);
-				fprintf(base_dados,"%s\t",temp->descricao);
-				fprintf(base_dados,"%s\n",temp->detalhes);
+				fprintf(base_dados,"%s\t",temp->date);
+				fprintf(base_dados,"%.2f\t",temp->value);
+				fprintf(base_dados,"%s\t",temp->category);
+				fprintf(base_dados,"%s\t",temp->description);
+				fprintf(base_dados,"%s\n",temp->details);
 					
 				//recebe o ponteiro seguinte
 				temp = temp->prox;
@@ -242,11 +231,11 @@ void descarregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta
 		//armazena os dados da ultima struct
 		if(temp->prox == NULL){
 						
-			fprintf(base_dados,"%s\t",temp->data);
-			fprintf(base_dados,"%f\t",temp->valor);
-			fprintf(base_dados,"%s\t",temp->categoria);
-			fprintf(base_dados,"%s\t",temp->descricao);
-			fprintf(base_dados,"%s\n",temp->detalhes);
+			fprintf(base_dados,"%s\t",temp->date);
+			fprintf(base_dados,"%.2f\t",temp->value);
+			fprintf(base_dados,"%s\t",temp->category);
+			fprintf(base_dados,"%s\t",temp->description);
+			fprintf(base_dados,"%s\n",temp->details);
 			
 		}
 				
@@ -260,9 +249,9 @@ void descarregar(lista_cadastro *ficha,FILE *base_dados,char nome[11],char pasta
 //=============================================================================================================================================================
 
 //função para alternar a base de dados que o usuário deseja acessar
-void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *locais){
+void show_data_base(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *places){
 	
-	//variáveis locais
+	//variáveis places
 	int i = 0,max,opc = 0,sel = 0;
 	
 //seleção do ano de cadastro
@@ -280,24 +269,24 @@ void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *loca
 	i = 0;
 	
 	//abre o arquivo lista_anos para leitura
-	locais = fopen("Database\\lista_anos.txt","r");
+	places = fopen("Database\\list_years.txt","r");
 	
 	//loop para receber os anos do arquivo para a matriz
-	while(fscanf(locais,"%s",m_ano[i]) != EOF){
+	while(fscanf(places,"%s",m_ano[i]) != EOF){
 		
 		i++;
 		
-		//para o loop se o índice chegar ao valor máximo
+		//para o loop se o índice chegar ao value máximo
 		if(i == 9999){
 			break;
 		}
 	}
 	
 	//fecha o arquivo lista_anos
-	fclose(locais);
+	fclose(places);
 	
 	/*variável max recebe a última posição em que a matriz 
-	recebeu valores e reinicializa o contador*/
+	recebeu valuees e reinicializa o contador*/
 	max = i-1;	
 	i = 0;
 	
@@ -307,14 +296,14 @@ void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *loca
 		//limpa a tela e exibe os meses para seleção
 		system("cls");
 		printf("%sPressione ESC para permanecer no ano atual\n\n",titulo);
-		
+		int u;
 		//loop para exibir os anos sem as barras(\\)
-		for(int u = 0;u<4;u++){
+		for(u = 0;u<4;u++){
 			printf("%c",m_ano[i][u]);
 		}
 		
 		//variável de seleção
-		fflush(stdin);
+		setbuf(stdin,NULL);
 		sel = getch()-48;
 		
 		//permanece no mês atual
@@ -329,12 +318,12 @@ void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *loca
 			
 		}else if(sel == 24){
 			
-			//decrementa o valor de i e exibe anos acima
+			//decrementa o value de i e exibe anos acima
 			i--;
 			
 		}else if(sel == 32){
 			
-			//incrementa o valor de i e exibe anos abaixo
+			//incrementa o value de i e exibe anos abaixo
 			i++;
 		}
 		
@@ -356,20 +345,6 @@ void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *loca
 	//reinicializa o contador
 	i = 0;
 	
-	//inicalização da matriz de seleção dos meses
-	strcpy(meses[0],"janeiro");
-	strcpy(meses[1],"fevereiro");
-	strcpy(meses[2],"março");
-	strcpy(meses[3],"abril");
-	strcpy(meses[4],"maio");
-	strcpy(meses[5],"junho");
-	strcpy(meses[6],"julho");
-	strcpy(meses[7],"agosto");
-	strcpy(meses[8],"setembro");
-	strcpy(meses[9],"outubro");
-	strcpy(meses[10],"novembro");
-	strcpy(meses[11],"dezembro");
-	
 	//loop de seleção do mês do base de dados
 	while(opc != -35){
 		
@@ -379,7 +354,7 @@ void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *loca
 		printf("%s",meses[i]);
 		
 		//variável de seleção
-		fflush(stdin);
+		setbuf(stdin,NULL);
 		opc = getch()-48;
 		
 		//permanece no mês atual
@@ -394,12 +369,12 @@ void alt_base_dados(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *loca
 			
 		}else if(opc == 24){
 			
-			//decrementa o valor de i e exibe meses acima
+			//decrementa o value de i e exibe meses acima
 			i--;
 			
 		}else if(opc == 32){
 			
-			//incrementa o valor de i e exibe meses abaixo
+			//incrementa o value de i e exibe meses abaixo
 			i++;
 		}
 		

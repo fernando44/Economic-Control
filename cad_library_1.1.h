@@ -2,14 +2,14 @@
 //=============================================================================================================================================================
 	
 //função de adição de dados do cadastro
-void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char data_sistema[11]){
+void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[11]){
 	
 	//variáveis locais
 	int i;
 	char sel,vlr[10];
 	
-	//variável para receber o valor
-	char valor[1000000];
+	//variável para receber o value
+	char value[1000000];
 	
 	//variável sinalizadora de mudança de variável
 	int n = 0;
@@ -21,82 +21,82 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 //===================================================================
 	
 	//copia a data do sistema para o cadastro
-	strcpy(ficha->data,data_sistema);
+	strcpy(ficha->date,Date);
 	
 	//atualiza a tela com os dados recebidos
 	system("cls");
 	printf("%s",titulo);
-	printf("Data: %s\n",ficha->data);
+	printf("Data: %s\n",ficha->date);
 	
 //Recebe os dados da descrição do cadastro
 //===================================================================
 
-	//recebe o valor padrão
+	//recebe o value padrão
 	strcpy(reseta,"");
-	strcpy(reseta,ficha->descricao);
+	strcpy(reseta,ficha->description);
 	
 	//inicializa a descrição 
-	strcpy(ficha->descricao," ");
+	strcpy(ficha->description," ");
 	printf("Descrição: ");
 	
 	//recebe a descrição
-	fflush(stdin);
-	fgets(ficha->descricao,100,stdin);
+	setbuf(stdin,NULL);
+	fgets(ficha->description,100,stdin);
 	
 	//verifica se a primeira tecla pressionada foi enter
-	if(ficha->descricao[0] == '\n'){
+	if(ficha->description[0] == '\n'){
 			
 		//inicializa de forma padrão a descrição
-		strcpy(ficha->descricao,reseta);
+		strcpy(ficha->description,reseta);
 		system("cls");
 		printf("%s",titulo);
-		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->data,ficha->descricao,ficha->categoria);
+		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->date,ficha->description,ficha->category);
 			
 	}else{
 			
 		//susbstitui o \n por \0
-		ficha->descricao[strlen(ficha->descricao)-1] = '\0';
-		printf("Categoria: %s",ficha->categoria);
+		ficha->description[strlen(ficha->description)-1] = '\0';
+		printf("Categoria: %s",ficha->category);
 		
 	}
 		
-//Recebe os dados da categoria do cadastro
+//Recebe os dados da category do cadastro
 //===================================================================
 	
-	//inicializa os índices da matriz de categorias
+	//inicializa os índices da matriz de categorys
 	i = 0;
 	int j = 0;
 	
-	//laço de seleção da categoria
+	//laço de seleção da category
 	while(1){
 				
 		//variável de controle
 		sel = getch()-48;
 			
-		//interrompre o loop para receber a categoria se a primeira tecla digitada for enter
-		if(j == 0  and sel == -35){
+		//interrompre o loop para receber a category se a primeira tecla digitada for enter
+		if(j == 0  && sel == -35){
 			
 			printf("\nValor: ");
 			break;
 					
-		}else if(sel == -35 and j !=0){
+		}else if(sel == -35 && j !=0){
 					
-			//recebe o valor selecionado pelo usuário
-			strcpy(ficha->categoria,categoria[i]);
-			ficha->categoria[12] = ' ';
+			//recebe o value selecionado pelo usuário
+			strcpy(ficha->category,category[i]);
+			ficha->category[12] = ' ';
 			system("cls");
 			printf("%s",titulo);
-			printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: ",ficha->data,ficha->descricao,ficha->categoria);
+			printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: ",ficha->date,ficha->description,ficha->category);
 			break;
 					
 		}else if(sel == 24){
 					
-			//decrementa i e exibe categorias acima
+			//decrementa i e exibe categorys acima
 			i--;
 				
 		}else if(sel == 32){
 					
-			//incrementa i e exibe categorias abaixo
+			//incrementa i e exibe categorys abaixo
 			i++;
 		}
 				
@@ -113,63 +113,63 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 		
 		system("cls");
 		printf("%s",titulo);
-		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->data,ficha->descricao,categoria[i]);
+		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->date,ficha->description,category[i]);
 		j++;
 	}
 					
-//Recebe os dados do valor do cadastro
+//Recebe os dados do value do cadastro
 //===================================================================		
 	
-	//converte para string recebe o valor padrão 
+	//converte para string recebe o value padrão 
 	strcpy(reseta,"");
-	sprintf(reseta,"%f",ficha->valor);
+	sprintf(reseta,"%f",ficha->value);
 	
 	//recebe a variável de verificação
-	strcpy(valor," ");
-	fflush(stdin);
-	fgets(valor,1000000,stdin);		
+	strcpy(value," ");
+	setbuf(stdin,NULL);
+	fgets(value,1000000,stdin);		
 			
 	//verifica se a primeira tecla pressionada foi o enter		
-	if(valor[0] != '\n'){
+	if(value[0] != '\n'){
 			
-		//susbstitui o \n por \0, converte e recebe os detalhes
-		valor[strlen(valor)-1] = '\0';
-		ficha->valor = atof(valor);
+		//susbstitui o \n por \0, converte e recebe os details
+		value[strlen(value)-1] = '\0';
+		ficha->value = atof(value);
 		system("cls");
 		printf("%s",titulo);
-		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->data,ficha->descricao,ficha->categoria,ficha->valor);
+		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->date,ficha->description,ficha->category,ficha->value);
 			
 	}else{
 		
-		//retorna o valor padrão
-		ficha->valor = atof(reseta);
+		//retorna o value padrão
+		ficha->value = atof(reseta);
 		system("cls");
 		printf("%s",titulo);
-		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->data,ficha->descricao,ficha->categoria,ficha->valor);
+		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->date,ficha->description,ficha->category,ficha->value);
 		
 	}
 	
-//Recebe detalhes do cadastro
+//Recebe details do cadastro
 //===================================================================
 	
-	//reinicializa com os valores padrão
+	//reinicializa com os valuees padrão
 	strcpy(reseta,"");
-	strcpy(reseta,ficha->detalhes);
+	strcpy(reseta,ficha->details);
 	
-	//reseta e recebe os detalhes
-	strcpy(ficha->detalhes," ");
-	fflush(stdin);
-	fgets(ficha->detalhes,100,stdin);
+	//reseta e recebe os details
+	strcpy(ficha->details," ");
+	setbuf(stdin,NULL);
+	fgets(ficha->details,100,stdin);
 	
-	if(ficha->detalhes[0] == '\n'){
+	if(ficha->details[0] == '\n'){
 		
-		//inicializa de forma padrão os detalhes	
-		strcpy(ficha->detalhes,reseta);
+		//inicializa de forma padrão os details	
+		strcpy(ficha->details,reseta);
 	
 	}else{
 		
 		//susbstitui o \n por \0 
-		ficha->detalhes[strlen(ficha->detalhes)-1] = '\0';	
+		ficha->details[strlen(ficha->details)-1] = '\0';	
 			
 	}
 }	
@@ -179,24 +179,24 @@ void preencher(char categoria[8][14],lista_cadastro *ficha,char titulo[500],char
 //=============================================================================================================================================================
 
 //função para adicionar cadastro na lista
-void adicionar(char categoria[8][14],lista_cadastro *list,char titulo[500],char data_sistema[11]){
+void add_new(char category[LIN][COL],list_cad *list,char titulo[500],char Date[11]){
 	
 	//alocação de memória para o novo cadastro
-	lista_cadastro *novo = (lista_cadastro *)malloc(sizeof(lista_cadastro));
+	list_cad *novo = (list_cad *)malloc(sizeof(list_cad));
 	novo->prox = NULL;
 	novo->ant = NULL;
 	
 	//inicialização do novo cadastro
-	strcpy(novo->descricao,"(Null)");
-	strcpy(novo->categoria,"-------------");
-	strcpy(novo->detalhes,"(Null)");
-	novo->valor = 0;
+	strcpy(novo->description,"(Null)");
+	strcpy(novo->category,"-------------");
+	strcpy(novo->details,"(Null)");
+	novo->value = 0;
 	
-	//chamada da função preencher para receber os valores da nova alocação
-	preencher(categoria,novo,titulo,data_sistema); 
+	//chamada da função preencher para receber os valuees da nova alocação
+	preencher(category,novo,titulo,Date); 
 	
 	//verifica se o cadastro não está vazio ou não para adicioná-lo na lista
-	if((strcmp(novo->descricao,"(Null)") != 0) and (strcmp(novo->categoria,"-------------") != 0) and novo->valor != 0){
+	if((strcmp(novo->description,"(Null)") != 0) && (strcmp(novo->category,"-------------") != 0) && novo->value != 0){
 			
 		//verifica se a lista está vazia
 		if(list->prox == NULL){

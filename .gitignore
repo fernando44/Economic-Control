@@ -1,9 +1,9 @@
 ﻿#exclui a base de dados do commit
 
-Database/
+/Database/*
 
 #exclui o executável do commit
 
 *.so
 
-*.exe
+*main_file.exe

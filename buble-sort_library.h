@@ -1,11 +1,11 @@
-//declaração da função ord_data
+//declaração da função ord_date
 //=============================================================================================================================================================
 
-//função de ordenação por data
-void ord_data(lista_cadastro *ordena){
+//função de ordenação por date
+void ord_date(list_cad *ordena){
 	
 	//variáveis locais
-	lista_cadastro *teste = ordena->prox;
+	list_cad *teste = ordena->prox;
 	
 	//indicador de passagem do loop
 	int marcador = -5;
@@ -14,12 +14,12 @@ void ord_data(lista_cadastro *ordena){
 	if(teste->prox != NULL){
 		
 		//variáveis temporárias para percorrer e ordenar a lista
-		lista_cadastro *temp1, *temp2;
+		list_cad *temp1, *temp2;
 		
 		//loop secundário de verificação de ordenação 
 		while(marcador !=0){
 			
-			//atribuição de valores das variáveis temporárias
+			//atribuição de valuees das variáveis temporárias
 			temp1 = ordena->prox;
 			temp2 = temp1->prox;
 			
@@ -30,7 +30,7 @@ void ord_data(lista_cadastro *ordena){
 		 	while(temp2->prox != NULL){
 				
 				//verifica se o segundo item é menor que o primeiro	
-				if(strcmp(temp2->data,temp1->data)<0){
+				if(strcmp(temp2->date,temp1->date)<0){
 			 		
 					temp1->prox = temp2->prox;
 					temp2->prox->ant = temp1;
@@ -43,14 +43,14 @@ void ord_data(lista_cadastro *ordena){
 	
 				}
 				
-				//reatribuição de valores das variáveis temporárias
+				//reatribuição de valuees das variáveis temporárias
 				temp1 = temp2;
 				temp2 = temp2->prox;
 			
 			}
 			
 			//verificação de termos desordenados ao fim da lista
-			if((temp2->prox == NULL ) and (strcmp(temp2->data,temp1->data)<0)){
+			if((temp2->prox == NULL ) && (strcmp(temp2->date,temp1->date)<0)){
 				 
 				 	temp1->prox = temp2->prox;
 				 	temp2->prox = temp1;
@@ -64,14 +64,14 @@ void ord_data(lista_cadastro *ordena){
 	}
 }
 
-//declaração da função ord_valor
+//declaração da função ord_value
 //=============================================================================================================================================================
 
-//função de ordenação por valor
-void ord_valor(lista_cadastro *ordena2){
+//função de ordenação por value
+void ord_value(list_cad *ordena2){
 	
 	//variáveis locais
-	lista_cadastro *teste = ordena2->prox;
+	list_cad *teste = ordena2->prox;
 	
 	//indicador de passagem do loop
 	int marcador = -5;
@@ -80,12 +80,12 @@ void ord_valor(lista_cadastro *ordena2){
 	if(teste->prox != NULL){
 		
 		//variáveis temporárias para percorrer e ordenar a lista
-		lista_cadastro *temp1, *temp2;
+		list_cad *temp1, *temp2;
 		
 		//loop secundário de verificação de ordenação 
 		while(marcador !=0){
 			
-			//atribuição de valores das variáveis temporárias
+			//atribuição de valuees das variáveis temporárias
 			temp1 = ordena2->prox;
 			temp2 = temp1->prox;
 			
@@ -96,7 +96,7 @@ void ord_valor(lista_cadastro *ordena2){
 		 	while(temp2->prox != NULL){
 				
 				//verifica se o segundo item é menor que o primeiro	
-				if(temp2->valor < temp1->valor){
+				if(temp2->value < temp1->value){
 			 		
 					temp1->prox = temp2->prox;
 					temp2->prox->ant = temp1;
@@ -109,14 +109,14 @@ void ord_valor(lista_cadastro *ordena2){
 				 	
 				}
 				
-				//reatribuição de valores das variáveis temporárias
+				//reatribuição de valuees das variáveis temporárias
 				temp1 = temp2;
 				temp2 = temp2->prox;
 			
 			}
 			
 			//verificação de termos desordenados ao fim da lista
-			if((temp2->prox == NULL ) and (temp2->valor < temp1->valor)){
+			if((temp2->prox == NULL ) && (temp2->value < temp1->value)){
 				 
 				 	temp1->prox = temp2->prox;
 				 	temp2->prox = temp1;
@@ -130,14 +130,14 @@ void ord_valor(lista_cadastro *ordena2){
 	}
 }
 
-//declaração da função ord_categoria
+//declaração da função ord_category
 //=============================================================================================================================================================
 
-//função de ordenação por data
-void ord_categoria(lista_cadastro *ordena){
+//função de ordenação por date
+void ord_category(list_cad *ordena){
 	
 	//variáveis locais
-	lista_cadastro *teste = ordena->prox;
+	list_cad *teste = ordena->prox;
 	
 	//indicador de passagem do loop
 	int marcador = -5;
@@ -146,12 +146,12 @@ void ord_categoria(lista_cadastro *ordena){
 	if(teste->prox != NULL){
 		
 		//variáveis temporárias para percorrer e ordenar a lista
-		lista_cadastro *temp1, *temp2;
+		list_cad *temp1, *temp2;
 		
 		//loop secundário de verificação de ordenação 
 		while(marcador !=0){
 			
-			//atribuição de valores das variáveis temporárias
+			//atribuição de valuees das variáveis temporárias
 			temp1 = ordena->prox;
 			temp2 = temp1->prox;
 			
@@ -162,7 +162,7 @@ void ord_categoria(lista_cadastro *ordena){
 		 	while(temp2->prox != NULL){
 				
 				//verifica se o segundo item é menor que o primeiro	
-				if(strcmp(temp2->categoria,temp1->categoria)<0){
+				if(strcmp(temp2->category,temp1->category)<0){
 			 		
 					temp1->prox = temp2->prox;
 					temp2->prox->ant = temp1;
@@ -175,14 +175,14 @@ void ord_categoria(lista_cadastro *ordena){
 	
 				}
 				
-				//reatribuição de valores das variáveis temporárias
+				//reatribuição de valuees das variáveis temporárias
 				temp1 = temp2;
 				temp2 = temp2->prox;
 			
 			}
 			
 			//verificação de termos desordenados ao fim da lista
-			if((temp2->prox == NULL ) and (strcmp(temp2->categoria,temp1->categoria)<0)){
+			if((temp2->prox == NULL ) && (strcmp(temp2->category,temp1->category)<0)){
 				 
 				 	temp1->prox = temp2->prox;
 				 	temp2->prox = temp1;
