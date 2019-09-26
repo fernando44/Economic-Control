@@ -1,5 +1,10 @@
 #include<time.h>
 
+/*
+	This library contains a function to return date 
+	of splitered and integer form
+*/
+
 //global strings to get date value
 char Date[11];
 char Month[11];
