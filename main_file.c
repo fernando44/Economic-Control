@@ -1,9 +1,16 @@
+/*
+	This main file contains library additions and the basic 
+	program execution and verification environment
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<conio.h>
 #include<locale.h>
 #include<unistd.h>
+
+//constants 
 #define LIN 8
 #define COL 14
 
@@ -14,7 +21,6 @@ FILE *data_base,*files;
 char month[3],year[5];
 char directory[25],verify[30];
 char category[LIN][COL] = {"Informatica <","Contas      <","Vestimenta  <","Escolar     <","Alimenticio <","Medicamentos<","Documentos  <","Compras     <"};
-char header[366] = {"***********************************************************************************************************************\n\n*****************************************| Controle Econômico |********************************************************\n\n***********************************************************************************************************************\n\n\n\n"};
 
 //custom libraries 
 #include"date.h"
@@ -27,7 +33,7 @@ char header[366] = {"***********************************************************
 
 //main function
 int main(){
-	
+    
 	//enable local language in console
 	setlocale(LC_ALL,"");
 	
@@ -36,42 +42,55 @@ int main(){
 	strcpy(month,Month);
 	strcpy(year,Year);
 	
-	//define window title 
-	system ("title Controle Econï¿½mico");
-	
-	//start point of main_list
+	//creating main_list
 	list_cad *main_list = (list_cad *)malloc(sizeof(list_cad));
 	main_list->prox = NULL;
 	main_list->ant = NULL;
 	
-	//create an folder for data base
+	//creating path to data base
 	strcpy(directory,"mkdir Database\\");
-			
-	//complement of name of directory of folder of data base
+        
+	//composition of name of place of data base
 	strcat(directory,year);
 	strcat(year,"\\");
-		
-	//complement of name of of data base
-	strcpy(verify,"Database\\");
+        
+	//composition of string of verifying if data base exists
+	strcpy(verify,"Database");
 	strcat(verify,year);
 	strcat(verify,"file_cheker.txt");
 		
 	//verifying if the Database directory exists
 	if((data_base = fopen(verify,"rb")) == NULL){
-		
+        
+        //reading string
+		char input[7];
+		    
 		//create a folder for save data base
 		system(directory);
 		
-		//create the verifier file
+		//creating the verifier file
 		data_base = fopen(verify,"wb");
 		fprintf(data_base,"%s","file_checker is an internal file, if it is modified or deleted the program may not work correctly");
 		
-		//add the year in file
-		files = fopen("Database\\list_years.txt","a");
+		//validating data in the file
+		files = fopen("Database\\list_years.txt","r");
 		
-		//burn the year in file
-		fprintf(files,"%s",year);
-		fprintf(files,"%c",'\n');
+		//search loop
+		do{				
+			//adding the years in file
+			if(fscanf(files,"%s",input) == EOF && strcmp(input,year) != 0){
+				
+				//close the file
+				fclose(files);
+				
+				//open add mode file
+				files = fopen("Database\\list_years.txt","a");
+				
+				//write the year in the file
+				fprintf(files,"%s",year);
+				fprintf(files,"%c",'\n');
+			}
+		}while(strcmp(input,"-1") == 0);
 		
 		//close the files
 		fclose(files);
@@ -83,3 +102,4 @@ int main(){
 	
 	return(EXIT_SUCCESS);
 }
+
