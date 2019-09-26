@@ -1,3 +1,8 @@
+/*
+	This library contains a definition of the
+	data type of the "object" of register 
+*/
+
 //dinamic data struct for list
 typedef struct data_din{
 	
