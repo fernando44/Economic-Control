@@ -1,8 +1,39 @@
+/*
+	This library contains functions to display de header of program
+	and to display program menu options 
+*/
+
+//Header function
+void HEADER(){
+	
+	int i = 1;
+
+	while(i < 281){
+		printf("*");
+		if( i == 100){
+			printf("\n\n");
+		}
+		if(i == 140){
+			printf("| Economic Control |");
+		}
+		if(i == 180){
+			printf("\n\n");
+		}
+		i++;
+	}
+	printf("\n\n\n\n");
+}
+
 //Menu function
 void Menu(list_cad *main_list,FILE *data_base){
 		
-		//submenu sorting options
-		char submenu[220] ="\n\n  ================================\n |   1 - Ordenar por Data         |\n |   2 - Ordenar por Valor        |\n |   3 - Ordenar por Categoria    |\n |   ESC - Retornar ao menu       |\n  ================================\n";
+		//set console dimension and title
+		system("mode con cols=100 lines=30");
+		system("title Economic-Control");
+	
+		//menu and submenu string options
+		char menu_options[115] = "\n\n1 - New register \n2 - View registers \n3 - Change register \n4 - Switch data base \n5 - About \n6 - Exit";
+		char submenu_options[215] = "\n\n  =============================\n |   1 - Order by Date         |\n |   2 - Order by Value        |\n |   3 - Order by Category     |\n |   ESC - Return to menu      |\n  =============================\n";
 		
 		//frees memory allocated by main_list
 		deallocate_list(main_list);
@@ -12,11 +43,11 @@ void Menu(list_cad *main_list,FILE *data_base){
 		
 		//define color green
 		system("COLOR 0A");
+		system("cls");
+		HEADER();
 		
 		//displays menu options
-		system("cls");
-		printf("%s",header);
-		printf("Selecione uma opção:\n\n1 - Novo cadastro \n2 - Exibir cadastros \n3 - Alterar cadastro\n4 - Alternar base de dados\n5 - Sobre\n6 - Sair");
+		printf("Select an option: %s",menu_options);
 		int option = -1;
 		
 		//selection menu
@@ -25,13 +56,13 @@ void Menu(list_cad *main_list,FILE *data_base){
 			
 			case 1:{				
 				system("cls");
-				//concatenate a new record in the list
-				add_new(category,main_list,header,Date);
+				//concatenate a new register in the list
+				add_new(category,main_list,"",Date);
 				
-				//sort for date before burn in file
+				//sort for date before write in file
 				ord_date(main_list);
 				
-				//writes main_list in file
+				//write main_list in file
 				download_list(main_list,data_base,month,year);
 				Menu(main_list,data_base);	
 				break;
@@ -39,6 +70,9 @@ void Menu(list_cad *main_list,FILE *data_base){
 			
 			case 2:{
 				
+				//set console dimension
+				system("mode con cols=100 lines=9001");
+				 
 				//check if main_list is empty
 				if(main_list->prox == NULL){
 					
@@ -47,7 +81,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 			
 					//feedback if main_list is empty
 					system("cls");
-					printf("\n\n\n\t\t\t\tNão existem cadastros na main_lista!!!");
+					printf("\n\n\n\t\t\t\tNo exists records to display!!!");
 					sleep (2);
 					
 				}else{
@@ -60,10 +94,10 @@ void Menu(list_cad *main_list,FILE *data_base){
 						
 						//displaying main_list
 						system("cls");
-						printf("%s",header);
-						ord_date(main_list);
+						HEADER();
+//						ord_date(main_list);
 						show_records(main_list);
-						printf("%s",submenu);
+						printf("%s",submenu_options);
 						
 						//receives new value for option
 						setbuf(stdin,NULL);
@@ -100,7 +134,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 							
 							//feedback default
 							system("cls");
-							printf("\n\n\n\t\t\t\tOpção inválida!");
+							printf("\n\n\n\t\t\t\tInvalid option!");
 							sleep (1);
 							
 						}
@@ -112,15 +146,15 @@ void Menu(list_cad *main_list,FILE *data_base){
 			
 			case 3:{
 				system("cls");
-				printf("%s",header);
+				HEADER();
 				
 				//edit a item of main_list
-				edit_register(category,main_list,header,Date);
+				edit_register(category,main_list,"",Date);
 				
-				//sort for date before burn in file
+				//sort for date before write into file
 				ord_date(main_list);
 				
-				//writes list in file
+				//write list into file
 				download_list(main_list,data_base,month,year);
 				Menu(main_list,data_base);		
 				break;
@@ -129,10 +163,10 @@ void Menu(list_cad *main_list,FILE *data_base){
 			case 4:{
 				
 				system("cls");
-				printf("%s",header);	
+				HEADER();	
 							
 				//selects other periods to load in main_file
-				show_data_base(month,year,header,files);
+				show_data_base(month,year,"",files);
 				Menu(main_list,data_base);				
 				break;
 			}
@@ -141,9 +175,9 @@ void Menu(list_cad *main_list,FILE *data_base){
 				
 				//about
 				system("cls");
-				printf("%s",header);
-				printf("Este software é gratuito e destinado para uso pessoal.\nSeu uso em ambientes empresariais não é recomendado por questões de segurança!!!\n\n");
-				printf("Desenvolvedor: Quemuel Alves Nassor\n\nContato ou suporte: quemuelalp@hotmail.com\n\nVersão: 1.0.2");
+				HEADER();
+				printf("This software is free and intended for personal use.\nIts use in business environments is not recommended for security reasons !!!\n\n");
+				printf("Developer: Quemuel Alves Nassor\n\nContact or support: quemuelalp@hotmail.com\n\n");
 				setbuf(stdin,NULL);
 				getch();
 				Menu(main_list,data_base);
@@ -166,7 +200,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 				
 				//feedback default
 				system("cls");
-				printf("\n\n\n\t\t\t\tOpção inválida!");
+				printf("\n\n\n\t\t\t\tInvalid option!");
 				sleep(1);
 				Menu(main_list,data_base);
 		}
