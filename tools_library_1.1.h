@@ -35,6 +35,7 @@ void show_records(list_cad *ficha){
 	
 	//variável para exibir a soma total
 	float total = 0;
+	int i = 0;
 	
 	//verifica se a lista de structs está ou não vazia
 	if(temp != NULL){
@@ -49,10 +50,10 @@ void show_records(list_cad *ficha){
 			printf("Descrição: %s\n\n",temp->description);
 			printf("Valor: %.2f      ",temp->value);
 			printf("Detalhes: %s\n",temp->details);
-			printf("-----------------------------------------------------------------------------------------------------------\n");
+			printf("-----------------------------------------------------------------------------------------------------------%i\n",i);
 			
 			total += temp->value;
-			
+			i++;
 			temp = temp->prox;
 		}
 		
@@ -63,7 +64,7 @@ void show_records(list_cad *ficha){
 		printf("Descrição: %s\n\n",temp->description);
 		printf("Valor: %.2f      ",temp->value);
 		printf("Detalhes: %s\n",temp->details);
-		printf("-----------------------------------------------------------------------------------------------------------\n");
+		printf("-----------------------------------------------------------------------------------------------------------%i\n",i);
 		
 		total += temp->value;
 		

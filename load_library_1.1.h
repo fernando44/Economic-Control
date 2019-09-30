@@ -1,158 +1,110 @@
-//matriz para armazenar anos que possuem cadastro
-char m_ano[10000][7];
+/*
+	This library contains functions to read data from files for memory,
+	write data into files, frees memory, and switch data base 
+*/
 
+//local variables
+char matrix_years[10000][7];
+char matrix_months[12][10] = {"January", "February", "March", "April", "May", "June", "June", "July", "August", "September", "October", "November", "December"};
 
-//declaração e inicialização da matriz dos meses do ano
-char meses[12][10] = {"janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"};
-
-
-//declaração da função carregar
-//=============================================================================================================================================================
-
-//função para ler dados do arquivo para a struct
-void load_list(list_cad *ficha,FILE *base_dados,char nome[11],char pasta[7]){
+//Load_list function 
+void load_list(list_cad *main_list,FILE *data_base,char name[11],char folder[7]){
 	
-	//contador sinalizar fim de dado 
-	int cnt = 0;
+	//local variables 
+	int count = 0, i = 0;
+	char character,file[50];
+	char string[10000] = "";
+	list_cad *temp = main_list;
 	
-	//variáveis para receber o value e os caracteres do arquivo
-	char value[500],digito[2];
-
-	//variável para receber o nome do arquivo
-	char arquivo[50];
+	//creating path to data base
+	strcpy(file,"Database\\");
+	strcat(file,folder);
+	strcat(file,name);
+	strcat(file,".txt");
 	
-	//copia e adiciona a extensão do nome do arquivo
-	strcpy(arquivo,"Database\\");
-	strcat(arquivo,pasta);
-	strcat(arquivo,nome);
-	strcat(arquivo,".txt");
-	
-	//cria uma alocação para ler os dados do arquivo
-	list_cad *recebe = (list_cad *)malloc(sizeof(list_cad));
-	recebe->prox = NULL;
-	recebe->ant = NULL;
-	
-	//reinicialização da struct receptora e da variável value
-	strcpy(recebe->date,"");
-	recebe->value = 0;
-	strcpy(recebe->category,"");
-	strcpy(recebe->description,"");
-	strcpy(recebe->details,"");
-	strcpy(value,"");
-	
-	//inicializa a variável que receberá os valuees dos cadastros
-	strcpy(value,"");
-	
-	//finaliza a string
-	digito[1] = '\0';
-			
-	//teste de abertura de arquivo para leitura
-	if((base_dados = fopen(arquivo,"r"))==NULL){
+	//verifying if the file exists
+	if((data_base = fopen(file,"r"))==NULL){
 		
+		//failure feedback
 		system("cls");
-		
-		//altera a cor do texto para vermelho
-		system("COLOR 0C");
-		printf("\n\n\n\t\t\t\tNão foi possível abrir o arquivo %s !!!", arquivo);
+		system("COLOR 0C");//define color red
+		printf("\n\n\n\t\t\t\tUnable to open file %s !!!", file);
 		sleep(2);
-			
-	//abre o arquivo em modo de leitura	
+				
 	}else{
-			system("cls");
-		//transfere os dados do arquivo para a lista de structs
-		while((digito[0] = fgetc(base_dados))!=EOF){
-			
-			//verifica a quebra de linha para adicionar uma nova alocação
-			if(digito[0]=='\n' && cnt == 4){
-			
-				//reseta o contador de verificação
-				cnt = 0;
+		
+		//temporary variable
+		list_cad *temp = main_list;
+		
+		do{
+			//verifying if character is valid
+			if(character != '\t' && character != '\n'){
+				string[strlen(string)] = character;
 				
-				//cria uma nova alocação a cada nova leitura do arquivo
-				list_cad *novo = (list_cad *)malloc(sizeof(list_cad));
-				novo->prox = NULL;
-				novo->ant = NULL;
-				
-				//tranferência dos dados da struct receptora para a lista
-				strcpy(novo->date,recebe->date);
-				novo->value = recebe->value;
-				strcpy(novo->category,recebe->category);
-				strcpy(novo->description,recebe->description);
-				strcpy(novo->details,recebe->details);
-				
-				//inserção das novas alocações na lista
-				//verifica o inicio da lista
-				if(ficha->prox == NULL){
-					
-					novo->prox = ficha->prox;
-					ficha->prox = novo;
-					novo->ant = ficha;
-					
-				}else if(ficha->prox != NULL){
-				
-					//reorganização da lista de cadastros	
-					novo->prox = ficha->prox;
-					ficha->prox = novo;
-					novo->ant = ficha;
-					novo->prox->ant = novo;
+			//reseting string to receive data
+			}else if(character == '\t' || character == '\n'){
+            	for(i = strlen(string);i>=0;i--){//cleaning string
+					string[i] = '\0';
 				}
-				
-				//reinicialização da struct receptora e da variável value
-				strcpy(recebe->date,"");
-				recebe->value = 0;
-				strcpy(recebe->category,"");
-				strcpy(recebe->description,"");
-				strcpy(recebe->details,"");
-				strcpy(value,"");
-				
-			//aloca os dados em suas respectivas variáveis na struct
-			}else if((digito[0] !='\n')){
-					
-				//incrementa o sinalizador de fim de dado
-				if(digito[0] == '\t'){
-					cnt++;
-				}
-				
-				//recebe a date	do cadastro
-				if(strlen(recebe->date) < 10 && cnt == 0 && digito[0] != '\t' ){
-						
-						strcat(recebe->date,digito);
-					
-				}
-				
-				//recebe o value do cadastro
-				if((strlen(recebe->date) == 10 ) && cnt == 1 && digito[0] != '\t'){
-					
-						strcat(value,digito);				
-						recebe->value = atof(value);
-						
-				}
-				
-				//recebe a category do cadastro
-				if((recebe->value != 0) && cnt == 2 && digito[0] != '\t'){
-					
-						strcat(recebe->category,digito);
-						
-				}
-				
-				//recebe a descrição do cadastro
-				if((recebe->category != 0) && cnt == 3 && digito[0] != '\t'){
-						
-						strcat(recebe->description,digito);
-						
-				}
-				
-				//recebe os details do cadastro
-				if((recebe->description != 0) && cnt == 4 && digito[0] != '\t'){
-					
-						strcat(recebe->details,digito);
-				
+				if(character == '\n'){
+//					printf("Data: %s      ",main_list->prox->date);
+//					printf("Categoria: %s      ",main_list->prox->category);
+//					printf("Descrição: %s\n\n",main_list->prox->description);
+//					printf("Valor: %f      ",main_list->prox->value);
+//					printf("Detalhes: %s\n",main_list->prox->details);
+//					printf("-----------------------------------------------------------------------------------------------------------\n");
+//					getch();
 				}
 			}
-		}
+			
+			//verifying new register
+            if(character == '\n' || main_list->prox == NULL){
+				
+				//percussing the list
+				while(temp->prox != NULL){
+					temp = temp->prox;
+				}
+				//create a new allocation and add in main_list
+				list_cad *new_cad = (list_cad *)malloc(sizeof(list_cad));
+				new_cad->prox = temp->prox;
+				temp->prox = new_cad;
+				new_cad->ant = temp;
+										
+				//inicializating the new register				
+				strcpy(new_cad->date,"");
+				strcpy(new_cad->category,"");
+				strcpy(new_cad->description,"");
+				strcpy(new_cad->details,"");
+				new_cad->value = 0;
+				count = 0;
+			}
+			
+			//allocating data into struct of the main_list	
+			if(character == '\t'){
+				count++;
+			}else if(character != '\t' && count == 0 && character != '\n'){
+				printf("%s",string);
+				strcpy(temp->prox->date, string);
+			}else if(character != '\t' && count == 1 && character != '\n'){
+				temp->prox->value = atof(string);
+			}else if(character != '\t' && count == 2 && character != '\n'){
+				strcpy(temp->prox->category, string);
+			}else if(character != '\t' && count == 3 && character != '\n'){
+				strcpy(temp->prox->description, string);
+			}else if(character != '\t' && count == 4 && character != '\n'){
+				strcpy(temp->prox->details, string);
+			}else if(strcmp(temp->prox->date,"") == 0 && strcmp(temp->prox->category,"") == 0 && (temp->prox->value == 0)){
+//				list_cad *del = temp->prox;
+//				del->ant->prox = NULL;
+//				free(del);
+				strcpy(temp->prox->date,"1");
+				strcpy(temp->prox->category,"1");
+				temp->prox->value = 1;
+			}
+		}while((character = fgetc(data_base))!=EOF);
 		
-		//fecha o arquivo de texto
-		fclose(base_dados);
+		//close the file
+		fclose(data_base);
 	}
 }
 
@@ -161,21 +113,21 @@ void load_list(list_cad *ficha,FILE *base_dados,char nome[11],char pasta[7]){
 //=============================================================================================================================================================
 
 //função para liberar memória alocada
-void deallocate_list(list_cad *ficha){
+void deallocate_list(list_cad *main_list){
 	
 	list_cad *temp;	
 	//laço que percorre e libera a lista
-	while(ficha->prox!= NULL){
+	while(main_list->prox!= NULL){
 			
 		//reorganização dos apontamentos da lista
-		temp = ficha->prox;
-		ficha->prox = temp->prox;
+		temp = main_list->prox;
+		main_list->prox = temp->prox;
 		
 		//verifica se a a variável temporária chegou ao fim da lista 
 		if(temp->prox == NULL){
 			
 			//reorgazinação do apontamento da lista
-			ficha->prox = temp->prox;
+			main_list->prox = temp->prox;
 			
 			//liberação de memória alocada
 			free(temp);
@@ -183,7 +135,7 @@ void deallocate_list(list_cad *ficha){
 		}	
 		
 		//reorganização dos apontamento na lista
-		temp->prox->ant = ficha;
+		temp->prox->ant = main_list;
 		free(temp);	
 	}	
 }
@@ -192,38 +144,38 @@ void deallocate_list(list_cad *ficha){
 //declaração da função descarregar
 //=============================================================================================================================================================
 
-//função para escrever dados da lista de struct no arquivo
-void download_list(list_cad *ficha,FILE *base_dados,char nome[11],char pasta[5]){
+//função para escrever dados da lista de struct no file
+void download_list(list_cad *main_list,FILE *data_base,char nome[11],char pasta[5]){
 	
-	//variável para receber o nome do arquivo
-	char arquivo[50];
+	//variável para new_cadr o nome do file
+	char file[50];
 	
-	//copia e adiciona a extensão do nome do arquivo
-	strcpy(arquivo,"Database\\");
-	strcat(arquivo,pasta);
-	strcat(arquivo,nome);
-	strcat(arquivo,".txt");
+	//copia e adiciona a extensão do nome do file
+	strcpy(file,"Database\\");
+	strcat(file,pasta);
+	strcat(file,nome);
+	strcat(file,".txt");
 	
 	//verifica se a lista possui itens ou se está vazia
-	if(ficha->prox != NULL){
+	if(main_list->prox != NULL){
 	
 		//ponteiro temporario
-		list_cad *temp = ficha->prox;
+		list_cad *temp = main_list->prox;
 		
-		//abre arquivo em modo escrita
-		base_dados = fopen(arquivo,"w");
+		//abre file em modo escrita
+		data_base = fopen(file,"w");
 		
 		if(temp->prox != NULL){
-			//loop para percorrer e gravar a lista de structs no arquivo		
+			//loop para percorrer e gravar a lista de structs no file		
 			while(temp->prox != NULL){
 				
-				fprintf(base_dados,"%s\t",temp->date);
-				fprintf(base_dados,"%.2f\t",temp->value);
-				fprintf(base_dados,"%s\t",temp->category);
-				fprintf(base_dados,"%s\t",temp->description);
-				fprintf(base_dados,"%s\n",temp->details);
+				fprintf(data_base,"%s\t",temp->date);
+				fprintf(data_base,"%.2f\t",temp->value);
+				fprintf(data_base,"%s\t",temp->category);
+				fprintf(data_base,"%s\t",temp->description);
+				fprintf(data_base,"%s\n",temp->details);
 					
-				//recebe o ponteiro seguinte
+				//new_cad o ponteiro seguinte
 				temp = temp->prox;
 			}
 		}
@@ -231,21 +183,21 @@ void download_list(list_cad *ficha,FILE *base_dados,char nome[11],char pasta[5])
 		//armazena os dados da ultima struct
 		if(temp->prox == NULL){
 						
-			fprintf(base_dados,"%s\t",temp->date);
-			fprintf(base_dados,"%.2f\t",temp->value);
-			fprintf(base_dados,"%s\t",temp->category);
-			fprintf(base_dados,"%s\t",temp->description);
-			fprintf(base_dados,"%s\n",temp->details);
+			fprintf(data_base,"%s\t",temp->date);
+			fprintf(data_base,"%.2f\t",temp->value);
+			fprintf(data_base,"%s\t",temp->category);
+			fprintf(data_base,"%s\t",temp->description);
+			fprintf(data_base,"%s\n",temp->details);
 			
 		}
 				
-		//fecha o arquivo
-		fclose(base_dados);
+		//fecha o file
+		fclose(data_base);
 	}
 }
 
 
-//declaração da função alt_base_dados
+//declaração da função alt_data_base
 //=============================================================================================================================================================
 
 //função para alternar a base de dados que o usuário deseja acessar
@@ -261,18 +213,18 @@ void show_data_base(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *plac
 	while(i < 10000){
 		
 		//atribui espaços em branco à string
-		strcpy(m_ano[i],"      ");
+		strcpy(matrix_years[i],"      ");
 		i++;
 	}
 	
 	//reinicializa o contador
 	i = 0;
 	
-	//abre o arquivo lista_anos para leitura
+	//abre o file lista_anos para leitura
 	places = fopen("Database\\list_years.txt","r");
 	
-	//loop para receber os anos do arquivo para a matriz
-	while(fscanf(places,"%s",m_ano[i]) != EOF){
+	//loop para new_cadr os anos do file para a matriz
+	while(fscanf(places,"%s",matrix_years[i]) != EOF){
 		
 		i++;
 		
@@ -282,24 +234,24 @@ void show_data_base(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *plac
 		}
 	}
 	
-	//fecha o arquivo lista_anos
+	//fecha o file lista_anos
 	fclose(places);
 	
-	/*variável max recebe a última posição em que a matriz 
-	recebeu valuees e reinicializa o contador*/
+	/*variável max new_cad a última posição em que a matriz 
+	new_cadu valuees e reinicializa o contador*/
 	max = i-1;	
 	i = 0;
 	
 	//loop para exibir os anos cadastrados e selecioná-los
 	while(sel != -35){
 		
-		//limpa a tela e exibe os meses para seleção
+		//limpa a tela e exibe os matrix_months para seleção
 		system("cls");
 		printf("%sPressione ESC para permanecer no ano atual\n\n",titulo);
 		int u;
 		//loop para exibir os anos sem as barras(\\)
 		for(u = 0;u<4;u++){
-			printf("%c",m_ano[i][u]);
+			printf("%c",matrix_years[i][u]);
 		}
 		
 		//variável de seleção
@@ -313,8 +265,8 @@ void show_data_base(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *plac
 		
 		}else if(sel == -35){
 			
-			//recebe o ano selecionado
-			strcpy(sel_ano,m_ano[i]);
+			//new_cad o ano selecionado
+			strcpy(sel_ano,matrix_years[i]);
 			
 		}else if(sel == 24){
 			
@@ -348,10 +300,10 @@ void show_data_base(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *plac
 	//loop de seleção do mês do base de dados
 	while(opc != -35){
 		
-		//limpa a tela e exibe os meses para seleção
+		//limpa a tela e exibe os matrix_months para seleção
 		system("cls");
 		printf("%sPressione ESC para permanecer no mês atual\n\n",titulo);
-		printf("%s",meses[i]);
+		printf("%s",matrix_months[i]);
 		
 		//variável de seleção
 		setbuf(stdin,NULL);
@@ -364,17 +316,17 @@ void show_data_base(char sel_mes[11],char sel_ano[7],char titulo[366],FILE *plac
 		
 		}else if(opc == -35){
 			
-			//recebe o mês selecionado
-			strcpy(sel_mes,meses[i]);
+			//new_cad o mês selecionado
+			strcpy(sel_mes,matrix_months[i]);
 			
 		}else if(opc == 24){
 			
-			//decrementa o value de i e exibe meses acima
+			//decrementa o value de i e exibe matrix_months acima
 			i--;
 			
 		}else if(opc == 32){
 			
-			//incrementa o value de i e exibe meses abaixo
+			//incrementa o value de i e exibe matrix_months abaixo
 			i++;
 		}
 		
