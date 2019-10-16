@@ -14,7 +14,6 @@ FILE *data_base,*files;
 char month[3],year[5];
 char directory[25],verify[30];
 char category[LIN][COL] = {"Informatica <","Contas      <","Vestimenta  <","Escolar     <","Alimenticio <","Medicamentos<","Documentos  <","Compras     <"};
-char header[366] = {"***********************************************************************************************************************\n\n*****************************************| Controle Econômico |********************************************************\n\n***********************************************************************************************************************\n\n\n\n"};
 
 //custom libraries 
 #include"date.h"
@@ -37,7 +36,7 @@ int main(){
 	strcpy(year,Year);
 	
 	//define window title 
-	system ("title Controle Econï¿½mico");
+	system ("title Controle Economico");
 	
 	//start point of main_list
 	list_cad *main_list = (list_cad *)malloc(sizeof(list_cad));

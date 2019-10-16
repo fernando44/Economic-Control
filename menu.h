@@ -1,3 +1,23 @@
+void HEADER(){
+	
+	int i = 1;
+
+	while(i < 281){
+		printf("*");
+		if( i == 100){
+			printf("\n\n");
+		}
+		if(i == 140){
+			printf("| Economic Control |");
+		}
+		if(i == 180){
+			printf("\n\n");
+		}
+		i++;
+	}
+	printf("\n\n\n\n");
+}
+
 //Menu function
 void Menu(list_cad *main_list,FILE *data_base){
 		
@@ -15,7 +35,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 		
 		//displays menu options
 		system("cls");
-		printf("%s",header);
+		HEADER();
 		printf("Selecione uma opção:\n\n1 - Novo cadastro \n2 - Exibir cadastros \n3 - Alterar cadastro\n4 - Alternar base de dados\n5 - Sobre\n6 - Sair");
 		int option = -1;
 		
@@ -26,7 +46,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 			case 1:{				
 				system("cls");
 				//concatenate a new record in the list
-				add_new(category,main_list,header,Date);
+				add_new(category,main_list,"",Date);
 				
 				//sort for date before burn in file
 				ord_date(main_list);
@@ -60,7 +80,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 						
 						//displaying main_list
 						system("cls");
-						printf("%s",header);
+						HEADER();
 						ord_date(main_list);
 						show_records(main_list);
 						printf("%s",submenu);
@@ -112,10 +132,10 @@ void Menu(list_cad *main_list,FILE *data_base){
 			
 			case 3:{
 				system("cls");
-				printf("%s",header);
+				HEADER();
 				
 				//edit a item of main_list
-				edit_register(category,main_list,header,Date);
+				edit_register(category,main_list,"",Date);
 				
 				//sort for date before burn in file
 				ord_date(main_list);
@@ -129,10 +149,10 @@ void Menu(list_cad *main_list,FILE *data_base){
 			case 4:{
 				
 				system("cls");
-				printf("%s",header);	
+				HEADER();	
 							
 				//selects other periods to load in main_file
-				show_data_base(month,year,header,files);
+				show_data_base(month,year,"",files);
 				Menu(main_list,data_base);				
 				break;
 			}
@@ -141,7 +161,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 				
 				//about
 				system("cls");
-				printf("%s",header);
+				HEADER();
 				printf("Este software é gratuito e destinado para uso pessoal.\nSeu uso em ambientes empresariais não é recomendado por questões de segurança!!!\n\n");
 				printf("Desenvolvedor: Quemuel Alves Nassor\n\nContato ou suporte: quemuelalp@hotmail.com\n\nVersão: 1.0.2");
 				setbuf(stdin,NULL);
