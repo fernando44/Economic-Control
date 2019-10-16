@@ -1,3 +1,5 @@
 #Ignore data base directory and .exe files
 /database/
 *.exe
+*.ini
+*.txt
