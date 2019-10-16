@@ -1,3 +1,5 @@
-#Ignore data base directory and .exe files
-/database/
+﻿#remove unwanted commit files
+/Database/*
 *.exe
+*.ini
+*.txt
