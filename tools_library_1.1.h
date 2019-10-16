@@ -1,12 +1,14 @@
+extern void HEADER();
+
 //declaração da função recebe_date
 //=============================================================================================================================================================
 
 //função para ler a date do cadastro
-void recebe_date(char recebe[11],char titulo[500]){
+void recebe_date(char recebe[11]){
 	
 	//variável inicial
 	char date[11];
-	
+	HEADER();
 	//recebe o dia
 	printf("Data: ");
 	setbuf(stdin,NULL);
@@ -35,7 +37,6 @@ void show_records(list_cad *ficha){
 	
 	//variável para exibir a soma total
 	float total = 0;
-	int i = 0;
 	
 	//verifica se a lista de structs está ou não vazia
 	if(temp != NULL){
@@ -50,10 +51,10 @@ void show_records(list_cad *ficha){
 			printf("Descrição: %s\n\n",temp->description);
 			printf("Valor: %.2f      ",temp->value);
 			printf("Detalhes: %s\n",temp->details);
-			printf("-----------------------------------------------------------------------------------------------------------%i\n",i);
+			printf("-----------------------------------------------------------------------------------------------------------\n");
 			
 			total += temp->value;
-			i++;
+			
 			temp = temp->prox;
 		}
 		
@@ -64,7 +65,7 @@ void show_records(list_cad *ficha){
 		printf("Descrição: %s\n\n",temp->description);
 		printf("Valor: %.2f      ",temp->value);
 		printf("Detalhes: %s\n",temp->details);
-		printf("-----------------------------------------------------------------------------------------------------------%i\n",i);
+		printf("-----------------------------------------------------------------------------------------------------------\n");
 		
 		total += temp->value;
 		
@@ -78,7 +79,7 @@ void show_records(list_cad *ficha){
 //=============================================================================================================================================================
 
 //função para alterar cadastro
-void edit_register(char category[8][14],list_cad *ficha,char titulo[500],char date[11]){
+void edit_register(char category[50][20],list_cad *ficha,char titulo[500],char date[11]){
 	
 	//variaveis locais
 	list_cad *temp = ficha->prox;
@@ -113,7 +114,7 @@ void edit_register(char category[8][14],list_cad *ficha,char titulo[500],char da
 		printf("Informe a data do cadastro \n");
 		
 		//recebe a date	
-		recebe_date(busca_date,titulo);
+		recebe_date(busca_date);
 
 //recebe a category para busca
 		
@@ -200,11 +201,11 @@ void edit_register(char category[8][14],list_cad *ficha,char titulo[500],char da
 				//recebe a nova date
 				system("cls");
 				printf("%s",titulo);
-				recebe_date(temp->date,cabecalho);
+				recebe_date(temp->date);
 				
 				//recebe os novos valuees da struct selecionada na lista
 				system("cls");
-				preencher(category,temp,cabecalho,temp->date);
+				preencher(category,temp,temp->date);
 				break;
 			}
 			temp = temp->prox;
@@ -216,11 +217,11 @@ void edit_register(char category[8][14],list_cad *ficha,char titulo[500],char da
 				//recebe a nova date
 				system("cls");
 				printf("%s",titulo);
-				recebe_date(temp->date,cabecalho);
+				recebe_date(temp->date);
 				
 				//recebe os novos valuees da struct selecionada na lista
 				system("cls");
-				preencher(category,temp,cabecalho,temp->date);
+				preencher(category,temp,temp->date);
 				
 		//se não for encontrado nenhum cadastro com os dados informados	
 		}else if((temp->prox == NULL) && (strcmp(busca_date,temp->date)) != 0 && (strcmp(busca_category,temp->category)) != 0 && (value != temp->value)){

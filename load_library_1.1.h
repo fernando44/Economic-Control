@@ -58,12 +58,12 @@ void load_list(list_cad *main_list,FILE *data_base,char name[11],char folder[7])
 			}
 			
 			//verifying new register
-            if(character == '\n' || main_list->prox == NULL){
+            if(character == '\n' && count == 4){
 				
-				//percussing the list
-				while(temp->prox != NULL){
-					temp = temp->prox;
-				}
+//				//percussing the list
+//				while(temp->prox != NULL){
+//					temp = temp->prox;	
+//				}
 				//create a new allocation and add in main_list
 				list_cad *new_cad = (list_cad *)malloc(sizeof(list_cad));
 				new_cad->prox = temp->prox;
@@ -83,7 +83,7 @@ void load_list(list_cad *main_list,FILE *data_base,char name[11],char folder[7])
 			if(character == '\t'){
 				count++;
 			}else if(character != '\t' && count == 0 && character != '\n'){
-				printf("%s",string);
+				printf("%i",count);getch();
 				strcpy(temp->prox->date, string);
 			}else if(character != '\t' && count == 1 && character != '\n'){
 				temp->prox->value = atof(string);
@@ -99,7 +99,7 @@ void load_list(list_cad *main_list,FILE *data_base,char name[11],char folder[7])
 //				free(del);
 				strcpy(temp->prox->date,"1");
 				strcpy(temp->prox->category,"1");
-				temp->prox->value = 1;
+				temp->prox->value = 0;
 			}
 		}while((character = fgetc(data_base))!=EOF);
 		

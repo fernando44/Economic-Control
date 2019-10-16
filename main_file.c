@@ -11,8 +11,8 @@
 #include<unistd.h>
 
 //constants 
-#define LIN 8
-#define COL 14
+#define LIN 50
+#define COL 20
 
 //pointers for files
 FILE *data_base,*files;
@@ -26,7 +26,7 @@ char category[LIN][COL] = {"Informatica <","Contas      <","Vestimenta  <","Esco
 #include"date.h"
 #include"type.h"
 #include"cad_library_1.1.h"
-#include"load_library_1.1.h"
+#include"load_library_1.2.h"
 #include"tools_library_1.1.h"
 #include"buble-sort_library.h"
 #include"menu.h"

@@ -1,8 +1,10 @@
+extern void HEADER();
+
 //declaração da função preencher
 //=============================================================================================================================================================
 	
 //função de adição de dados do cadastro
-void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[11]){
+void preencher(char category[50][20],list_cad *ficha,char Date[11]){
 	
 	//variáveis locais
 	int i;
@@ -25,7 +27,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 	
 	//atualiza a tela com os dados recebidos
 	system("cls");
-	printf("%s",titulo);
+	HEADER();
 	printf("Data: %s\n",ficha->date);
 	
 //Recebe os dados da descrição do cadastro
@@ -49,7 +51,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		//inicializa de forma padrão a descrição
 		strcpy(ficha->description,reseta);
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->date,ficha->description,ficha->category);
 			
 	}else{
@@ -85,7 +87,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 			strcpy(ficha->category,category[i]);
 			ficha->category[12] = ' ';
 			system("cls");
-			printf("%s",titulo);
+			HEADER();
 			printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: ",ficha->date,ficha->description,ficha->category);
 			break;
 					
@@ -112,7 +114,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		}
 		
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->date,ficha->description,category[i]);
 		j++;
 	}
@@ -136,7 +138,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		value[strlen(value)-1] = '\0';
 		ficha->value = atof(value);
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->date,ficha->description,ficha->category,ficha->value);
 			
 	}else{
@@ -144,7 +146,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		//retorna o value padrão
 		ficha->value = atof(reseta);
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->date,ficha->description,ficha->category,ficha->value);
 		
 	}
@@ -179,7 +181,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 //=============================================================================================================================================================
 
 //função para adicionar cadastro na lista
-void add_new(char category[LIN][COL],list_cad *list,char titulo[500],char Date[11]){
+void add_new(char category[LIN][COL],list_cad *list,char Date[11]){
 	
 	//alocação de memória para o novo cadastro
 	list_cad *novo = (list_cad *)malloc(sizeof(list_cad));
@@ -193,7 +195,7 @@ void add_new(char category[LIN][COL],list_cad *list,char titulo[500],char Date[1
 	novo->value = 0;
 	
 	//chamada da função preencher para receber os valuees da nova alocação
-	preencher(category,novo,titulo,Date); 
+	preencher(category,novo,Date); 
 	
 	//verifica se o cadastro não está vazio ou não para adicioná-lo na lista
 	if((strcmp(novo->description,"(Null)") != 0) && (strcmp(novo->category,"-------------") != 0) && novo->value != 0){

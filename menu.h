@@ -57,7 +57,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 			case 1:{				
 				system("cls");
 				//concatenate a new register in the list
-				add_new(category,main_list,"",Date);
+				add_new(category,main_list,Date);
 				
 				//sort for date before write in file
 				ord_date(main_list);
@@ -166,7 +166,7 @@ void Menu(list_cad *main_list,FILE *data_base){
 				HEADER();	
 							
 				//selects other periods to load in main_file
-				show_data_base(month,year,"",files);
+				show_data_base(month,year,files);
 				Menu(main_list,data_base);				
 				break;
 			}
