@@ -25,7 +25,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 	
 	//atualiza a tela com os dados recebidos
 	system("cls");
-	printf("%s",titulo);
+	HEADER();
 	printf("Data: %s\n",ficha->date);
 	
 //Recebe os dados da descrição do cadastro
@@ -49,7 +49,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		//inicializa de forma padrão a descrição
 		strcpy(ficha->description,reseta);
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->date,ficha->description,ficha->category);
 			
 	}else{
@@ -85,7 +85,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 			strcpy(ficha->category,category[i]);
 			ficha->category[12] = ' ';
 			system("cls");
-			printf("%s",titulo);
+			HEADER();
 			printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: ",ficha->date,ficha->description,ficha->category);
 			break;
 					
@@ -112,7 +112,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		}
 		
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s",ficha->date,ficha->description,category[i]);
 		j++;
 	}
@@ -136,7 +136,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		value[strlen(value)-1] = '\0';
 		ficha->value = atof(value);
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->date,ficha->description,ficha->category,ficha->value);
 			
 	}else{
@@ -144,7 +144,7 @@ void preencher(char category[8][14],list_cad *ficha,char titulo[500],char Date[1
 		//retorna o value padrão
 		ficha->value = atof(reseta);
 		system("cls");
-		printf("%s",titulo);
+		HEADER();
 		printf("Data: %s\nDescrição: %s\nCategoria: %s\nValor: %.2f\nDescrição: ",ficha->date,ficha->description,ficha->category,ficha->value);
 		
 	}
