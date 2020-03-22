@@ -4,7 +4,6 @@
 	manipulate dinamic lists of him
 */
 
-
 //Dependencies
 #include<stdio.h>
 #include<stdlib.h>
@@ -32,10 +31,10 @@ void initalizeString(char* String, int Size){
 reg *newReg(){
     reg *emptyReg = (reg *)malloc(sizeof(reg));						//Allocates *reg size memory
     emptyReg->prox = emptyReg->ant = NULL;							//Initalize poiters with NULL
-    initalizateString(emptyReg->date,11);							//Initialize date with \0
-    initalizateString(emptyReg->description,100);					//Initialize description with \0
-    initalizateString(emptyReg->category,14);						//Initialize category with \0
-    initalizateString(emptyReg->details,100);						//Initialize details with \0
+    initalizeString(emptyReg->date,11);								//Initialize date with \0
+    initalizeString(emptyReg->description,100);						//Initialize description with \0
+    initalizeString(emptyReg->category,14);							//Initialize category with \0
+    initalizeString(emptyReg->details,100);							//Initialize details with \0
     emptyReg->value = 0.00;											//Initialize value with 0.00
     return emptyReg;
 }
