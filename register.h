@@ -9,13 +9,14 @@
 #include<stdlib.h>
 
 //Dinamic data struct for lists
-typedef struct dataType{
-	struct dataType *ant; 
-	struct dataType *prox; 
+typedef struct regType{
+	struct regType *ant; 
+	struct regType *prox;
+	int id; 
 	char description[100];
-	char category[14];	
+	char category[50];	
 	char details[100]; 
-	char date[11];		
+	char date[20];		
 	double value;		
 }reg;
 
@@ -27,15 +28,16 @@ void initalizeString(char* String, int Size){
 	};
 }
 
-//Create an empty reg
+//Create an empty register
 reg *newReg(){
     reg *emptyReg = (reg *)malloc(sizeof(reg));						//Allocates *reg size memory
     emptyReg->prox = emptyReg->ant = NULL;							//Initalize poiters with NULL
-    initalizeString(emptyReg->date,11);								//Initialize date with \0
+    initalizeString(emptyReg->date,20);								//Initialize date with \0
     initalizeString(emptyReg->description,100);						//Initialize description with \0
-    initalizeString(emptyReg->category,14);							//Initialize category with \0
+    initalizeString(emptyReg->category,50);							//Initialize category with \0
     initalizeString(emptyReg->details,100);							//Initialize details with \0
     emptyReg->value = 0.00;											//Initialize value with 0.00
+    emptyReg->id = 0;												//Initialize id with 0
     return emptyReg;
 }
 
@@ -68,12 +70,11 @@ reg *addMiddle(reg *regsList, reg *newItem){
 };
 
 //Add a new item to the end of the list
-reg *addEnd(reg *regsList, reg *newItem){
+void addEnd(reg *regsList, reg *newItem){
 	regsList = navEnd(regsList);
 	newItem->ant = regsList;
 	newItem->prox = regsList->prox;
 	regsList->prox = newItem;
-	return navStart(regsList);
 };
 
 //Remove the first item at the beginning of the list
@@ -97,10 +98,8 @@ reg *remMiddle(reg *regsList){
 };
 
 //Remove the last item at the end of the list
-reg *remEnd(reg *regsList){
+void remEnd(reg *regsList){
 	regsList = navEnd(regsList);
-	reg *temp = navStart(regsList);
 	(regsList->ant != NULL) ? (regsList->ant->prox = regsList->prox) : 0;
 	free(regsList);
-	return temp;
 };
