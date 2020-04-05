@@ -12,6 +12,7 @@
 extern void ClrScr();
 extern void HEADER();
 extern char categoryList[LIN][COL];
+extern int sizeOfCategoryList;
 
 //Function to get date value
 void getNewDate(char input[20]){
@@ -74,8 +75,48 @@ void getCategory(char input[COL], int sizeOfCategoryList){
 	}
 }
 
+//Function to generate ID
+int getId(){
+	
+	//Local variables
+	long start = 73;
+	char idFile[30];
+	int Id = 0;
+	
+	//Opening file in read mode
+	FILE *config = fopen("ID_increment.txt","r");
+
+	//Positioning file pointer
+	fseek(config,start,SEEK_CUR);
+	
+	//Get ID from file
+	while(fgets(idFile,30,config)!=NULL);
+	
+	//Incrementing ID
+	Id = atoi(idFile);
+	Id++;
+	
+	//Close the file
+	fclose(config);
+	
+	//Open File in write mode to write incremented ID
+	config = fopen("ID_increment.txt","w");
+
+	//Writing new file content
+	fprintf(config,"%s","#This is a configuration file, don't delete or modify\n\n#ID incrementer:\n");
+	fprintf(config,"%i",Id);
+	
+	//Close the file
+	fclose(config);
+	
+	return Id;
+}
+
 //Function to fill the data of new record
 void dataFeed(reg *regsList){
+	
+	//Set id of register
+	regsList->id = regsList->id == 0 ? getId() : regsList->id;
 
 //Receives date data
 //===================================================================
@@ -119,7 +160,7 @@ void dataFeed(reg *regsList){
 	
 	//Get selected category to the regList
 	ClrScr();
-	getCategory(regsList->category,7);
+	getCategory(regsList->category,sizeOfCategoryList);
 	
 	//Clean screen and display data
 	ClrScr();
