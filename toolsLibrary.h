@@ -21,7 +21,7 @@ void showRecords(reg *ficha){
 	double sumValue = 0;
 	
 	//Check if regsList is empty
-	if(temp == NULL || temp->date[0] == '\0'){
+	if(temp == NULL || strcmp(temp->date ,"\0") == 0){
 		
 		//Feedback if regsList is empty
 		ClrScr();
