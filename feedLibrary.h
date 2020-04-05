@@ -29,26 +29,29 @@ void getNewDate(char input[20]){
 	setbuf(stdin,NULL);
 	fgets(newDate,11,stdin);
 	
-	//Checking if input is valid
-	for(index = 0; index < 11; index++){
-		
-		if((!isdigit(newDate[index]) && (index != 4 || index != 7)) || newDate[4] != '-' || newDate[7] != '-'){
-			ClrScr();
-			printf("Invalid entry, please try again!");
-			sleep(2);
-			getNewDate(input);
-			break;
-		}		
-	}
-
-	//Validating selection
-	if(newDate[0] != '\n' && strcmp(newDate,"\0") != 0){
-		
-		//Insert the new value of date and concatenate the add-on
-		newDate[strlen(newDate)-1] = ' ';
-		getDate();
-		strcat(newDate,Time);
-		strcpy(input,newDate);
+	if(strcmp(newDate,"\n") != 0){
+			
+		//Checking if input is valid
+		for(index = 0; index < 11; index++){
+			
+			if((!isdigit(newDate[index]) && (index != 4 || index != 7)) || newDate[4] != '-' || newDate[7] != '-'){
+				ClrScr();
+				printf("Invalid entry, please try again!");
+				sleep(2);
+				getNewDate(input);
+				break;
+			}		
+		}
+	
+		//Validating selection
+		if(strcmp(newDate,"\0") != 0){
+			
+			//Insert the new value of date and concatenate the add-on
+			newDate[strlen(newDate)-1] = ' ';
+			getDate();
+			strcat(newDate,Time);
+			strcpy(input,newDate);
+		}
 	}
 }
 
@@ -62,7 +65,8 @@ void getCategory(char input[COL], int sizeOfCategoryList){
 	
 	//Display all categories in categoryList
 	for(count = 0; count < sizeOfCategoryList-1; count++){
-		printf("%i - %s\n",count+1, categoryList[count]);
+		count <= 8 ? printf(" ") : 0;
+		printf("   %i - %s",count+1, categoryList[count]);
 	}
 	
 	//Returns the selected category if the Index is in the range Index <= count or Index >= 0 if not return NULL
@@ -117,7 +121,11 @@ void dataFeed(reg *regsList){
 	
 	//Set id of register
 	regsList->id = regsList->id == 0 ? getId() : regsList->id;
-
+	
+	ClrScr();
+	HEADER();
+	printf("Id: %i\n",regsList->id);
+	
 //Receives date data
 //===================================================================
 	
@@ -135,8 +143,6 @@ void dataFeed(reg *regsList){
 		
 	}
 	
-	ClrScr();
-	HEADER();
 	printf("Date: %s",regsList->date);
 	
 //Receives description data
@@ -161,6 +167,7 @@ void dataFeed(reg *regsList){
 	//Get selected category to the regList
 	ClrScr();
 	getCategory(regsList->category,sizeOfCategoryList);
+	regsList->category[strlen(regsList->category)-1] = '\0';
 	
 	//Clean screen and display data
 	ClrScr();
@@ -184,8 +191,8 @@ void dataFeed(reg *regsList){
 	value[strlen(value)-1] = '\0';	
 	
 	//Set the value of the new record to NULL if it is empty
-	Value != 0.00 && strcmp(value,"\0") == 0 ? 0 : Value == 0.00 && strcmp(value,"\0") != 0 ? (regsList->value = atof(value)) : 0;
-	printf("valor digitado: %s - valor da entidade: %f",value,regsList->value);
+	Value != 0.00 && strcmp(value,"\0") == 0 ? 0 : Value == 0.00 && strcmp(value,"\0") != 0 ? (regsList->value = atof(value)) : Value != 0.00 && strcmp(value,"\0") != 0 ? (regsList->value = atof(value)) : 0;
+
 	//Clean screen and display data
 	ClrScr();
 	HEADER();
