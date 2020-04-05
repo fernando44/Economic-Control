@@ -1,5 +1,24 @@
 #This is a configuration file, don't delete or modify
 
-#Categories:
-{Informatica,Eletronic,Contas,Vestimenta,Escolar,Alimenticio,Medicamentos,Documentos,Compras}
-
+#Categories list:
+Computing
+Eletronic
+Accounts
+Clothes
+School
+Food
+Medicines
+Documents
+Shopping
+Furniture
+Tools
+Books
+Paint
+Footwear
+Hunting and fishing
+Services
+Gardening
+Plumbing
+Electric
+Construction
+Beauty

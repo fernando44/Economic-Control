@@ -56,8 +56,8 @@ void Menu(reg *regsList,FILE *dataBase){
 	regsList = newReg();
 				
 	//Loading data from archives for regsList
-//	regsList = loadListFromTxt(regsList,dataBase,path);
-	loadListFromJson(regsList,dataBase,path);
+	regsList = loadListFromTxt(regsList,dataBase,path);
+//	loadListFromJson(regsList,dataBase,path);
 	ClrScr();
 	HEADER();
 	
