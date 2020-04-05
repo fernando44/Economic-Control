@@ -76,12 +76,15 @@ reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
 			initalizeString(value,100);
 			for(index = 0; index<strlen(strLine);index++){
 				
+				
 				//Mapping key characters and separating content
-				strLine[index] != '\t' && chrKeyCount == 0 ? (newRecord->date[strlen(newRecord->date)] = strLine[index]) : 0;
-				strLine[index] != '\t' && chrKeyCount == 1 ? (value[strlen(value)] = strLine[index]) && (newRecord->value = atof(value)) : 0;
-				strLine[index] != '\t' && chrKeyCount == 2 ? (newRecord->category[strlen(newRecord->category)] = strLine[index]) : 0;
-				strLine[index] != '\t' && chrKeyCount == 3 ? (newRecord->description[strlen(newRecord->description)] = strLine[index]) : 0;
-				strLine[index] != '\n' && chrKeyCount == 4 ? (newRecord->details[strlen(newRecord->details)] = strLine[index]) : 0;
+				strLine[index] == '\t' && chrKeyCount == 1 ? initalizeString(value,100) : 0;
+				strLine[index] != '\t' && chrKeyCount == 0 ? (value[strlen(value)] = strLine[index]) && (newRecord->id = atoi(value)) : 0;
+				strLine[index] != '\t' && chrKeyCount == 1 ? (newRecord->date[strlen(newRecord->date)] = strLine[index]) : 0;
+				strLine[index] != '\t' && chrKeyCount == 2 ? (value[strlen(value)] = strLine[index]) && (newRecord->value = atof(value)) : 0;
+				strLine[index] != '\t' && chrKeyCount == 3 ? (newRecord->category[strlen(newRecord->category)] = strLine[index]) : 0;
+				strLine[index] != '\t' && chrKeyCount == 4 ? (newRecord->description[strlen(newRecord->description)] = strLine[index]) : 0;
+				strLine[index] != '\n' && chrKeyCount == 5 ? (newRecord->details[strlen(newRecord->details)] = strLine[index]) : 0;
 				strLine[index] == '\t' ? chrKeyCount++ : 0;
 			}
 			
