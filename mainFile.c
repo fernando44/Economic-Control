@@ -3,6 +3,10 @@
 	program execution and verification environment
 */
 
+//Constants
+#define LIN 50
+#define COL 50
+
 //Custom libraries and dependencies
 #include<stdio.h>
 #include<string.h>
@@ -14,8 +18,6 @@
 
 //Pointers for files
 FILE *dataBase,*yearList;
-
-//char categoryList[LIN][COL] = {"Informatica","Contas","Vestimenta","Escolar","Alimenticio","Medicamentos","Documentos","Compras"};
 
 //Check data base
 void checkDatabase(){
