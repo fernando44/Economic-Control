@@ -97,7 +97,7 @@ void Menu(reg *regsList,FILE *dataBase){
 		case 2:{
 			
 			//Loop of submenu
-			if(regsList != NULL || regsList->date[0] != '\0'){
+			if(regsList != NULL || strcmp(regsList->date ,"\0") != 0){
 				do{
 					
 					//Displaying regsList
