@@ -3,10 +3,6 @@
 	in the new record
 */
 
-//Constants 
-#define LIN 50
-#define COL 50
-
 //Dependencies
 #include<string.h>
 #include<stdio.h>
@@ -15,9 +11,7 @@
 //Extern declarations
 extern void ClrScr();
 extern void HEADER();
-
-//Global variables
-char categoryList[LIN][COL] = {"Informatica","Contas","Vestimenta","Escolar","Alimenticio","Medicamentos","Documentos","Compras"};
+extern char categoryList[LIN][COL];
 
 //Function to get date value
 void getNewDate(char input[20]){
