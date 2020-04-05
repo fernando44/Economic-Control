@@ -13,8 +13,32 @@
 #define C 7
 
 //Global variables and extern declarations
+int sizeOfCategoryList;
 char matrixYears[L][C];
+char categoryList[LIN][COL];// = {"Informatica","Contas","Vestimenta","Escolar","Alimenticio","Medicamentos","Documentos","Compras"};
 extern char MonthsOfYear[12][10];
+
+//Function to load configurations
+loadConfig(char categoryList[LIN][COL]){
+	
+	//Local variables
+	long start = 76;
+	sizeOfCategoryList = 0;
+	
+	//Opening file in read mode
+	FILE *config = fopen("config.txt","r");
+	
+	//Positioning file pointer
+	fseek(config,start,SEEK_CUR);
+	
+	//Get categories, and increment sizeOfCategoryList
+	while(fgets(categoryList[sizeOfCategoryList],COL,config) != NULL){
+		sizeOfCategoryList++;
+	}
+	
+	//Close the file
+	fclose(config);
+}
 
 //Function to load data from txt file at data base to regList
 reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
@@ -125,6 +149,7 @@ void saveListAsTxt(reg *regList, FILE *dataBase, char path[30]){
 	//Writing list inside the file
 	while(regList != NULL){
 		
+		fprintf(dataBase,"%i\t",regList->id);
 		fprintf(dataBase,"%s\t",regList->date);
 		fprintf(dataBase,"%f\t",regList->value);
 		fprintf(dataBase,"%s\t",regList->category);
