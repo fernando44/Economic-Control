@@ -80,6 +80,9 @@ int main(){
 	
 	//Call checks data base function
 	checkDatabase();
+		
+	//Load category list
+	loadConfig(categoryList);
 	
 	//Call menu program function
 	Menu(newReg(),dataBase);
