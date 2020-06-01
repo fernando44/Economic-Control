@@ -7,15 +7,6 @@
 #include<unistd.h>
 #include<stdio.h>
 
-//Custom libraries 
-#include"feedLibrary.h"
-#include"loadLibrary.h"
-#include"toolsLibrary.h"
-#include"sortLibrary.h"
-
-//Global variables
-char month[11], year[5],path[50];
-
 //Function to clean screen
 void ClrScr(){
 	int i = 0;
@@ -32,11 +23,23 @@ void HEADER(){
 	printf("****************************************************************************************************\n\n\n\n");
 }
 
+//Custom libraries 
+#include"feedLibrary.h"
+#include"loadLibrary.h"
+#include"toolsLibrary.h"
+#include"sortLibrary.h"
+
+//Global variables
+char month[11], year[5],path[50];
+
 //Function to display menu of program
 void Menu(reg *regsList,char path[30],FILE *dataBase){
 	
 	//Local variables
 	int option = -1;
+	
+	//Load category list
+	loadConfig(categoryList);
 
 	//Menu and submenu string options
 	char menuOptions[115] = "\n\n1 - New register \n2 - View registers \n3 - Change register \n4 - Switch data base \n5 - About \n6 - Exit";

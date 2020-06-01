@@ -6,17 +6,18 @@
 //libraries
 #include<stdio.h>
 #include<string.h>
+#include<sys/stat.h>
 
 //Constprevs
 #define LIN 50
 #define COL 50
 
 //Defines '\' or '/' on unix/windows environtments
-const char unix[2] = "//";
-const char win[2] = "\\";
+const char *unx = "//";
+const char *win = "\\";
 #ifdef __unix__         
     
-	#define BARKEY unix
+	#define BARKEY unx
 
 #elif defined(_WIN32) || defined(WIN32) 
 
@@ -29,6 +30,20 @@ const char win[2] = "\\";
 #include"date.h"
 #include"menu.h"
 
+//Funtion to create directories
+void ___mkdir (char *path){
+	
+	#ifdef __unix__         
+	    
+		mkdir(path,0700);
+	
+	#elif defined(_WIN32) || defined(WIN32) 
+	
+	  	mkdir(path);
+	
+	#endif
+}
+
 //Pointers for files
 FILE *dataBase,*yearList;
 
@@ -37,9 +52,9 @@ void checkDatabase(){
 	
 	//Local variables
 	char directory[30] = "Database";
-	strcat(directory,BARKEY);
+	strcat(directory,(char *)BARKEY);
 	char yearsPath[30] = "Database";
-	strcat(yearsPath,BARKEY);
+	strcat(yearsPath,(char *)BARKEY);
 	strcat(yearsPath,"list_years.txt");
 	char verify[30]; 
 	char itemResult[7]; 
@@ -50,7 +65,7 @@ void checkDatabase(){
 	strcpy(year,Year);
 	
 	//Creating path to data base
-	strcat(year,BARKEY);
+	strcat(year,(char *)BARKEY);
 	strcat(directory,year);
 	
 	//Creating path to check if a data base exists
@@ -61,8 +76,8 @@ void checkDatabase(){
 	if((dataBase = fopen(verify,"rb")) == NULL){
         
 		//Creating directory to data base
-		mkdir("Database");
-		mkdir(directory);
+		___mkdir("Database");
+		___mkdir(directory);
 		
 		//Validating new data base
 		dataBase = fopen(verify,"wb");
@@ -99,17 +114,14 @@ int main(){
 	//Local variables
 	getDate();
 	char path[30] = "Database";
-	strcat(path,BARKEY);
+	strcat(path,(char *)BARKEY);
 	strcat(path,Year);
-	strcat(path,BARKEY);
+	strcat(path,(char *)BARKEY);
 	strcat(path,Month);
 	
 	//Call checks data base function
 	checkDatabase();
 		
-	//Load category list
-	loadConfig(categoryList);
-	
 	//Call menu program function
 	Menu(newReg(),path,dataBase);
 

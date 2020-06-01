@@ -19,7 +19,7 @@ char matrixYears[L][C];
 char categoryList[LIN][COL];
 
 //Function to load configurations
-loadConfig(char categoryList[LIN][COL]){
+void loadConfig(char categoryList[LIN][COL]){
 	
 	//Local variables
 	long start = 76;
@@ -307,21 +307,21 @@ void switchDataBase(char Path[30],FILE *dataBase){
 	
 	for(i=0;i<strlen(Path);i++){
 		
-		if(Path[i] != BARKEY[0] && count == 1){
+		if(Path[i] != (char) BARKEY[0] && count == 1){
 			year[i] = Path[i];
 		}
 		
-		if(Path[i] != BARKEY[0] && count == 2){
+		if(Path[i] != (char) BARKEY[0] && count == 2){
 			month[i] = Path[i];
 		}
 		
-		Path[i] == BARKEY[0] ? count++ : 0;
+		Path[i] == (char) BARKEY[0] ? count++ : 0;
 		
 	}
 	
 	//Local variables
 	char yearsPath[30] = "Database";
-	strcat(yearsPath,BARKEY);
+	strcat(yearsPath,(char *)BARKEY);
 	strcat(yearsPath,"list_years.txt");
 	
 	//Opens the year record in read mode
@@ -355,7 +355,7 @@ void switchDataBase(char Path[30],FILE *dataBase){
 	if(strcmp(year,matrixYears[option-1]) != 0){
 		strcpy(year, option-1 > countYears || option-1 < 0 ? year : matrixYears[option-1]);
 	}
-	year[strlen(year)-1] = BARKEY[0];
+	year[strlen(year)-1] = (char) BARKEY[0];
 	
 	//Reset option
 	option = '\0';	
@@ -383,7 +383,7 @@ void switchDataBase(char Path[30],FILE *dataBase){
 	
 	//Creating path to data base
 	strcpy(newPath,"Database");
-	strcat(newPath,BARKEY);
+	strcat(newPath,(char *)BARKEY);
 	strcat(newPath,year);
 	strcat(newPath,month);
 	
