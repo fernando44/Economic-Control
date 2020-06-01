@@ -14,7 +14,7 @@ char DateTimeNow[20];
 char Time[10];
 
 //Matrix of months of year
-char MonthsOfYear[12][10] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+const char MonthsOfYear[12][10] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 //Function to get system date
 void getDate(){
