@@ -3,13 +3,26 @@
 	program execution and verification environment
 */
 
-//Constants
+//libraries
+#include<stdio.h>
+#include<string.h>
+
+//Constprevs
 #define LIN 50
 #define COL 50
 
-//Custom libraries and dependencies
-#include<stdio.h>
-#include<string.h>
+//Defines '\' or '/' on unix/windows environtments
+const char unix[2] = "//";
+const char win[2] = "\\";
+#ifdef __unix__         
+    
+	#define BARKEY unix
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+   #define BARKEY win
+
+#endif
 
 //Custom libraries 
 #include"register.h"
@@ -23,7 +36,11 @@ FILE *dataBase,*yearList;
 void checkDatabase(){
 	
 	//Local variables
-	char directory[30] = "Database\\";
+	char directory[30] = "Database";
+	strcat(directory,BARKEY);
+	char yearsPath[30] = "Database";
+	strcat(yearsPath,BARKEY);
+	strcat(yearsPath,"list_years.txt");
 	char verify[30]; 
 	char itemResult[7]; 
 	char year[5];
@@ -33,7 +50,7 @@ void checkDatabase(){
 	strcpy(year,Year);
 	
 	//Creating path to data base
-	strcat(year,"\\");
+	strcat(year,BARKEY);
 	strcat(directory,year);
 	
 	//Creating path to check if a data base exists
@@ -51,8 +68,9 @@ void checkDatabase(){
 		dataBase = fopen(verify,"wb");
 		fprintf(dataBase,"%s","file_check is an internal file, if it is modified or deleted the program may not work correctly");
 		
+		
 		//Opening list of years in reading mode
-		yearList = fopen("Database\\list_years.txt","r");		
+		yearList = fopen(yearsPath,"r");		
 		
 		//Search current year in file
 		do{				
@@ -61,7 +79,7 @@ void checkDatabase(){
 				
 				//Open the file in write mode
 				fclose(yearList);
-				yearList = fopen("Database\\list_years.txt","a");
+				yearList = fopen(yearsPath,"a");
 				
 				//Write the current year in the file
 				fprintf(yearList,"%s",year);
@@ -78,6 +96,14 @@ void checkDatabase(){
 //Main function
 int main(){
 	
+	//Local variables
+	getDate();
+	char path[30] = "Database";
+	strcat(path,BARKEY);
+	strcat(path,Year);
+	strcat(path,BARKEY);
+	strcat(path,Month);
+	
 	//Call checks data base function
 	checkDatabase();
 		
@@ -85,8 +111,8 @@ int main(){
 	loadConfig(categoryList);
 	
 	//Call menu program function
-	Menu(newReg(),dataBase);
-	
+	Menu(newReg(),path,dataBase);
+
 	return(EXIT_SUCCESS);
 }
 
