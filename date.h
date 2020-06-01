@@ -6,22 +6,16 @@
 //Dependencies
 #include<time.h>
 
-<<<<<<< HEAD
+
 //Global variables
-=======
-//Global strings to get date value
->>>>>>> master
 char Date[11];
 char Month[11];
 char Year[5];
 char DateTimeNow[20];
-<<<<<<< HEAD
 char Time[10];
 
 //Matrix of months of year
 const char MonthsOfYear[12][10] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-=======
->>>>>>> master
 
 //Function to get system date
 void getDate(){
@@ -37,11 +31,7 @@ void getDate(){
 	strftime(Month,11,"%B",tm);
 	strftime(Year,5,"%Y",tm);
 	strftime(DateTimeNow,20,"%Y-%m-%d %X",tm);
-<<<<<<< HEAD
 	strftime(Time,10,"%X",tm);
 
-=======
-	
->>>>>>> master
 }
 

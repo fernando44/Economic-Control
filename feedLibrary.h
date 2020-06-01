@@ -75,7 +75,7 @@ void getCategory(char input[COL], int sizeOfCategoryList){
 	
 	//Checking if is new or existing
 	if(strcmp(input,"\0") == 0 || strcmp(input,categoryList[Index-1]) == 0){
-		strcpy(input, Index-1 > count || Index-1 < 0 ? "" : categoryList[Index-1]);
+		strcpy(input, (Index-1 > count || Index-1 < 0 ? "" : categoryList[Index-1]));
 	}
 }
 
