@@ -7,16 +7,16 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
+#include<unistd.h>
 
-//Constants 
+//Constants
 #define L 1000
 #define C 7
 
 //Global variables and extern declarations
 int sizeOfCategoryList;
 char matrixYears[L][C];
-char categoryList[LIN][COL];// = {"Informatica","Contas","Vestimenta","Escolar","Alimenticio","Medicamentos","Documentos","Compras"};
-extern char MonthsOfYear[12][10];
+char categoryList[LIN][COL];
 
 //Function to load configurations
 loadConfig(char categoryList[LIN][COL]){
@@ -26,18 +26,18 @@ loadConfig(char categoryList[LIN][COL]){
 	sizeOfCategoryList = 0;
 	
 	//Opening file in read mode
-	FILE *config = fopen("config.txt","r");
+	FILE *file = fopen("config.txt","r");
 	
 	//Positioning file pointer
-	fseek(config,start,SEEK_CUR);
+	fseek(file,start,SEEK_CUR);
 	
 	//Get categories, and increment sizeOfCategoryList
-	while(fgets(categoryList[sizeOfCategoryList],COL,config) != NULL){
+	while(fgets(categoryList[sizeOfCategoryList],COL,file) != NULL){
 		sizeOfCategoryList++;
 	}
 	
 	//Close the file
-	fclose(config);
+	fclose(file);
 }
 
 //Function to load data from txt file at data base to regList
@@ -54,8 +54,9 @@ reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
 		
 		//Failure feedback
 		ClrScr();
-		printf("\n\n\n\t\t\t\tUnable to open file %s !!!", localPath);
+		printf("\n\n\n\t\t\t\tCould not open the file %c%s%c !!!", 34,localPath,34);
 		sleep(2);
+		regList = NULL;
 				
 	}else{
 		
@@ -101,34 +102,88 @@ reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
 }
 
 //Function to load data from json file at data base to regList
-void loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
-	
+reg *loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
+		
 	//Local variables
-	char localPath[50];
+	char localPath[50], strLine[500], value[100];
+	int index, chrKeyCount;
 	strcpy(localPath,path);
 	strcat(localPath,".json");
-	
+		
 	//Verifying if the archive exists
 	if((dataBase = fopen(localPath,"r"))==NULL){
 		
 		//Failure feedback
 		ClrScr();
-		printf("\n\n\n\t\t\t\tUnable to open file %s !!!", localPath);
+		printf("\n\n\n\t\t\t\tCould not open the file %c%s%c !!!", 34,localPath,34);
 		sleep(2);
+		regList = NULL;
 				
 	}else{
 		
-		//Need implementation
-	
+//		//Creating a new record and adding it to the regList
+//		reg *newRecord;
+//		initalizeString(value,100);
+//		initalizeString(strLine,500);
+//		
+//		//Reading file by lines
+//		setbuf(stdin,NULL);
+//		while(fgets(strLine,500,dataBase) != NULL){
+//			
+//			//Splitting line content
+//			chrKeyCount = 0;
+//			initalizeString(value,100);
+//			for(index = 0; index<strlen(strLine);index++){
+//				
+//				if(strLine[index] == '{'){
+//					
+//					//Creating a new record to storage data
+//					newRecord = newReg();
+//					
+//				}else if(strLine[index] == '}'){
+//					
+//					//Insert file data into regList
+//					strcmp(regList->date,"") == 0 ? regList = newRecord : addEnd(regList,newRecord);
+//					
+//				}
+//
+//				if(newRecord != NULL){
+//				
+//				strLine[index] != ',' && strLine[index-2-strlen(value)] == ':' ? (strLine[index] != '"' ? value[strlen(value)] = strLine[index] : 0) : strLine[index] == ',' ? initalizeString(value,100) : 0;
+//				strLine[index] != ',' && chrKeyCount == 0 ? (newRecord->id = atoi(value)) : 0;
+//				strLine[index] != ',' && strLine[index-3-strlen(newRecord->date)] == ':' && chrKeyCount == 1 ? strLine[index] != '"' ? (newRecord->date[strlen(newRecord->date)] = strLine[index]) : 0 : 0;
+//				strLine[index] != ',' && chrKeyCount == 2 ? (newRecord->value = atof(value)) : 0;
+//				strLine[index] != ',' && strLine[index-3-strlen(newRecord->category)] == ':' && chrKeyCount == 3 ? strLine[index] != '"' ? (newRecord->category[strlen(newRecord->category)] = strLine[index]) : 0 : 0;
+//				strLine[index] != ',' && strLine[index-3-strlen(newRecord->description)] == ':' && chrKeyCount == 4 ? strLine[index] != '"' ? (newRecord->description[strlen(newRecord->description)] = strLine[index]) : 0 : 0;
+//				strLine[index] != '}' && strLine[index-3-strlen(newRecord->details)] == ':' && chrKeyCount == 5 ? strLine[index] != '"' ? (newRecord->details[strlen(newRecord->details)] = strLine[index]) : 0 : 0;
+//				strLine[index] != '{' && strLine[index] == ',' ? chrKeyCount++ : 0;
+////				printf("\n\n id: %i\n date: %s\n category: %s\n value: %f\n description: %s\n details: %s",newRecord->id,newRecord->date,newRecord->category,newRecord->value,newRecord->description,newRecord->details);
+////				setbuf(stdin,NULL);
+////				getchar();
+//				}
+//				
+//			}
+////			printf("\n\nconteudo lido:\n id: %i\n date: %s\n category: %s\n value: %f\n description: %s\n details: %s",newRecord->id,newRecord->date,newRecord->category,newRecord->value,newRecord->description,newRecord->details);
+////			setbuf(stdin,NULL);
+////			getchar();
+//			
+//			//Insert file data into regList
+////			strcmp(regList->date,"") == 0 ? regList = newRecord : addEnd(regList,newRecord);
+//		};
+//		
+//		//Close the files
+//		fclose(dataBase);
 	}
 	
+	//Returns list of content from file
+	return regList;
 }
 
 //Function to clean list
 void cleanList(reg *regList){
 	
 	//Verifying if regList is null
-	if(regList->prox != NULL){
+	if(regList != NULL && regList->next != NULL){
 			
 		//Function call to remove records
 		remEnd(regList);
@@ -159,7 +214,7 @@ void saveListAsTxt(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%s\t",regList->description);
 		fprintf(dataBase,"%s\n",regList->details);
 	
-		regList = regList->prox,dataBase,path;
+		regList = regList->next,dataBase,path;
 	}
 	
 	//Close the file
@@ -180,7 +235,7 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 	//Writing list inside the file
 	while(regList != NULL){
 		
-		regList->ant == NULL ? fprintf(dataBase,"%c",'[') : 0;
+		regList->prev == NULL ? fprintf(dataBase,"%c",'[') : 0;
 		
 		fprintf(dataBase,"%c",'{');
 		fprintf(dataBase,"%c",'"');
@@ -233,9 +288,9 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%c",'}');
 		
-		regList->prox != NULL ? fprintf(dataBase,"%c",',') : 0;
+		regList->next != NULL ? fprintf(dataBase,"%c",',') : 0;
 	
-		regList = regList->prox;
+		regList = regList->next;
 	}
 	fprintf(dataBase,"%c",']');
 	
@@ -243,90 +298,99 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 	fclose(dataBase);
 }
 
-//show_data_base function
-//void show_data_base(char month[11],char year[7],FILE *file){
-//	
-//	//local variables
-//	int count = 0,max = 0,key = 0;
-//	
-//	//opens the year record in read mode
-//	file = fopen("Database\\list_years.txt","r");
-//	
-//	//loop for fill matrix of years
-//	while(fscanf(file,"%s",matrix_years[count]) != EOF || (count == 9999)){
-//		max = count;
-//		count++;
-//	}
-//	count = 0;
-//	
-//	//close the file
-//	fclose(file);
-//	
-//	//loop to display and select years
-//	while(key != -35 || key != -21){
-//		
-//		system("cls");
-//		HEADER();
-//		printf("Press ESC to stay in current year\n\n");
-//		printf("%s",matrix_years[count]);
-//		
-//		//key pressed reading
-//		setbuf(stdin,NULL);
-//		key = getch()-48;
-//		
-//		//enter key pressed
-//		if(key == -35){
-//			strcpy(year,matrix_years[count]);
-//			break;
-//		//rolling matrix up 	
-//		}else if(key == 24){
-//			count--;
-//		//rolling matrix down	
-//		}else if(key == 32){
-//			count++;
-//		}
-//		
-//		//back to start
-//		if(count == max +1){
-//			count = 0;
-//		//back to end	
-//		}else if(count<0){
-//			count = max;
-//		}		
-//	}
-//	count = key = 0;
-//	
-//	
-//	//loop to display and select months
-//	while(key != -35 || key != -21){
-//		
-//		system("cls");
-//		HEADER();
-//		printf("Press ESC to stay in current month\n\n");
-//		printf("%s",matrix_months[count]);
-//		
-//		//key pressed reading
-//		setbuf(stdin,NULL);
-//		key = getch()-48;
-//		
-//		//enter key pressed
-//		if(key == -35){
-//			strcpy(month,matrix_months[count]);
-//			break;
-//		//rolling matrix up	
-//		}else if(key == 24){
-//			count--;			
-//		//rolling matrix down	
-//		}else if(key == 32){
-//			count++;
-//		}
-//		
-//		//back to start
-//		if(count == 12 ){
-//			count = 0;
-//		//back to end	
-//		}else if(count<0){
-//			count = 11;
-//		}		
-//	}
-//}
+//Function to switch database
+void switchDataBase(char Path[30],FILE *dataBase){
+	
+	//Local variables
+	int i,count = 0,countYears = 0;
+	char newPath[30], option, year[7],month[11];
+	
+	for(i=0;i<strlen(Path);i++){
+		
+		if(Path[i] != BARKEY[0] && count == 1){
+			year[i] = Path[i];
+		}
+		
+		if(Path[i] != BARKEY[0] && count == 2){
+			month[i] = Path[i];
+		}
+		
+		Path[i] == BARKEY[0] ? count++ : 0;
+		
+	}
+	
+	//Local variables
+	char yearsPath[30] = "Database";
+	strcat(yearsPath,BARKEY);
+	strcat(yearsPath,"list_years.txt");
+	
+	//Opens the year record in read mode
+	FILE *yearList = fopen(yearsPath,"r");
+	
+	//Loop for fill matrix of years
+	while(fscanf(yearList,"%s",matrixYears[countYears]) != EOF || (countYears == 9999)){
+		countYears++;
+	}
+	
+	//Close the file
+	fclose(yearList);
+	
+	ClrScr();
+	HEADER();
+	printf("Active Database: %c%s%c\n\n",34,Path,34);
+	printf("Select a year\n\n");
+
+	//loop to display and select years
+	for(i=0;i<countYears;i++){
+
+		i <= 8 ? printf(" ") : 0;
+		printf("   %i - %s\n",i+1,matrixYears[i]);
+	}
+
+	//Get selected option
+	setbuf(stdin,NULL);
+	option = getchar()-48;
+
+	//Checking if is currente or other
+	if(strcmp(year,matrixYears[option-1]) != 0){
+		strcpy(year, option-1 > countYears || option-1 < 0 ? year : matrixYears[option-1]);
+	}
+	year[strlen(year)-1] = BARKEY[0];
+	
+	//Reset option
+	option = '\0';	
+	
+	ClrScr();
+	HEADER();
+	printf("Active Database: %c%s%c\n\n",34,Path,34);
+	printf("Select a month\n\n");
+
+	//loop to display and select months
+	for(i=0;i<12;i++){
+		
+		i <= 8 ? printf(" ") : 0;
+		printf("   %i - %s\n",i+1,MonthsOfYear[i]);
+	}
+
+	//Get selected option
+	setbuf(stdin,NULL);
+	option = getchar()-48;
+		
+	//Checking if is currente or other
+	if(strcmp(month,MonthsOfYear[option-1]) != 0){
+		strcpy(month, option-1 > 12 || option-1 < 0 ? month : MonthsOfYear[option-1]);
+	}
+	
+	//Creating path to data base
+	strcpy(newPath,"Database");
+	strcat(newPath,BARKEY);
+	strcat(newPath,year);
+	strcat(newPath,month);
+	
+	//Switch dataBase
+	dataBase = fopen(newPath,"r");
+	strcpy(Path,newPath);
+	
+	fclose(dataBase);
+	
+}
