@@ -33,20 +33,11 @@ void HEADER(){
 }
 
 //Function to display menu of program
-void Menu(reg *regsList,FILE *dataBase){
+void Menu(reg *regsList,char path[30],FILE *dataBase){
 	
 	//Local variables
 	int option = -1;
-	
-	//Creating path to data base
-	getDate();
-	strcpy(year,Year);
-	strcpy(month,Month);
-	strcat(year,"\\");
-	strcpy(path,"Database\\");
-	strcat(path,year);
-	strcat(path,month);
-	
+
 	//Menu and submenu string options
 	char menuOptions[115] = "\n\n1 - New register \n2 - View registers \n3 - Change register \n4 - Switch data base \n5 - About \n6 - Exit";
 	char submenuOptions[215] = "\n\n   1 - Order by Date \n   2 - Order by Id  \n   3 - Order by Value \n   4 - Return to menu \n";
@@ -55,13 +46,13 @@ void Menu(reg *regsList,FILE *dataBase){
 	cleanList(regsList);
 	regsList = newReg();
 				
-	//Loading data from archives for regsList
-	regsList = loadListFromTxt(regsList,dataBase,path);
-//	loadListFromJson(regsList,dataBase,path);
+	//Loading data from archives for regsList 
+	regsList = (loadListFromTxt(regsList,dataBase,path)) == NULL ? (loadListFromJson(regsList,dataBase,path)) == NULL ? newReg() : 0 : (loadListFromTxt(regsList,dataBase,path));
 	ClrScr();
 	HEADER();
 	
-	//Displays menu options
+	//Displays menu options and informations
+	printf("Active Database: %c%s%c\n\n",34,path,34);
 	printf("Select an option: %s\n",menuOptions);
 	
 	//Selection menu
@@ -90,14 +81,14 @@ void Menu(reg *regsList,FILE *dataBase){
 			saveListAsTxt(regsList,dataBase,path);
 			
 			//Return to menu
-			Menu(regsList,dataBase);	
+			Menu(regsList,path,dataBase);
 			break;
 		}
 		
 		case 2:{
 			
 			//Loop of submenu
-			if(regsList != NULL || strcmp(regsList->date ,"\0") != 0){
+			if(regsList != NULL && strcmp(regsList->date,"") != 0){
 				do{
 					
 					//Displaying regsList
@@ -138,12 +129,18 @@ void Menu(reg *regsList,FILE *dataBase){
 					}
 					
 				}while(option != 4);
+				
+			}else{
+				
+				//Feedback if regsList is empty
+				ClrScr();
+				printf("\n\n\n\t\t\t\tNo exists records to display!!!");
+				sleep (2);
+				
 			}
 			
-			showRecords(regsList);
-			printf("\n\n\nlista que vai para o menu");
 			//Return to menu
-			Menu(regsList,dataBase);
+			Menu(regsList,path,dataBase);
 			break;
 		}
 		
@@ -155,27 +152,24 @@ void Menu(reg *regsList,FILE *dataBase){
 			editRecord(regsList);
 			
 			//Sort by ascending date before writing to file
-//			orderByDate(regsList);
+			orderByDate(regsList);
 			
 			//Write regsList in file
 			saveListAsJson(regsList,dataBase,path);
 			saveListAsTxt(regsList,dataBase,path);
 
 			//Return to menu
-			Menu(regsList,dataBase);		
+			Menu(regsList,path,dataBase);
 			break;
 		}
 		
 		case 4:{
 			
-			ClrScr();
-			HEADER();	
-						
 			//Switch data base
-//			show_data_base(Month,Year,yearList);
-
+			switchDataBase(path,dataBase);
+						
 			//Return to menu
-			Menu(regsList,dataBase);				
+			Menu(regsList,path,dataBase);
 			break;
 		}
 			
@@ -190,7 +184,7 @@ void Menu(reg *regsList,FILE *dataBase){
 			getchar();
 			
 			//Return to menu
-			Menu(regsList,dataBase);
+			Menu(regsList,path,dataBase);
 			break;
 			
 		}
@@ -211,7 +205,7 @@ void Menu(reg *regsList,FILE *dataBase){
 			sleep(1);
 			
 			//Return to menu
-			Menu(regsList,dataBase);
+			Menu(regsList,path,dataBase);
 	}
 		
 	//Clearing the list of records
