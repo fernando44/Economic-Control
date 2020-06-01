@@ -46,7 +46,7 @@ void showRecords(reg *ficha){
 			//Increment the sum value with the value of each record and the total number of records
 			sumValue += temp->value;
 			totalRecords++;			
-			temp = temp->prox;
+			temp = temp->next;
 		}
 		
 		//Displays the sum value
@@ -82,7 +82,7 @@ void editRecord(reg *regList){
 			break;
 		}
 		
-		temp = temp->prox;
+		temp = temp->next;
 		
 		//Feedback default
 		if(temp == NULL){
