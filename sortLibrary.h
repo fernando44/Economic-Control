@@ -6,6 +6,7 @@
 
 //Dependencies
 #include<string.h>
+#include<unistd.h>
 
 //Function to order regList by ascending date
 reg *orderByDate(reg *regList){
@@ -13,32 +14,43 @@ reg *orderByDate(reg *regList){
 	//Local variables
 	reg *aux, *percursor;
 	
-	//Set start point of percursor
-	percursor = navStart(regList);
+	//Check if regsList is empty
+	if(regList == NULL || strcmp(regList->date ,"\0") == 0){
 		
-	//percursor loop
-	while(percursor != NULL){	
+		//Feedback if regsList is empty
+		ClrScr();
+		printf("\n\n\n\t\t\t\tNo exists records to order!!!");
+		sleep (2);
+		
+	}else{
+	
+		//Set start point of percursor
+		percursor = navStart(regList);
 			
-		//atribuição de valuees das variáveis temporárias
-		aux = percursor->prox;
-			
-		//Aux loop
-		 while(aux != NULL){
+		//percursor loop
+		while(percursor != NULL){	
 				
-			//Check and sort the items in the list
-			if(strcmp(percursor->date,aux->date)>0){
-		 		
-				percursor->prox = aux->prox;
-				aux->prox  != NULL ? aux->prox->ant = percursor : 0;
-				aux->ant = percursor->ant;
-				percursor->ant != NULL ? percursor->ant->prox = aux : 0;
-				percursor->ant = aux;
-				aux->prox = percursor;
-				percursor = aux;
+			//set aux variable value
+			aux = percursor->next;
+				
+			//Aux loop
+			 while(aux != NULL){
+					
+				//Check and sort the items in the list
+				if(strcmp(percursor->date,aux->date)>0){
+			 		
+					percursor->next = aux->next;
+					aux->next  != NULL ? aux->next->prev = percursor : 0;
+					aux->prev = percursor->prev;
+					percursor->prev != NULL ? percursor->prev->next = aux : 0;
+					percursor->prev = aux;
+					aux->next = percursor;
+					percursor = aux;
+				}
+				aux = aux->next;
 			}
-			aux = aux->prox;
+			percursor = percursor->next;
 		}
-		percursor = percursor->prox;
 	}
 	
 	return navStart(regList);
@@ -50,32 +62,43 @@ reg *orderById(reg *regList){
 	//Local variables
 	reg *aux, *percursor;
 	
-	//Set start point of percursor
-	percursor = navStart(regList);
+	//Check if regsList is empty
+	if(regList == NULL || strcmp(regList->date ,"\0") == 0){
 		
-	//percursor loop
-	while(percursor != NULL){	
+		//Feedback if regsList is empty
+		ClrScr();
+		printf("\n\n\n\t\t\t\tNo exists records to order!!!");
+		sleep (2);
+		
+	}else{
+		
+		//Set start point of percursor
+		percursor = navStart(regList);
 			
-		//atribuição de valuees das variáveis temporárias
-		aux = percursor->prox;
-			
-		//Aux loop
-		 while(aux != NULL){
+		//percursor loop
+		while(percursor != NULL){	
 				
-			//Check and sort the items in the list
-			if(percursor->id > aux->id){
-		 		
-				percursor->prox = aux->prox;
-				aux->prox  != NULL ? aux->prox->ant = percursor : 0;
-				aux->ant = percursor->ant;
-				percursor->ant != NULL ? percursor->ant->prox = aux : 0;
-				percursor->ant = aux;
-				aux->prox = percursor;
-				percursor = aux;
+			//set aux variable value
+			aux = percursor->next;
+				
+			//Aux loop
+			 while(aux != NULL){
+					
+				//Check and sort the items in the list
+				if(percursor->id > aux->id){
+			 		
+					percursor->next = aux->next;
+					aux->next  != NULL ? aux->next->prev = percursor : 0;
+					aux->prev = percursor->prev;
+					percursor->prev != NULL ? percursor->prev->next = aux : 0;
+					percursor->prev = aux;
+					aux->next = percursor;
+					percursor = aux;
+				}
+				aux = aux->next;
 			}
-			aux = aux->prox;
+			percursor = percursor->next;
 		}
-		percursor = percursor->prox;
 	}
 	
 	return navStart(regList);
@@ -87,32 +110,43 @@ reg *orderByValue(reg *regList){
 	//Local variables
 	reg *aux, *percursor;
 	
-	//Set start point of percursor
-	percursor = navStart(regList);
+	//Check if regsList is empty
+	if(regList == NULL || strcmp(regList->date ,"\0") == 0){
 		
-	//percursor loop
-	while(percursor != NULL){	
+		//Feedback if regsList is empty
+		ClrScr();
+		printf("\n\n\n\t\t\t\tNo exists records to order!!!");
+		sleep (2);
+		
+	}else{
+	
+		//Set start point of percursor
+		percursor = navStart(regList);
 			
-		//atribuição de valuees das variáveis temporárias
-		aux = percursor->prox;
-			
-		//Aux loop
-		 while(aux != NULL){
+		//percursor loop
+		while(percursor != NULL){	
 				
-			//Check and sort the items in the list
-			if(percursor->value > aux->value){
-		 		
-				percursor->prox = aux->prox;
-				aux->prox  != NULL ? aux->prox->ant = percursor : 0;
-				aux->ant = percursor->ant;
-				percursor->ant != NULL ? percursor->ant->prox = aux : 0;
-				percursor->ant = aux;
-				aux->prox = percursor;
-				percursor = aux;
+			//set aux variable value
+			aux = percursor->next;
+				
+			//Aux loop
+			 while(aux != NULL){
+					
+				//Check and sort the items in the list
+				if(percursor->value > aux->value){
+			 		
+					percursor->next = aux->next;
+					aux->next  != NULL ? aux->next->prev = percursor : 0;
+					aux->prev = percursor->prev;
+					percursor->prev != NULL ? percursor->prev->next = aux : 0;
+					percursor->prev = aux;
+					aux->next = percursor;
+					percursor = aux;
+				}
+				aux = aux->next;
 			}
-			aux = aux->prox;
+			percursor = percursor->next;
 		}
-		percursor = percursor->prox;
 	}
 	
 	return navStart(regList);
