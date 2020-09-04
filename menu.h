@@ -3,7 +3,7 @@
 	and to display program menu options 
 */
 
-//Custom libraries and dependencies
+//Dependencies
 #include<unistd.h>
 #include<stdio.h>
 
@@ -29,21 +29,11 @@ void HEADER(){
 #include"toolsLibrary.h"
 #include"sortLibrary.h"
 
-//Global variables
-char month[11], year[5],path[50];
-
 //Function to display menu of program
 void Menu(reg *regsList,char path[30],FILE *dataBase){
 	
 	//Local variables
-	int option = -1;
-	
-	//Load category list
-	loadConfig(categoryList);
-
-	//Menu and submenu string options
-	char menuOptions[115] = "\n\n1 - New register \n2 - View registers \n3 - Change register \n4 - Switch data base \n5 - About \n6 - Exit";
-	char submenuOptions[215] = "\n\n   1 - Order by Date \n   2 - Order by Id  \n   3 - Order by Value \n   4 - Return to menu \n";
+	int option = 0;
 	
 	//Clearing the list of records
 	cleanList(regsList);
@@ -56,11 +46,12 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 	
 	//Displays menu options and informations
 	printf("Active Database: %c%s%c\n\n",34,path,34);
-	printf("Select an option: %s\n",menuOptions);
+	printf("Select an option:");
+	printf("\n\n1 - New register \n2 - View registers \n3 - Change register \n4 - Switch data base \n5 - About \n6 - Exit\n\n");
 	
 	//Selection menu
 	setbuf(stdin,NULL);
-	switch(getchar()-48){
+	switch((getchar()-48)){
 		
 		case 1:{				
 			
@@ -90,42 +81,59 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 		
 		case 2:{
 			
-			//Loop of submenu
+			//Validating regList
 			if(regsList != NULL && strcmp(regsList->date,"") != 0){
+				
+				//Loop of submenu
 				do{				
 					//Displaying regsList
 					ClrScr();
 					HEADER();
 					showRecords(orderByDate(regsList));
-					printf("\n\n   Select an option: %s",submenuOptions);
 					
-					//Receives new value for option
+					//Diplaying options
+					printf("\n\n   Select an option: ");
+					printf("\n\n   1 - Order by Date \n   2 - Order by Id  \n   3 - Order by Value \n   4 - Return to menu \n\n");
+					
+					//Selection menu
 					setbuf(stdin,NULL);
-					option = getchar()-48;
-					
-					if(option == 1){
+					switch((getchar()-48)){
 						
-						//Sort by ascending date
-						regsList = orderByDate(regsList);
+						case 1:{
+							
+							//Sort by ascending date
+							regsList = orderByDate(regsList);
+							break;
+						}
 						
-					}else if(option == 2){
-					
-						//Sort by ascending id
-						regsList = orderById(regsList);
+						case 2:{
+							
+							//Sort by ascending id
+							regsList = orderById(regsList);
+							break;
+						}
 						
-					}else if(option == 3){
+						case 3: {
+							
+							//Sort by ascending value
+							regsList = orderByValue(regsList);
+							break;
+						}
 						
-						//Sort by ascending value
-						regsList = orderByValue(regsList);
-					
-					}
-					
-					if(option != 1 && option != 2 && option != 4 && option !=3){
+						case 4:{
+							
+							option = 4;
+							break;
+						}
 						
-						//Feedback default
-						ClrScr();
-						printf("\n\n\n\t\t\t\tInvalid option!");
-						sleep (1);
+						default:{
+							
+							//Feedback default
+							ClrScr();
+							printf("\n\n\n\t\t\t\tInvalid option!");
+							sleep (1);
+							break;
+						}
 					}
 					
 				}while(option != 4);
@@ -166,8 +174,8 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 		case 4:{
 			
 			//Switch data base
-			switchDataBase(path,dataBase);
-						
+			switchDataBase();
+
 			//Return to menu
 			Menu(regsList,path,dataBase);
 			break;
@@ -197,7 +205,7 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			break;
 		}
 			
-		default:
+		default:{
 			
 			//Feedback default
 			ClrScr();
@@ -206,6 +214,8 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			
 			//Return to menu
 			Menu(regsList,path,dataBase);
+			break;
+		}
 	}
 		
 	//Clearing the list of records
