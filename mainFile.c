@@ -12,6 +12,14 @@
 #define LIN 50
 #define COL 50
 
+//Global variables 
+char basePath[30] = "Database";
+char yearsPath[25];
+char categoryList[LIN][COL];
+int sizeOfCategoryList;
+FILE *dataBase;
+FILE *yearList;
+
 //Funtion to create directories
 void ___mkdir (char *path);
 
@@ -39,14 +47,8 @@ void ___mkdir (char *path);
 #include"date.h"
 #include"menu.h"
 
-//Global variables 
-char basePath[30] = "Database";
-char yearsPath[25];
+//Extern declarations
 extern DateTime dateTime;
-extern char categoryList[LIN][COL];
-
-//Pointers for files
-FILE *dataBase,*yearList;
 
 //Check data base
 void checkDatabase(){
