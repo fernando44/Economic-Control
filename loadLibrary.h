@@ -182,20 +182,6 @@ reg *loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
 	return regList;
 }
 
-//Function to clean list
-void cleanList(reg *regList){
-	
-	//Verifying if regList is null
-	if(regList != NULL && regList->next != NULL){
-			
-		//Function call to remove records
-		remEnd(regList);
-		cleanList(regList);
-		
-	}
-	regList = newReg();
-}
-
 //Function to write list to data base in format at txt
 void saveListAsTxt(reg *regList, FILE *dataBase, char path[30]){
 	
@@ -302,11 +288,11 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 }
 
 //Function to switch database
-void switchDataBase(){
+void switchDataBase(void){
 	
 	//Local variables
-	int i, countSeparators = 0, countYears = 0;
-	char newPath[30], option, currentYear[7], currentMonth[11];
+	int i, countSeparators = 0, countYears = 0, option = 0;
+	char newPath[30], chrOption[6], currentYear[7], currentMonth[11];
 	
 	//Loop to get year and month from current data base
 	for(i=0;i<strlen(basePath);i++){
@@ -330,7 +316,7 @@ void switchDataBase(){
 	FILE *yearList = fopen(yearsPath,"r");
 	
 	//Loop for fill matrix of years
-	while(fscanf(yearList,"%s",matrixYears[countYears]) != EOF || (countYears == 1000)){
+	while(fscanf(yearList,"%s",matrixYears[countYears]) != EOF || (countYears == 999)){
 		countYears++;
 	}
 	
@@ -351,7 +337,9 @@ void switchDataBase(){
 
 	//Get selected option
 	setbuf(stdin,NULL);
-	option = getchar()-48;
+	fgets(chrOption,5,stdin);
+	chrOption[5] = '\0';
+	option = atoi(chrOption);
 
 	//Checking if is currente or other
 	if(strcmp(currentYear,matrixYears[option-1]) != 0){
@@ -359,7 +347,8 @@ void switchDataBase(){
 	}
 
 	//Reset option
-	option = '\0';	
+	chrOption[0] = '\0';
+	option = 0;
 	
 	ClrScr();
 	HEADER();
@@ -375,7 +364,9 @@ void switchDataBase(){
 
 	//Get selected option
 	setbuf(stdin,NULL);
-	option = getchar()-48;
+	fgets(chrOption,3,stdin);
+	chrOption[5] = '\0';
+	option = atoi(chrOption);
 		
 	//Checking if is currente or other
 	if(strcmp(currentMonth,MonthsOfYear[option-1]) != 0){
@@ -394,3 +385,103 @@ void switchDataBase(){
 	fclose(dataBase);
 	
 }
+
+//Function to check yearsPath directory
+void checkYearsPath(void){
+	
+	char itemResult[7]; 
+	
+	//Opening list of years in append mode
+	yearList = fopen(yearsPath,"a");		
+	
+	//Search current year in file
+	while(fscanf(yearList,"%s",itemResult) != EOF){
+
+		//Add current year in file if don't exist
+		if(atoi(itemResult) == EOF && strcmp(itemResult,dateTime.Year) != 0){
+			
+			//Write the current year in the file
+			fprintf(yearList,"%s",dateTime.Year);
+			fprintf(yearList,"%c",'\n');
+			
+		}else if (atoi(itemResult) != EOF && strcmp(itemResult,dateTime.Year) == 0){
+			
+			break;
+		}
+	}
+	
+	//Close the files
+	fclose(yearList);
+}
+
+//Check data base
+void checkDatabase(void){
+	
+	//Local variables
+	char dataBaseFileCheck[30]; 
+	char filePathTxt[30]; 
+	char filePathJson[30]; 
+	
+	//Creating path to list years
+	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
+	strcpy(yearsPath,basePath);
+	strcat(yearsPath,"list_years.txt");
+	
+	//Call datetime function
+	getDate();
+	
+	//Creating path to data base
+	strcat(basePath,dateTime.Year);
+	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
+	
+	//Creating path to check if a data base exists
+	strcpy(dataBaseFileCheck,basePath);
+	strcat(dataBaseFileCheck,"file_check.txt");
+	
+	//Checking if an old data base exists
+	if((dataBase = fopen(dataBaseFileCheck,"rb")) == NULL){
+        
+		//Creating directory to data base
+		___mkdir("Database");
+		___mkdir(basePath);
+		
+		//Validating new data base
+		dataBase = fopen(dataBaseFileCheck,"wb");
+		fprintf(dataBase,"%s","file_check is an internal file, if it is modified or deleted the program may not work correctly");
+		
+		//Close the file
+		fclose(dataBase);
+		
+		//Concatenate current month
+		strcat(basePath,dateTime.Month);
+		strcpy(filePathTxt,basePath);
+		strcpy(filePathJson,basePath);
+		
+		//Concatenate file extensions
+		strcat(filePathTxt,".txt");
+		strcat(filePathJson,".json");
+		
+		//Write new files
+		dataBase = fopen(filePathJson,"w");
+		dataBase = fopen(filePathTxt,"w");
+		
+		//Opening list of years in append mode
+		yearList = fopen(yearsPath,"a");
+		
+		//Write the current year in the file
+			fprintf(yearList,"%s",dateTime.Year);
+			fprintf(yearList,"%c",'\n');
+		
+		//Close the file
+		fclose(yearList);
+		fclose(dataBase);
+		
+	}else{
+		
+		//Concatenate current month
+		strcat(basePath,dateTime.Month);
+	}
+	
+	checkYearsPath();
+}
+

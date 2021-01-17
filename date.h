@@ -22,7 +22,7 @@ DateTime dateTime;
 const char MonthsOfYear[12][10] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 //Function to get system date
-void getDate(){
+void getDate(void){
 	
 	//Struct for get system date
 	struct tm * tm;

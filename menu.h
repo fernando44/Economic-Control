@@ -1,31 +1,13 @@
 /*
-	This library contains functions to display de header of program
-	and to display program menu options 
+	This library contains functions to display program menu options 
 */
 
 //Dependencies
 #include<unistd.h>
 #include<stdio.h>
 
-//Function to clean screen
-void ClrScr(){
-	int i = 0;
-     for(i = 0; i < 500; i++){
-          printf("\n");
-     }
-} 
-
-//Function to display program header
-void HEADER(){
-	
-	printf("****************************************************************************************************\n\n");
-	printf("****************************************| Economic Control |****************************************\n\n");
-	printf("****************************************************************************************************\n\n\n\n");
-}
-
 //Custom libraries 
 #include"feedLibrary.h"
-#include"loadLibrary.h"
 #include"toolsLibrary.h"
 #include"sortLibrary.h"
 

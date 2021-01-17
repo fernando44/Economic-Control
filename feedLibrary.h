@@ -61,7 +61,7 @@ void getCategory(char input[COL]){
 	HEADER();
 	printf("Select a category for record: \n\n");
 	int count = 0, Index = 0;
-	char selectedOption[3];
+	char selectedOption[4];
 	
 	//Display all categories in categoryList
 	for(count = 0; count < sizeOfCategoryList-1; count++){
@@ -72,6 +72,7 @@ void getCategory(char input[COL]){
 	//Returns the selected category if the Index is in the range Index <= count or Index >= 0 if not return NULL
 	setbuf(stdin,NULL);
 	fgets(selectedOption,3,stdin);
+	selectedOption[3] = '\0';
 	Index = atoi(selectedOption);
 	
 	//Checking if is new or existing
@@ -81,7 +82,7 @@ void getCategory(char input[COL]){
 }
 
 //Function to generate ID
-int getId(){
+int getId(void){
 	
 	//Local variables
 	long start = 73;

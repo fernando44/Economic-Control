@@ -42,110 +42,33 @@ void ___mkdir (char *path);
 
 #endif
 
+//Function to clean screen
+void ClrScr(){
+	int i = 0;
+     for(i = 0; i < 500; i++){
+          printf("\n");
+     }
+} 
+
+//Function to display program header
+void HEADER(){
+	
+	printf("****************************************************************************************************\n\n");
+	printf("****************************************| Economic Control |****************************************\n\n");
+	printf("****************************************************************************************************\n\n\n\n");
+}
+
 //Custom libraries 
 #include"register.h"
 #include"date.h"
+#include"loadLibrary.h"
 #include"menu.h"
 
 //Extern declarations
 extern DateTime dateTime;
 
-//Check data base
-void checkDatabase(){
-	
-	//Local variables
-	// char yearsPath[25];
-	char dataBaseFileCheck[30]; 
-	char itemResult[7]; 
-	char filePathTxt[30]; 
-	char filePathJson[30]; 
-	
-	//Creating path to list years
-	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
-	strcpy(yearsPath,basePath);
-	strcat(yearsPath,"list_years.txt");
-	
-	//Call datetime function
-	getDate();
-	
-	//Creating path to data base
-	strcat(basePath,dateTime.Year);
-	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
-	
-	//Creating path to check if a data base exists
-	strcpy(dataBaseFileCheck,basePath);
-	strcat(dataBaseFileCheck,"file_check.txt");
-	
-	//Checking if an old data base exists
-	if((dataBase = fopen(dataBaseFileCheck,"rb")) == NULL){
-        
-		//Creating directory to data base
-		___mkdir("Database");
-		___mkdir(basePath);
-		
-		//Validating new data base
-		dataBase = fopen(dataBaseFileCheck,"wb");
-		fprintf(dataBase,"%s","file_check is an internal file, if it is modified or deleted the program may not work correctly");
-		
-		//Close the file
-		fclose(dataBase);
-		
-		//Concatenate current month
-		strcat(basePath,dateTime.Month);
-		strcpy(filePathTxt,basePath);
-		strcpy(filePathJson,basePath);
-		
-		//Concatenate file extensions
-		strcat(filePathTxt,".txt");
-		strcat(filePathJson,".json");
-		
-		//Write new files
-		dataBase = fopen(filePathJson,"w");
-		dataBase = fopen(filePathTxt,"w");
-		
-		//Opening list of years in append mode
-		yearList = fopen(yearsPath,"a");
-		
-		//Write the current year in the file
-			fprintf(yearList,"%s",dateTime.Year);
-			fprintf(yearList,"%c",'\n');
-		
-		//Close the file
-		fclose(yearList);
-		fclose(dataBase);
-		
-	}else{
-		
-		//Concatenate current month
-		strcat(basePath,dateTime.Month);
-	}
-	
-	//Opening list of years in append mode
-	yearList = fopen(yearsPath,"a");		
-	
-	//Search current year in file
-	while(fscanf(yearList,"%s",itemResult) != EOF){
-
-		//Add current year in file if don't exist
-		if(atoi(itemResult) == EOF && strcmp(itemResult,dateTime.Year) != 0){
-			
-			//Write the current year in the file
-			fprintf(yearList,"%s",dateTime.Year);
-			fprintf(yearList,"%c",'\n');
-			
-		}else if (atoi(itemResult) != EOF && strcmp(itemResult,dateTime.Year) == 0){
-			
-			break;
-		}
-		
-	}
-	
-	//Close the files
-	fclose(yearList);
-}
-
 //Main function
-int main(){
+int main(void){
 	
 	//Call checks data base function
 	checkDatabase();
