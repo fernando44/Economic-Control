@@ -1,6 +1,10 @@
 /*
- *	This library contains a function to return date 
- *	of splitered and integer form
+ *	This library contains a definition of the
+ *	data type of the "DateTime" and methods to
+ *	format and get data from him
+ *  
+ *  Author: Quemuel Alves Nassor
+ *  Date: 02/05/21
  */
 
 #ifndef DATETIME_H
