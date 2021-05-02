@@ -1,6 +1,6 @@
 /*
 	This library contains functions to
-	sort the regList by date, or by Id
+	sort the recList by date, or by Id
 	or by value
 */
 
@@ -8,16 +8,16 @@
 #include<string.h>
 #include<unistd.h>
 
-//Function to order regList by ascending date
-reg *orderByDate(reg *regList){
+//Function to order recList by ascending date
+/* rec *orderByDate(rec *recList){
 	
 	//Local variables
-	reg *aux, *percursor;
+	rec *aux, *percursor;
 	
-	//Check if regsList is empty
-	if(regList == NULL || strcmp(regList->date ,"\0") == 0){
+	//Check if recsList is empty
+	if(recList == NULL|| strcmp(recList->date ,"\0") == 0){
 		
-		//Feedback if regsList is empty
+		//Feedback if recsList is empty
 		ClrScr();
 		printf("\n\n\n\t\t\t\tNo exists records to order!!!");
 		sleep (2);
@@ -25,7 +25,7 @@ reg *orderByDate(reg *regList){
 	}else{
 	
 		//Set start point of percursor
-		percursor = navStart(regList);
+		percursor = nav_start(recList);
 			
 		//percursor loop
 		while(percursor != NULL){	
@@ -53,19 +53,19 @@ reg *orderByDate(reg *regList){
 		}
 	}
 	
-	return navStart(regList);
-}
+	return nav_start(recList);
+} */
 
-//Function to order regList by ascending id
-reg *orderById(reg *regList){
+//Function to order recList by ascending id
+rec *orderById(rec *recList){
 	
 	//Local variables
-	reg *aux, *percursor;
+	rec *aux, *percursor;
 	
-	//Check if regsList is empty
-	if(regList == NULL || strcmp(regList->date ,"\0") == 0){
+	//Check if recsList is empty
+	if(recList == NULL/* || strcmp(recList->date ,"\0") == 0*/){
 		
-		//Feedback if regsList is empty
+		//Feedback if recsList is empty
 		ClrScr();
 		printf("\n\n\n\t\t\t\tNo exists records to order!!!");
 		sleep (2);
@@ -73,7 +73,7 @@ reg *orderById(reg *regList){
 	}else{
 		
 		//Set start point of percursor
-		percursor = navStart(regList);
+		percursor = nav_start(recList);
 			
 		//percursor loop
 		while(percursor != NULL){	
@@ -101,19 +101,19 @@ reg *orderById(reg *regList){
 		}
 	}
 	
-	return navStart(regList);
+	return nav_start(recList);
 }
 
-//Function to order regList by ascending value
-reg *orderByValue(reg *regList){
+//Function to order recList by ascending value
+rec *orderByValue(rec *recList){
 	
 	//Local variables
-	reg *aux, *percursor;
+	rec *aux, *percursor;
 	
-	//Check if regsList is empty
-	if(regList == NULL || strcmp(regList->date ,"\0") == 0){
+	//Check if recsList is empty
+	if(recList == NULL/* || strcmp(recList->date ,"\0") == 0*/){
 		
-		//Feedback if regsList is empty
+		//Feedback if recsList is empty
 		ClrScr();
 		printf("\n\n\n\t\t\t\tNo exists records to order!!!");
 		sleep (2);
@@ -121,7 +121,7 @@ reg *orderByValue(reg *regList){
 	}else{
 	
 		//Set start point of percursor
-		percursor = navStart(regList);
+		percursor = nav_start(recList);
 			
 		//percursor loop
 		while(percursor != NULL){	
@@ -149,5 +149,5 @@ reg *orderByValue(reg *regList){
 		}
 	}
 	
-	return navStart(regList);
+	return nav_start(recList);
 }

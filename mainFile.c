@@ -8,6 +8,10 @@
 #include<string.h>
 #include<sys/stat.h>
 
+//Custom libraries 
+#include <record.h>
+#include <dir_mgmt.h>
+
 //Constants
 #define LIN 50
 #define COL 50
@@ -59,13 +63,10 @@ void HEADER(){
 }
 
 //Custom libraries 
-#include"register.h"
-#include"date.h"
 #include"loadLibrary.h"
 #include"menu.h"
 
 //Extern declarations
-extern DateTime dateTime;
 
 //Main function
 int main(void){
@@ -75,9 +76,9 @@ int main(void){
 	
 	//Load category list
 	loadConfig(categoryList);
-	
+	rec *list = new_rec();
 	//Call menu program function
-	Menu(newReg(),basePath,dataBase);
+	Menu(list,basePath,dataBase);
 
 	return(0);
 }

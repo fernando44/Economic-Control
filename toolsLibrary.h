@@ -1,6 +1,6 @@
 /*	
 	This library contains functions for obtaining date
-	display records in regList, edit and search records
+	display records in recList, edit and search records
 */
 
 //Dependencies
@@ -8,18 +8,18 @@
 #include<unistd.h>
 #include<stdio.h>
 
-//Function to display records in the regList
-void showRecords(reg *ficha){
+//Function to display records in the recList
+void showRecords(rec *ficha){
 	
 	//Local variables
-	reg *temp = ficha;
+	rec *temp = ficha;
 	int totalRecords = 0;
 	double sumValue = 0;
 	
-	//Check if regsList is empty
-	if(temp == NULL || strcmp(temp->date ,"\0") == 0){
+	//Check if recsList is empty
+	if(temp == NULL/* || strcmp(temp->date ,"\0") == 0*/){
 		
-		//Feedback if regsList is empty
+		//Feedback if recsList is empty
 		ClrScr();
 		printf("\n\n\n\t\t\t\tNo exists records to display!!!");
 		sleep (2);
@@ -32,7 +32,7 @@ void showRecords(reg *ficha){
 			
 			//Displays the record data
 			printf("          Id: %i\n",temp->id);
-			printf("          Date: %s\n",temp->date);
+			printf("          Date: %s\n",temp->datetime.fmt_str(temp->datetime));
 			printf("          Category: %s\n",temp->category);
 			printf("          Description: %s\n",temp->description);
 			printf("          Value: %.2f\n",temp->value);
@@ -51,16 +51,16 @@ void showRecords(reg *ficha){
 }
 
 //Function to edit an record
-void editRecord(reg *regList){
+void editRecord(rec *recList){
 	
 	//Local variables
-	reg *temp = regList;
+	rec *temp = recList;
 	int idKeyWord = 0;	
 	
 	//Receive idKeyWord to search
 	ClrScr();
 	HEADER();
-	showRecords(regList);
+	showRecords(recList);
 	printf("\n\n   Enter the ID of the record to be edited: \n");
 	
 	//Input ID
