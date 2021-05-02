@@ -13,5 +13,4 @@ For the application to work correctly, you must recompile it in the machine envi
 This is free software developed to facilitate personal economic organization and for educational purposes.
 All source code is commented as well as the functions explained just above their declarations.
 
-On build use the comand follow:
-gcc ./mainFile.c -o mainFile --std=c99
+To build use the comands of script build-linux.sh
