@@ -31,7 +31,7 @@ void init_str(char *string, int length)
 void show_rec(rec *item)
 {
     printf("          Id: %li\n", item->id);
-    printf("          Date: %s\n", item->datetime.fmt_str(item->datetime));
+    printf("          Date: %s\n", dtm_str(item->datetime));
     printf("          Category: %s\n", item->category);
     printf("          Description: %s\n", item->description);
     printf("          Value: %.2Lf\n", item->value);
@@ -44,9 +44,9 @@ rec *nav_end(rec *list)
 {
     rec *end = list;
 
-    while (end != NULL)
+    while (end->next != NULL)
     {
-        end = list->next;
+        end = end->next;
     }
     return end;
 }
@@ -56,9 +56,9 @@ rec *nav_start(rec *list)
 {
     rec *start = list;
 
-    while (start != NULL)
+    while (start->prev != NULL)
     {
-        start = list->prev;
+        start = start->prev;
     }
     return start;
 }
