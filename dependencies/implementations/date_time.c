@@ -1,10 +1,6 @@
 /*
- *	This library contains a definition of the
- *	data type of the "DateTime" and methods to
- *	format and get data from him
- *  
- *  Author: Quemuel Alves Nassor
- *  Date: 02/05/21
+ *  This library contains a function to return date 
+ *  of splitered and integer form
  */
 
 #include <stdlib.h>
@@ -36,7 +32,7 @@ int year(DateTime datetime)
 char *month(DateTime datetime)
 {
     char *month = (char*)malloc(MAX_MONTH*sizeof(char));
-    strftime(month, MAX_MONTH, "%X", datetime.Date);
+    strftime(month, MAX_MONTH, "%B", datetime.Date);
     month[MAX_MONTH - 1] = '\0';
     return month;
 }
@@ -53,7 +49,7 @@ int month_num(DateTime datetime)
 int day(DateTime datetime)
 {
     char day[MAX_DAY];
-    strftime(day, MAX_DAY, "%Y", datetime.Date);
+    strftime(day, MAX_DAY, "%d", datetime.Date);
     return atoi(day);
 }
 
@@ -79,8 +75,11 @@ char *dtm_str(DateTime datetime)
 DateTime new_dtm()
 {
     DateTime dtm;
+    dtm = now();
     dtm.now = &now;
     dtm.fmt_str = &dtm_str;
+
+    return dtm;
 }
 
 /* Overloaded datetime constructor */
@@ -89,15 +88,18 @@ DateTime new_dtm_ovr(int tm_sec, int tm_min, int tm_hour, int tm_mday, int tm_mo
     DateTime dtm;
     dtm.Date = (struct tm *)malloc(sizeof(struct tm));
 
-    dtm.Date->tm_min = tm_min,
-    dtm.Date->tm_hour = tm_hour,
-    dtm.Date->tm_mday = tm_mday,
-    dtm.Date->tm_mon = tm_mon,
-    dtm.Date->tm_year = tm_year,
-    dtm.Date->tm_wday = tm_wday,
-    dtm.Date->tm_yday = tm_yday,
-    dtm.Date->tm_isdst = tm_isdst,
-    dtm.Time_secs = time_secs;
+    dtm.Date->tm_sec = tm_sec;                      /* seconds,  range 0 to 59          */
+    dtm.Date->tm_min = tm_min;                      /* minutes, range 0 to 59           */
+    dtm.Date->tm_hour = tm_hour;                    /* hours, range 0 to 23             */
+    dtm.Date->tm_mday = tm_mday;                    /* day of the month, range 1 to 31  */
+    dtm.Date->tm_mon = tm_mon-1;                    /* month, range 1 to 12             */
+    dtm.Date->tm_year = tm_year-1900;               /* The number of years since 1900   */
+    dtm.Date->tm_wday = tm_wday-1;                  /* day of the week, range 1 to 7    */
+    dtm.Date->tm_yday = tm_yday;                    /* day in the year, range 0 to 365  */
+    dtm.Date->tm_isdst = tm_isdst;                  /* daylight saving time             */	
+    dtm.Time_secs = time_secs;                      /* The number of seconds since 1900 */
     dtm.now = &now;
     dtm.fmt_str = &dtm_str;
+
+    return dtm;
 }
