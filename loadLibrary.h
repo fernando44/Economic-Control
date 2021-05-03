@@ -196,9 +196,9 @@ void saveListAsTxt(rec *recList, FILE *dataBase, char path[30]){
 	//Writing list inside the file
 	while(recList != NULL){
 		
-		fprintf(dataBase,"%i\t",recList->id);
+		fprintf(dataBase,"%li\t",recList->id);
 		fprintf(dataBase,"%s\t",recList->datetime.fmt_str(recList->datetime));
-		fprintf(dataBase,"%f\t",recList->value);
+		fprintf(dataBase,"%Lf\t",recList->value);
 		fprintf(dataBase,"%s\t",recList->category);
 		fprintf(dataBase,"%s\t",recList->description);
 		fprintf(dataBase,"%s\n",recList->details);
@@ -231,7 +231,7 @@ void saveListAsJson(rec *recList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%s","id");
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
-		fprintf(dataBase,"%i",recList->id);
+		fprintf(dataBase,"%li",recList->id);
 		fprintf(dataBase,"%c",',');
 		
 		fprintf(dataBase,"%c",'"');
@@ -247,7 +247,7 @@ void saveListAsJson(rec *recList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%s","value");
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
-		fprintf(dataBase,"%f",recList->value);
+		fprintf(dataBase,"%Lf",recList->value);
 		fprintf(dataBase,"%c",',');
 		
 		fprintf(dataBase,"%c",'"');
@@ -406,7 +406,7 @@ void checkYearsPath(void){
 		if(atoi(itemResult) == EOF && atoi(itemResult) == year(dtm)){
 			
 			//Write the current year in the file
-			fprintf(yearList,"%s",year(dtm));
+			fprintf(yearList,"%i",year(dtm));
 			fprintf(yearList,"%c",'\n');
 			
 		}else if (atoi(itemResult) != EOF && atoi(itemResult) == year(dtm)){
@@ -479,7 +479,7 @@ void checkDatabase(void){
 		yearList = fopen(yearsPath,"a");
 		
 		//Write the current year in the file
-			fprintf(yearList,"%s",year(dtm));
+			fprintf(yearList,"%i",year(dtm));
 			fprintf(yearList,"%c",'\n');
 		
 		//Close the file
