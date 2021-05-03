@@ -3,128 +3,83 @@
 	program execution and verification environment
 */
 
-//libraries
+//Dependencies
 #include<stdio.h>
 #include<string.h>
 #include<sys/stat.h>
 
-//Constprevs
+//Custom libraries 
+#include <record.h>
+#include <dir_mgmt.h>
+
+//Constants
 #define LIN 50
 #define COL 50
 
-//Defines '\' or '/' on unix/windows environtments
-const char *unx = "//";
-const char *win = "\\";
+//Global variables 
+char basePath[30] = "Database";
+char yearsPath[25];
+char categoryList[LIN][COL];
+int sizeOfCategoryList;
+FILE *dataBase;
+FILE *yearList;
+
+//Funtion to create directories
+void ___mkdir (char *path);
+
+//Defines '\' or '/' and mkdir on unix/windows environtments
 #ifdef __unix__         
     
-	#define BARKEY unx
+	const char *DIRECTORY_SEPARATOR_CHAR = "/";
+	
+	void ___mkdir (char *path){
+		mkdir(path,0700);
+	}
 
 #elif defined(_WIN32) || defined(WIN32) 
 
-   #define BARKEY win
+	const char *DIRECTORY_SEPARATOR_CHAR = "\\";
+	
+	void ___mkdir (char *path){
+   		mkdir(path);
+	}
 
 #endif
 
+//Function to clean screen
+void ClrScr(){
+	int i = 0;
+     for(i = 0; i < 500; i++){
+          printf("\n");
+     }
+} 
+
+//Function to display program header
+void HEADER(){
+	
+	printf("****************************************************************************************************\n\n");
+	printf("****************************************| Economic Control |****************************************\n\n");
+	printf("****************************************************************************************************\n\n\n\n");
+}
+
 //Custom libraries 
-#include"register.h"
-#include"date.h"
+#include"loadLibrary.h"
 #include"menu.h"
 
-//Funtion to create directories
-void ___mkdir (char *path){
-	
-	#ifdef __unix__         
-	    
-		mkdir(path,0700);
-	
-	#elif defined(_WIN32) || defined(WIN32) 
-	
-	  	mkdir(path);
-	
-	#endif
-}
-
-//Pointers for files
-FILE *dataBase,*yearList;
-
-//Check data base
-void checkDatabase(){
-	
-	//Local variables
-	char directory[30] = "Database";
-	strcat(directory,(char *)BARKEY);
-	char yearsPath[30] = "Database";
-	strcat(yearsPath,(char *)BARKEY);
-	strcat(yearsPath,"list_years.txt");
-	char verify[30]; 
-	char itemResult[7]; 
-	char year[5];
-	
-	//Call datetime function
-	getDate();
-	strcpy(year,Year);
-	
-	//Creating path to data base
-	strcat(year,(char *)BARKEY);
-	strcat(directory,year);
-	
-	//Creating path to check if a data base exists
-	strcpy(verify,directory);
-	strcat(verify,"file_check.txt");
-	
-	//Checking if an old data base exists
-	if((dataBase = fopen(verify,"rb")) == NULL){
-        
-		//Creating directory to data base
-		___mkdir("Database");
-		___mkdir(directory);
-		
-		//Validating new data base
-		dataBase = fopen(verify,"wb");
-		fprintf(dataBase,"%s","file_check is an internal file, if it is modified or deleted the program may not work correctly");
-		
-		
-		//Opening list of years in reading mode
-		yearList = fopen(yearsPath,"r");		
-		
-		//Search current year in file
-		do{				
-			//Add current year in file if don't exist
-			if(fscanf(yearList,"%s",itemResult) == EOF && strcmp(itemResult,year) != 0){
-				
-				//Open the file in write mode
-				fclose(yearList);
-				yearList = fopen(yearsPath,"a");
-				
-				//Write the current year in the file
-				fprintf(yearList,"%s",year);
-				fprintf(yearList,"%c",'\n');
-			}
-		}while(strcmp(itemResult,"-1") == 0);
-		
-		//Close the files
-		fclose(yearList);
-		fclose(dataBase);
-	}
-}
+//Extern declarations
 
 //Main function
-int main(){
-	
-	//Local variables
-	getDate();
-	char path[30] = "Database";
-	strcat(path,(char *)BARKEY);
-	strcat(path,Year);
-	strcat(path,(char *)BARKEY);
-	strcat(path,Month);
+int main(void){
 	
 	//Call checks data base function
 	checkDatabase();
-		
+	
+	//Load category list
+	loadConfig(categoryList);
+	rec *list = new_rec();
 	//Call menu program function
-	Menu(newReg(),path,dataBase);
+	Menu(list,basePath,dataBase);
 
-	return(EXIT_SUCCESS);
+	return(0);
 }
 

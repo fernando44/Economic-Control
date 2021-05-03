@@ -8,11 +8,10 @@
 #include<stdio.h>
 #include<ctype.h>
 
-//Extern declarations
-extern void ClrScr();
-extern void HEADER();
+//Global variables
 extern char categoryList[LIN][COL];
 extern int sizeOfCategoryList;
+extern DateTime dateTime;
 
 //Function to get date value
 void getNewDate(char input[20]){
@@ -20,7 +19,7 @@ void getNewDate(char input[20]){
 	//Local variables
 	int index;
 	char newDate[20];
-	initalizeString(newDate,20);
+	init_str(newDate,20);
 	
 	//Read new date and concatenate the add-on
 	ClrScr();
@@ -48,20 +47,21 @@ void getNewDate(char input[20]){
 			
 			//Insert the new value of date and concatenate the add-on
 			newDate[strlen(newDate)-1] = ' ';
-			getDate();
-			strcat(newDate,Time);
+			// getDate();
+			// strcat(newDate,dateTime.Time);
 			strcpy(input,newDate);
 		}
 	}
 }
 
 //Function to get category
-void getCategory(char input[COL], int sizeOfCategoryList){
+void getCategory(char input[COL]){
 	
 	//Menu to select category from record
 	HEADER();
 	printf("Select a category for record: \n\n");
 	int count = 0, Index = 0;
+	char selectedOption[4];
 	
 	//Display all categories in categoryList
 	for(count = 0; count < sizeOfCategoryList-1; count++){
@@ -71,7 +71,9 @@ void getCategory(char input[COL], int sizeOfCategoryList){
 	
 	//Returns the selected category if the Index is in the range Index <= count or Index >= 0 if not return NULL
 	setbuf(stdin,NULL);
-	Index = getchar()-48;
+	fgets(selectedOption,3,stdin);
+	selectedOption[3] = '\0';
+	Index = atoi(selectedOption);
 	
 	//Checking if is new or existing
 	if(strcmp(input,"\0") == 0 || strcmp(input,categoryList[Index-1]) == 0){
@@ -80,7 +82,7 @@ void getCategory(char input[COL], int sizeOfCategoryList){
 }
 
 //Function to generate ID
-int getId(){
+int getId(void){
 	
 	//Local variables
 	long start = 73;
@@ -117,104 +119,104 @@ int getId(){
 }
 
 //Function to fill the data of new record
-void dataFeed(reg *regsList){
+void dataFeed(rec *recsList){
 	
-	//Set id of register
-	regsList->id = regsList->id == 0 ? getId() : regsList->id;
+	//Set id of recister
+	recsList->id = recsList->id == 0 ? getId() : recsList->id;
 	
 	ClrScr();
 	HEADER();
-	printf("Id: %i\n",regsList->id);
+	printf("Id: %i\n",recsList->id);
 	
 //Receives date data
 //===================================================================
 	
 	//Get date input and checking if is new or existing
-	if(strcmp(regsList->date,"\0") == 0){
+	// if(strcmp(recsList->date,"\0") == 0){
 		
-		//Set the date of the new record to DateTimeNow
-		getDate();
-		strcpy(regsList->date,DateTimeNow);
+	// 	//Set the date of the new record to DateTimeNow
+	// 	getDate();
+	// 	strcpy(recsList->date,dateTime.DateTimeNow);
 		
-	}else{
+	// }else{
 		
-		//Get new date to record
-		getNewDate(regsList->date);
+	// 	//Get new date to record
+	// 	getNewDate(recsList->date);
 		
-	}
+	// }
 	
-	printf("Date: %s",regsList->date);
+	// printf("Date: %s",recsList->date);
 	
 //Receives description data
 //===================================================================
 
 	//Local variables
 	char description[100];
-	strcpy(description,regsList->description);
+	strcpy(description,recsList->description);
 	
 	//Get description input
 	printf("\nDescription: ");
 	setbuf(stdin,NULL);
-	fgets(regsList->description,100,stdin);
-	regsList->description[strlen(regsList->description)-1] = '\0';
+	fgets(recsList->description,100,stdin);
+	recsList->description[strlen(recsList->description)-1] = '\0';
 	
 	//Checking if is new or existing
-	(strcmp(regsList->description,"\0") == 0 && strcmp(description,"\0") != 0) ? strcpy(regsList->description,description) : 0;
+	(strcmp(recsList->description,"\0") == 0 && strcmp(description,"\0") != 0) ? strcpy(recsList->description,description) : 0;
 			
 //Receives category data
 //===================================================================
 	
-	//Get selected category to the regList
+	//Get selected category to the recList
 	ClrScr();
-	getCategory(regsList->category,sizeOfCategoryList);
-	regsList->category[strlen(regsList->category)-1] = '\0';
+	getCategory(recsList->category);
+	recsList->category[strlen(recsList->category)-1] = '\0';
 	
 	//Clean screen and display data
 	ClrScr();
 	HEADER();
-	printf("Date: %s",regsList->date);
-	printf("\nDescription: %s",regsList->description);
-	printf("\nCategory: %s",regsList->category);
+	printf("Date: %s",recsList->datetime.fmt_str(recsList->datetime));
+	printf("\nDescription: %s",recsList->description);
+	printf("\nCategory: %s",recsList->category);
 					
 //Receives value data
 //===================================================================		
 	
 	//Local variables
-	double Value = regsList->value;
+	double Value = recsList->value;
 	char value[100];
 	
 	//Get value input
-	initalizeString(value,100);
+	init_str(value,100);
 	printf("\nValue: ");
 	setbuf(stdin,NULL);
-	fgets(value,100,stdin);	
+	fgets(value,100,stdin);
 	value[strlen(value)-1] = '\0';	
 	
 	//Set the value of the new record to NULL if it is empty
-	Value != 0.00 && strcmp(value,"\0") == 0 ? 0 : Value == 0.00 && strcmp(value,"\0") != 0 ? (regsList->value = atof(value)) : Value != 0.00 && strcmp(value,"\0") != 0 ? (regsList->value = atof(value)) : 0;
+	Value != 0.00 && strcmp(value,"\0") == 0 ? 0 : Value == 0.00 && strcmp(value,"\0") != 0 ? (recsList->value = atof(value)) : Value != 0.00 && strcmp(value,"\0") != 0 ? (recsList->value = atof(value)) : 0;
 
 	//Clean screen and display data
 	ClrScr();
 	HEADER();
-	printf("Date: %s",regsList->date);
-	printf("\nDescription: %s",regsList->description);
-	printf("\nCategory: %s",regsList->category);
-	printf("\nValue: %.2f",regsList->value);
+	printf("Date: %s",recsList->datetime.fmt_str(recsList->datetime));
+	printf("\nDescription: %s",recsList->description);
+	printf("\nCategory: %s",recsList->category);
+	printf("\nValue: %.2f",recsList->value);
 
 //Receives details data
 //===================================================================
 	
 	//Local variables
 	char details[100];
-	strcpy(details,regsList->details);
+	strcpy(details,recsList->details);
 	
 	//Get details input
 	printf("\nDetails: ");
 	setbuf(stdin,NULL);
-	fgets(regsList->details,100,stdin);
-	regsList->details[strlen(regsList->details)-1] = '\0';
+	fgets(recsList->details,100,stdin);
+	recsList->details[strlen(recsList->details)-1] = '\0';
 	
 	//Checking if is new or existing
-	(strcmp(regsList->details,"\0") == 0 && strcmp(details,"\0") != 0) ? strcpy(regsList->details,details) : 0;
+	(strcmp(recsList->details,"\0") == 0 && strcmp(details,"\0") != 0) ? strcpy(recsList->details,details) : 0;
 	
 }	

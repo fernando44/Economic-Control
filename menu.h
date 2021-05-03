@@ -1,138 +1,128 @@
 /*
-	This library contains functions to display de header of program
-	and to display program menu options 
+	This library contains functions to display program menu options 
 */
 
-//Custom libraries and dependencies
+//Dependencies
 #include<unistd.h>
 #include<stdio.h>
 
-//Function to clean screen
-void ClrScr(){
-	int i = 0;
-     for(i = 0; i < 500; i++){
-          printf("\n");
-     }
-} 
-
-//Function to display program header
-void HEADER(){
-	
-	printf("****************************************************************************************************\n\n");
-	printf("****************************************| Economic Control |****************************************\n\n");
-	printf("****************************************************************************************************\n\n\n\n");
-}
-
 //Custom libraries 
 #include"feedLibrary.h"
-#include"loadLibrary.h"
 #include"toolsLibrary.h"
 #include"sortLibrary.h"
 
-//Global variables
-char month[11], year[5],path[50];
-
 //Function to display menu of program
-void Menu(reg *regsList,char path[30],FILE *dataBase){
+void Menu(rec *recsList,char path[30],FILE *dataBase){
 	
 	//Local variables
-	int option = -1;
-	
-	//Load category list
-	loadConfig(categoryList);
-
-	//Menu and submenu string options
-	char menuOptions[115] = "\n\n1 - New register \n2 - View registers \n3 - Change register \n4 - Switch data base \n5 - About \n6 - Exit";
-	char submenuOptions[215] = "\n\n   1 - Order by Date \n   2 - Order by Id  \n   3 - Order by Value \n   4 - Return to menu \n";
+	int option = 0;
 	
 	//Clearing the list of records
-	cleanList(regsList);
-	regsList = newReg();
+	clean_list(recsList);
+	recsList = new_rec();
 				
-	//Loading data from archives for regsList 
-	regsList = (loadListFromTxt(regsList,dataBase,path)) == NULL ? (loadListFromJson(regsList,dataBase,path)) == NULL ? newReg() : 0 : (loadListFromTxt(regsList,dataBase,path));
+	//Loading data from archives for recsList 
+	recsList = (loadListFromTxt(recsList,dataBase,path)) == NULL ? (loadListFromJson(recsList,dataBase,path)) == NULL ? new_rec() : 0 : (loadListFromTxt(recsList,dataBase,path));
 	ClrScr();
 	HEADER();
 	
 	//Displays menu options and informations
 	printf("Active Database: %c%s%c\n\n",34,path,34);
-	printf("Select an option: %s\n",menuOptions);
+	printf("Select an option:");
+	printf("\n\n1 - New records \n2 - View records \n3 - Change records \n4 - Switch data base \n5 - About \n6 - Exit\n\n");
 	
 	//Selection menu
 	setbuf(stdin,NULL);
-	switch(getchar()-48){
+	switch((getchar()-48)){
 		
 		case 1:{				
 			
-			//Add a new register in the list
+			//Add a new records in the list
 			ClrScr();
-			if(strcmp(regsList->date,"") != 0){
+			if(recsList->id != 0){
 				
-				addEnd(regsList,newReg());
-				dataFeed(navEnd(regsList));
+				add_end(recsList,new_rec());
+				dataFeed(nav_end(recsList));
 				
 			}else{
 				
-				dataFeed(regsList);
+				dataFeed(recsList);
 			}
 			
 			//Sort by ascending date before writing to file
-			regsList = orderByDate(regsList);
+			// recsList = orderByDate(recsList);
 			
-			//Write regsList in file
-			saveListAsJson(regsList,dataBase,path);
-			saveListAsTxt(regsList,dataBase,path);
+			//Write recsList in file
+			saveListAsJson(recsList,dataBase,path);
+			saveListAsTxt(recsList,dataBase,path);
 			
 			//Return to menu
-			Menu(regsList,path,dataBase);
+			Menu(recsList,path,dataBase);
 			break;
 		}
 		
 		case 2:{
 			
-			//Loop of submenu
-			if(regsList != NULL && strcmp(regsList->date,"") != 0){
+			//Validating recList
+			if(recsList != NULL && recsList->id != 0){
+				
+				//Loop of submenu
 				do{				
-					//Displaying regsList
+					//Displaying recsList
 					ClrScr();
 					HEADER();
-					showRecords(orderByDate(regsList));
-					printf("\n\n   Select an option: %s",submenuOptions);
+					showRecords(orderById(recsList));
 					
-					//Receives new value for option
+					//Diplaying options
+					printf("\n\n   Select an option: ");
+					printf("\n\n   1 - Order by Date \n   2 - Order by Id  \n   3 - Order by Value \n   4 - Return to menu \n\n");
+					
+					//Selection menu
 					setbuf(stdin,NULL);
-					option = getchar()-48;
-					
-					if(option == 1){
+					switch((getchar()-48)){
 						
-						//Sort by ascending date
-						regsList = orderByDate(regsList);
+						case 1:{
+							
+							//Sort by ascending date
+							// recsList = orderByDate(recsList);
+							break;
+						}
 						
-					}else if(option == 2){
-					
-						//Sort by ascending id
-						regsList = orderById(regsList);
+						case 2:{
+							
+							//Sort by ascending id
+							recsList = orderById(recsList);
+							break;
+						}
 						
-					}else if(option == 3){
+						case 3: {
+							
+							//Sort by ascending value
+							recsList = orderByValue(recsList);
+							break;
+						}
 						
-						//Sort by ascending value
-						regsList = orderByValue(regsList);
-					
-					}
-					
-					if(option != 1 && option != 2 && option != 4 && option !=3){
+						case 4:{
+							
+							option = 4;
+							break;
+						}
 						
-						//Feedback default
-						ClrScr();
-						printf("\n\n\n\t\t\t\tInvalid option!");
-						sleep (1);
+						default:{
+							
+							//Feedback default
+							ClrScr();
+							printf("\n\n\n\t\t\t\tInvalid option!");
+							sleep (1);
+							break;
+						}
 					}
 					
 				}while(option != 4);
 				
 			}else{
 
-				//Feedback if regsList is empty
+				//Feedback if recsList is empty
 				ClrScr();
 				printf("\n\n\n\t\t\t\tNo exists records to display!!!");
 				sleep (2);
@@ -140,7 +130,7 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			}
 			
 			//Return to menu
-			Menu(regsList,path,dataBase);
+			Menu(recsList,path,dataBase);
 			break;
 		}
 		
@@ -148,28 +138,28 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			ClrScr();
 			HEADER();
 			
-			//Edit a register of regsList
-			editRecord(regsList);
+			//Edit a records of recsList
+			editRecord(recsList);
 			
 			//Sort by ascending date before writing to file
-			orderByDate(regsList);
+			// orderByDate(recsList);
 			
-			//Write regsList in file
-			saveListAsJson(regsList,dataBase,path);
-			saveListAsTxt(regsList,dataBase,path);
+			//Write recsList in file
+			saveListAsJson(recsList,dataBase,path);
+			saveListAsTxt(recsList,dataBase,path);
 
 			//Return to menu
-			Menu(regsList,path,dataBase);
+			Menu(recsList,path,dataBase);
 			break;
 		}
 		
 		case 4:{
 			
 			//Switch data base
-			switchDataBase(path,dataBase);
-						
+			switchDataBase();
+
 			//Return to menu
-			Menu(regsList,path,dataBase);
+			Menu(recsList,path,dataBase);
 			break;
 		}
 			
@@ -184,7 +174,7 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			getchar();
 			
 			//Return to menu
-			Menu(regsList,path,dataBase);
+			Menu(recsList,path,dataBase);
 			break;
 			
 		}
@@ -197,7 +187,7 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			break;
 		}
 			
-		default:
+		default:{
 			
 			//Feedback default
 			ClrScr();
@@ -205,10 +195,12 @@ void Menu(reg *regsList,char path[30],FILE *dataBase){
 			sleep(1);
 			
 			//Return to menu
-			Menu(regsList,path,dataBase);
+			Menu(recsList,path,dataBase);
+			break;
+		}
 	}
 		
 	//Clearing the list of records
-	cleanList(regsList);
-	regsList = newReg();
+	clean_list(recsList);
+	recsList = new_rec();
 }

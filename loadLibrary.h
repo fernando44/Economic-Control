@@ -14,9 +14,12 @@
 #define C 7
 
 //Global variables and extern declarations
-int sizeOfCategoryList;
 char matrixYears[L][C];
-char categoryList[LIN][COL];
+extern int sizeOfCategoryList;
+extern char categoryList[LIN][COL];
+extern char yearsPath[25];
+extern char basePath[30];
+extern FILE *dataBase;
 
 //Function to load configurations
 void loadConfig(char categoryList[LIN][COL]){
@@ -40,11 +43,11 @@ void loadConfig(char categoryList[LIN][COL]){
 	fclose(file);
 }
 
-//Function to load data from txt file at data base to regList
-reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
+//Function to load data from txt file at data base to recList
+rec *loadListFromTxt(rec *recList,FILE *dataBase, char path[30]){
 	
 	//Local variables
-	char localPath[50], strLine[500], value[100];
+	char localPath[30], strLine[500], value[100];
 	int index, chrKeyCount;
 	strcpy(localPath,path);
 	strcat(localPath,".txt");
@@ -56,41 +59,41 @@ reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
 		ClrScr();
 		printf("\n\n\n\t\t\t\tCould not open the file %c%s%c !!!", 34,localPath,34);
 		sleep(2);
-		regList = NULL;
+		recList = NULL;
 				
 	}else{
 		
-		//Creating a new record and adding it to the regList
-		reg *newRecord;
-		initalizeString(value,100);
-		initalizeString(strLine,500);
+		//Creating a new record and adding it to the recList
+		rec *new_record;
+		init_str(value,100);
+		init_str(strLine,500);
 		
 		//Reading file by lines
 		setbuf(stdin,NULL);
 		while(fgets(strLine,500,dataBase) != NULL){
 			
 			//Creating a new record to storage data
-			newRecord = newReg();
+			new_record = new_rec();
 			
 			//Splitting line content
 			chrKeyCount = 0;
-			initalizeString(value,100);
+			init_str(value,100);
 			for(index = 0; index<strlen(strLine);index++){
 				
 				
 				//Mapping key characters and separating content
-				strLine[index] == '\t' && chrKeyCount == 1 ? initalizeString(value,100) : 0;
-				strLine[index] != '\t' && chrKeyCount == 0 ? (value[strlen(value)] = strLine[index]) && (newRecord->id = atoi(value)) : 0;
-				strLine[index] != '\t' && chrKeyCount == 1 ? (newRecord->date[strlen(newRecord->date)] = strLine[index]) : 0;
-				strLine[index] != '\t' && chrKeyCount == 2 ? (value[strlen(value)] = strLine[index]) && (newRecord->value = atof(value)) : 0;
-				strLine[index] != '\t' && chrKeyCount == 3 ? (newRecord->category[strlen(newRecord->category)] = strLine[index]) : 0;
-				strLine[index] != '\t' && chrKeyCount == 4 ? (newRecord->description[strlen(newRecord->description)] = strLine[index]) : 0;
-				strLine[index] != '\n' && chrKeyCount == 5 ? (newRecord->details[strlen(newRecord->details)] = strLine[index]) : 0;
+				strLine[index] == '\t' && chrKeyCount == 1 ? init_str(value,100) : 0;
+				strLine[index] != '\t' && chrKeyCount == 0 ? (value[strlen(value)] = strLine[index]) && (new_record->id = atoi(value)) : 0;
+				// strLine[index] != '\t' && chrKeyCount == 1 ? (new_record->date[strlen(new_record->date)] = strLine[index]) : 0;
+				strLine[index] != '\t' && chrKeyCount == 2 ? (value[strlen(value)] = strLine[index]) && (new_record->value = atof(value)) : 0;
+				strLine[index] != '\t' && chrKeyCount == 3 ? (new_record->category[strlen(new_record->category)] = strLine[index]) : 0;
+				strLine[index] != '\t' && chrKeyCount == 4 ? (new_record->description[strlen(new_record->description)] = strLine[index]) : 0;
+				strLine[index] != '\n' && chrKeyCount == 5 ? (new_record->details[strlen(new_record->details)] = strLine[index]) : 0;
 				strLine[index] == '\t' ? chrKeyCount++ : 0;
 			}
 			
-			//Insert file data into regList
-			strcmp(regList->date,"") == 0 ? regList = newRecord : addEnd(regList,newRecord);
+			//Insert file data into recList
+			// strcmp(recList->date,"") == 0 ? recList = new_record : addEnd(recList,new_record);
 		};
 		
 		//Close the files
@@ -98,14 +101,14 @@ reg *loadListFromTxt(reg *regList,FILE *dataBase, char path[30]){
 	}
 	
 	//Returns list of content from file
-	return regList;
+	return recList;
 }
 
-//Function to load data from json file at data base to regList
-reg *loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
+//Function to load data from json file at data base to recList
+rec *loadListFromJson(rec *recList,FILE *dataBase, char path[30]){
 		
 	//Local variables
-	char localPath[50], strLine[500], value[100];
+	char localPath[30], strLine[500], value[100];
 	int index, chrKeyCount;
 	strcpy(localPath,path);
 	strcat(localPath,".json");
@@ -117,14 +120,14 @@ reg *loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
 		ClrScr();
 		printf("\n\n\n\t\t\t\tCould not open the file %c%s%c !!!", 34,localPath,34);
 		sleep(2);
-		regList = NULL;
+		recList = NULL;
 				
 	}else{
 		
-//		//Creating a new record and adding it to the regList
-//		reg *newRecord;
-//		initalizeString(value,100);
-//		initalizeString(strLine,500);
+//		//Creating a new record and adding it to the recList
+//		rec *new_record;
+//		init_str(value,100);
+//		init_str(strLine,500);
 //		
 //		//Reading file by lines
 //		setbuf(stdin,NULL);
@@ -132,43 +135,43 @@ reg *loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
 //			
 //			//Splitting line content
 //			chrKeyCount = 0;
-//			initalizeString(value,100);
+//			init_str(value,100);
 //			for(index = 0; index<strlen(strLine);index++){
 //				
 //				if(strLine[index] == '{'){
 //					
 //					//Creating a new record to storage data
-//					newRecord = newReg();
+//					new_record = new_rec();
 //					
 //				}else if(strLine[index] == '}'){
 //					
-//					//Insert file data into regList
-//					strcmp(regList->date,"") == 0 ? regList = newRecord : addEnd(regList,newRecord);
+//					//Insert file data into recList
+//					strcmp(recList->date,"") == 0 ? recList = new_record : addEnd(recList,new_record);
 //					
 //				}
 //
-//				if(newRecord != NULL){
+//				if(new_record != NULL){
 //				
-//				strLine[index] != ',' && strLine[index-2-strlen(value)] == ':' ? (strLine[index] != '"' ? value[strlen(value)] = strLine[index] : 0) : strLine[index] == ',' ? initalizeString(value,100) : 0;
-//				strLine[index] != ',' && chrKeyCount == 0 ? (newRecord->id = atoi(value)) : 0;
-//				strLine[index] != ',' && strLine[index-3-strlen(newRecord->date)] == ':' && chrKeyCount == 1 ? strLine[index] != '"' ? (newRecord->date[strlen(newRecord->date)] = strLine[index]) : 0 : 0;
-//				strLine[index] != ',' && chrKeyCount == 2 ? (newRecord->value = atof(value)) : 0;
-//				strLine[index] != ',' && strLine[index-3-strlen(newRecord->category)] == ':' && chrKeyCount == 3 ? strLine[index] != '"' ? (newRecord->category[strlen(newRecord->category)] = strLine[index]) : 0 : 0;
-//				strLine[index] != ',' && strLine[index-3-strlen(newRecord->description)] == ':' && chrKeyCount == 4 ? strLine[index] != '"' ? (newRecord->description[strlen(newRecord->description)] = strLine[index]) : 0 : 0;
-//				strLine[index] != '}' && strLine[index-3-strlen(newRecord->details)] == ':' && chrKeyCount == 5 ? strLine[index] != '"' ? (newRecord->details[strlen(newRecord->details)] = strLine[index]) : 0 : 0;
+//				strLine[index] != ',' && strLine[index-2-strlen(value)] == ':' ? (strLine[index] != '"' ? value[strlen(value)] = strLine[index] : 0) : strLine[index] == ',' ? init_str(value,100) : 0;
+//				strLine[index] != ',' && chrKeyCount == 0 ? (new_record->id = atoi(value)) : 0;
+//				strLine[index] != ',' && strLine[index-3-strlen(new_record->date)] == ':' && chrKeyCount == 1 ? strLine[index] != '"' ? (new_record->date[strlen(new_record->date)] = strLine[index]) : 0 : 0;
+//				strLine[index] != ',' && chrKeyCount == 2 ? (new_record->value = atof(value)) : 0;
+//				strLine[index] != ',' && strLine[index-3-strlen(new_record->category)] == ':' && chrKeyCount == 3 ? strLine[index] != '"' ? (new_record->category[strlen(new_record->category)] = strLine[index]) : 0 : 0;
+//				strLine[index] != ',' && strLine[index-3-strlen(new_record->description)] == ':' && chrKeyCount == 4 ? strLine[index] != '"' ? (new_record->description[strlen(new_record->description)] = strLine[index]) : 0 : 0;
+//				strLine[index] != '}' && strLine[index-3-strlen(new_record->details)] == ':' && chrKeyCount == 5 ? strLine[index] != '"' ? (new_record->details[strlen(new_record->details)] = strLine[index]) : 0 : 0;
 //				strLine[index] != '{' && strLine[index] == ',' ? chrKeyCount++ : 0;
-////				printf("\n\n id: %i\n date: %s\n category: %s\n value: %f\n description: %s\n details: %s",newRecord->id,newRecord->date,newRecord->category,newRecord->value,newRecord->description,newRecord->details);
+////				printf("\n\n id: %i\n date: %s\n category: %s\n value: %f\n description: %s\n details: %s",new_record->id,new_record->date,new_record->category,new_record->value,new_record->description,new_record->details);
 ////				setbuf(stdin,NULL);
 ////				getchar();
 //				}
 //				
 //			}
-////			printf("\n\nconteudo lido:\n id: %i\n date: %s\n category: %s\n value: %f\n description: %s\n details: %s",newRecord->id,newRecord->date,newRecord->category,newRecord->value,newRecord->description,newRecord->details);
+////			printf("\n\nconteudo lido:\n id: %i\n date: %s\n category: %s\n value: %f\n description: %s\n details: %s",new_record->id,new_record->date,new_record->category,new_record->value,new_record->description,new_record->details);
 ////			setbuf(stdin,NULL);
 ////			getchar();
 //			
-//			//Insert file data into regList
-////			strcmp(regList->date,"") == 0 ? regList = newRecord : addEnd(regList,newRecord);
+//			//Insert file data into recList
+////			strcmp(recList->date,"") == 0 ? recList = new_record : addEnd(recList,new_record);
 //		};
 //		
 //		//Close the files
@@ -176,28 +179,14 @@ reg *loadListFromJson(reg *regList,FILE *dataBase, char path[30]){
 	}
 	
 	//Returns list of content from file
-	return regList;
-}
-
-//Function to clean list
-void cleanList(reg *regList){
-	
-	//Verifying if regList is null
-	if(regList != NULL && regList->next != NULL){
-			
-		//Function call to remove records
-		remEnd(regList);
-		cleanList(regList);
-		
-	}
-	regList = newReg();
+	return recList;
 }
 
 //Function to write list to data base in format at txt
-void saveListAsTxt(reg *regList, FILE *dataBase, char path[30]){
+void saveListAsTxt(rec *recList, FILE *dataBase, char path[30]){
 	
 	//Local variables
-	char localPath[50];
+	char localPath[30];
 	strcpy(localPath,path);
 	strcat(localPath,".txt");
 	
@@ -205,16 +194,16 @@ void saveListAsTxt(reg *regList, FILE *dataBase, char path[30]){
 	dataBase = fopen(localPath,"w");
 	
 	//Writing list inside the file
-	while(regList != NULL){
+	while(recList != NULL){
 		
-		fprintf(dataBase,"%i\t",regList->id);
-		fprintf(dataBase,"%s\t",regList->date);
-		fprintf(dataBase,"%f\t",regList->value);
-		fprintf(dataBase,"%s\t",regList->category);
-		fprintf(dataBase,"%s\t",regList->description);
-		fprintf(dataBase,"%s\n",regList->details);
+		fprintf(dataBase,"%i\t",recList->id);
+		fprintf(dataBase,"%s\t",recList->datetime.fmt_str(recList->datetime));
+		fprintf(dataBase,"%f\t",recList->value);
+		fprintf(dataBase,"%s\t",recList->category);
+		fprintf(dataBase,"%s\t",recList->description);
+		fprintf(dataBase,"%s\n",recList->details);
 	
-		regList = regList->next,dataBase,path;
+		recList = recList->next,dataBase,path;
 	}
 	
 	//Close the file
@@ -222,10 +211,10 @@ void saveListAsTxt(reg *regList, FILE *dataBase, char path[30]){
 }
 
 //Function to write list to data base in format at json
-void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
+void saveListAsJson(rec *recList, FILE *dataBase, char path[30]){
 	
 	//Local variables
-	char localPath[50];
+	char localPath[30];
 	strcpy(localPath,path);
 	strcat(localPath,".json");
 	
@@ -233,16 +222,16 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 	dataBase = fopen(localPath,"w");
 	
 	//Writing list inside the file
-	while(regList != NULL){
+	while(recList != NULL){
 		
-		regList->prev == NULL ? fprintf(dataBase,"%c",'[') : 0;
+		recList->prev == NULL ? fprintf(dataBase,"%c",'[') : 0;
 		
 		fprintf(dataBase,"%c",'{');
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s","id");
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
-		fprintf(dataBase,"%i",regList->id);
+		fprintf(dataBase,"%i",recList->id);
 		fprintf(dataBase,"%c",',');
 		
 		fprintf(dataBase,"%c",'"');
@@ -250,7 +239,7 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
 		fprintf(dataBase,"%c",'"');
-		fprintf(dataBase,"%s",regList->date);
+		fprintf(dataBase,"%s",recList->datetime.fmt_str(recList->datetime));
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%c",',');
 		
@@ -258,7 +247,7 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%s","value");
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
-		fprintf(dataBase,"%f",regList->value);
+		fprintf(dataBase,"%f",recList->value);
 		fprintf(dataBase,"%c",',');
 		
 		fprintf(dataBase,"%c",'"');
@@ -266,7 +255,7 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
 		fprintf(dataBase,"%c",'"');
-		fprintf(dataBase,"%s",regList->category);
+		fprintf(dataBase,"%s",recList->category);
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%c",',');
 		
@@ -275,7 +264,7 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
 		fprintf(dataBase,"%c",'"');
-		fprintf(dataBase,"%s",regList->description);
+		fprintf(dataBase,"%s",recList->description);
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%c",',');
 		
@@ -284,13 +273,13 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%s"," : ");
 		fprintf(dataBase,"%c",'"');
-		fprintf(dataBase,"%s",regList->details);
+		fprintf(dataBase,"%s",recList->details);
 		fprintf(dataBase,"%c",'"');
 		fprintf(dataBase,"%c",'}');
 		
-		regList->next != NULL ? fprintf(dataBase,"%c",',') : 0;
+		recList->next != NULL ? fprintf(dataBase,"%c",',') : 0;
 	
-		regList = regList->next;
+		recList = recList->next;
 	}
 	fprintf(dataBase,"%c",']');
 	
@@ -299,36 +288,35 @@ void saveListAsJson(reg *regList, FILE *dataBase, char path[30]){
 }
 
 //Function to switch database
-void switchDataBase(char Path[30],FILE *dataBase){
+void switchDataBase(void){
 	
 	//Local variables
-	int i,count = 0,countYears = 0;
-	char newPath[30], option, year[7],month[11];
+	int i, countSeparators = 0, countYears = 0, option = 0;
+	char newPath[30], chrOption[6], currentYear[7], currentMonth[11];
 	
-	for(i=0;i<strlen(Path);i++){
+	//Loop to get year and month from current data base
+	for(i=0;i<strlen(basePath);i++){
 		
-		if(Path[i] != (char) BARKEY[0] && count == 1){
-			year[i] = Path[i];
+		//Get year
+		if(basePath[i] != (char) DIRECTORY_SEPARATOR_CHAR[0] && countSeparators == 1){
+			currentYear[i] = basePath[i];
 		}
 		
-		if(Path[i] != (char) BARKEY[0] && count == 2){
-			month[i] = Path[i];
+		//Get month
+		if(basePath[i] != (char) DIRECTORY_SEPARATOR_CHAR[0] && countSeparators == 2){
+			currentMonth[i] = basePath[i];
 		}
 		
-		Path[i] == (char) BARKEY[0] ? count++ : 0;
+		//Increase the count of directory separators
+		basePath[i] == (char) DIRECTORY_SEPARATOR_CHAR[0] ? countSeparators++ : 0;
 		
 	}
-	
-	//Local variables
-	char yearsPath[30] = "Database";
-	strcat(yearsPath,(char *)BARKEY);
-	strcat(yearsPath,"list_years.txt");
 	
 	//Opens the year record in read mode
 	FILE *yearList = fopen(yearsPath,"r");
 	
 	//Loop for fill matrix of years
-	while(fscanf(yearList,"%s",matrixYears[countYears]) != EOF || (countYears == 9999)){
+	while(fscanf(yearList,"%s",matrixYears[countYears]) != EOF || (countYears == 999)){
 		countYears++;
 	}
 	
@@ -337,7 +325,7 @@ void switchDataBase(char Path[30],FILE *dataBase){
 	
 	ClrScr();
 	HEADER();
-	printf("Active Database: %c%s%c\n\n",34,Path,34);
+	printf("Active Database: %c%s%c\n\n",34,basePath,34);
 	printf("Select a year\n\n");
 
 	//loop to display and select years
@@ -349,48 +337,161 @@ void switchDataBase(char Path[30],FILE *dataBase){
 
 	//Get selected option
 	setbuf(stdin,NULL);
-	option = getchar()-48;
+	fgets(chrOption,5,stdin);
+	chrOption[5] = '\0';
+	option = atoi(chrOption);
 
 	//Checking if is currente or other
-	if(strcmp(year,matrixYears[option-1]) != 0){
-		strcpy(year, option-1 > countYears || option-1 < 0 ? year : matrixYears[option-1]);
+	if(strcmp(currentYear,matrixYears[option-1]) != 0){
+		strcpy(currentYear, option-1 > countYears || option-1 < 0 ? currentYear : matrixYears[option-1]);
 	}
-	year[strlen(year)-1] = (char) BARKEY[0];
-	
+
 	//Reset option
-	option = '\0';	
+	chrOption[0] = '\0';
+	option = 0;
 	
 	ClrScr();
 	HEADER();
-	printf("Active Database: %c%s%c\n\n",34,Path,34);
+	printf("Active Database: %c%s%c\n\n",34,basePath,34);
 	printf("Select a month\n\n");
 
+	DateTime display;
+	display.Date->tm_mon = option-1;
+
 	//loop to display and select months
-	for(i=0;i<12;i++){
-		
+	for(i=January;i<December;i++){
+		display.Date->tm_mon = i;
 		i <= 8 ? printf(" ") : 0;
-		printf("   %i - %s\n",i+1,MonthsOfYear[i]);
+		printf("   %i - %s\n",i,month(display));
 	}
 
 	//Get selected option
 	setbuf(stdin,NULL);
-	option = getchar()-48;
+	fgets(chrOption,3,stdin);
+	chrOption[5] = '\0';
+	option = atoi(chrOption);
+	display.Date->tm_mon = option-1;
 		
 	//Checking if is currente or other
-	if(strcmp(month,MonthsOfYear[option-1]) != 0){
-		strcpy(month, option-1 > 12 || option-1 < 0 ? month : MonthsOfYear[option-1]);
+	if(strcmp(currentMonth,month(display)) != 0){
+		strcpy(currentMonth, option-1 > 12 || option-1 < 0 ? currentMonth : month(display));
 	}
 	
 	//Creating path to data base
-	strcpy(newPath,"Database");
-	strcat(newPath,(char *)BARKEY);
-	strcat(newPath,year);
-	strcat(newPath,month);
+	strcpy(basePath,"Database");
+	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
+	strcat(basePath,currentYear);
+	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
+	strcat(basePath,currentMonth);
 	
 	//Switch dataBase
-	dataBase = fopen(newPath,"r");
-	strcpy(Path,newPath);
-	
+	dataBase = fopen(basePath,"r");
 	fclose(dataBase);
 	
 }
+
+//Function to check yearsPath directory
+void checkYearsPath(void){
+	
+	char itemResult[7]; 
+	DateTime dtm = now();
+	
+	//Opening list of years in append mode
+	yearList = fopen(yearsPath,"a");		
+	
+	//Search current year in file
+	while(fscanf(yearList,"%s",itemResult) != EOF){
+
+		//Add current year in file if don't exist
+		if(atoi(itemResult) == EOF && atoi(itemResult) == year(dtm)){
+			
+			//Write the current year in the file
+			fprintf(yearList,"%s",year(dtm));
+			fprintf(yearList,"%c",'\n');
+			
+		}else if (atoi(itemResult) != EOF && atoi(itemResult) == year(dtm)){
+			
+			break;
+		}
+	}
+	
+	//Close the files
+	fclose(yearList);
+}
+
+//Check data base
+void checkDatabase(void){
+	
+	//Local variables
+	char dataBaseFileCheck[30]; 
+	char filePathTxt[30]; 
+	char filePathJson[30]; 
+	
+	DateTime dtm = now();
+	
+	//Creating path to list years
+	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
+	strcpy(yearsPath,basePath);
+	strcat(yearsPath,"list_years.txt");
+	
+	//Call datetime function
+	// getDate();
+	
+	char y_str[5];
+	snprintf(y_str,5,"%d",year(dtm));
+
+	//Creating path to data base
+	strcat(basePath,y_str);
+	strcat(basePath,DIRECTORY_SEPARATOR_CHAR);
+	
+	//Creating path to check if a data base exists
+	strcpy(dataBaseFileCheck,basePath);
+	strcat(dataBaseFileCheck,"file_check.txt");
+	
+	//Checking if an old data base exists
+	if((dataBase = fopen(dataBaseFileCheck,"rb")) == NULL){
+        
+		//Creating directory to data base
+		___mkdir("Database");
+		___mkdir(basePath);
+		
+		//Validating new data base
+		dataBase = fopen(dataBaseFileCheck,"wb");
+		fprintf(dataBase,"%s","file_check is an internal file, if it is modified or deleted the program may not work correctly");
+		
+		//Close the file
+		fclose(dataBase);
+		
+		//Concatenate current month
+		strcat(basePath,month(dtm));
+		strcpy(filePathTxt,basePath);
+		strcpy(filePathJson,basePath);
+		
+		//Concatenate file extensions
+		strcat(filePathTxt,".txt");
+		strcat(filePathJson,".json");
+		
+		//Write new files
+		dataBase = fopen(filePathJson,"w");
+		dataBase = fopen(filePathTxt,"w");
+		
+		//Opening list of years in append mode
+		yearList = fopen(yearsPath,"a");
+		
+		//Write the current year in the file
+			fprintf(yearList,"%s",year(dtm));
+			fprintf(yearList,"%c",'\n');
+		
+		//Close the file
+		fclose(yearList);
+		fclose(dataBase);
+		
+	}else{
+		
+		//Concatenate current month
+		strcat(basePath,month(dtm));
+	}
+	
+	checkYearsPath();
+}
+

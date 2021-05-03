@@ -12,3 +12,5 @@ to be added, however, it is not recommended to use letters, signs or special cha
 For the application to work correctly, you must recompile it in the machine environment.
 This is free software developed to facilitate personal economic organization and for educational purposes.
 All source code is commented as well as the functions explained just above their declarations.
+
+To build use the comands of script build-linux.sh
