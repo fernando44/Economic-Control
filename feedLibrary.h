@@ -126,7 +126,7 @@ void dataFeed(rec *recsList){
 	
 	ClrScr();
 	HEADER();
-	printf("Id: %i\n",recsList->id);
+	printf("Id: %li\n",recsList->id);
 	
 //Receives date data
 //===================================================================
@@ -201,7 +201,7 @@ void dataFeed(rec *recsList){
 	printf("Date: %s",recsList->datetime.fmt_str(recsList->datetime));
 	printf("\nDescription: %s",recsList->description);
 	printf("\nCategory: %s",recsList->category);
-	printf("\nValue: %.2f",recsList->value);
+	printf("\nValue: %.2Lf",recsList->value);
 
 //Receives details data
 //===================================================================
