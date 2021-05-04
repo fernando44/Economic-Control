@@ -30,14 +30,7 @@ void showRecords(rec *ficha){
 		printf("----------------------------------------------------------------------------------------------------\n");
 		while(temp != NULL){
 			
-			//Displays the record data
-			printf("          Id: %i\n",temp->id);
-			printf("          Date: %s\n",temp->datetime.fmt_str(temp->datetime));
-			printf("          Category: %s\n",temp->category);
-			printf("          Description: %s\n",temp->description);
-			printf("          Value: %.2f\n",temp->value);
-			printf("          Details: %s\n",temp->details);
-			printf("----------------------------------------------------------------------------------------------------\n");
+			temp->show(temp);
 			
 			//Increment the sum value with the value of each record and the total number of records
 			sumValue += temp->value;
