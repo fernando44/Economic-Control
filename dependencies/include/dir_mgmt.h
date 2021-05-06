@@ -7,10 +7,12 @@
  *  Date: 27/12/20
  */
 
-#include <limits.h>
 
 #ifndef DIR_MGMT_H
 #define DIR_MGMT_H
+
+#include <limits.h>
+#include <stdlib.h>
 #define MAX_ERROR_MESS (PATH_MAX + NAME_MAX)
 
 #if defined(_WIN32) || defined(WIN32)
